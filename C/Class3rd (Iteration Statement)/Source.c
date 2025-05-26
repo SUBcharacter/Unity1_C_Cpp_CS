@@ -151,19 +151,19 @@ void main()
 // 반복문의 경우 미리 예측해서 실행하는 구조를 가지며,
 // 예측이 틀렸다면 현재 반복문 내의 조건 분기만 다시 검사하여 처리
 
-int a = 0;
-
-do
-{
-	system("cls");
-	a += 20;
-	printf("조건 : a가 3000을 초과 하기 전까지 반복\n");
-	printf("현재 a의 값 : %d\n\n", a);
-	Sleep(100);
-
-} while (a<3000);
-
-printf("반복 종료");
+//int a = 0;
+//
+//do
+//{
+//	system("cls");
+//	a += 20;
+//	printf("조건 : a가 3000을 초과 하기 전까지 반복\n");
+//	printf("현재 a의 값 : %d\n\n", a);
+//	Sleep(100);
+//
+//} while (a<3000);
+//
+//printf("반복 종료");
 
 #pragma endregion
 
@@ -189,6 +189,25 @@ printf("반복 종료");
 //}
 
 #pragma endregion
+
+#pragma region continue 문
+
+// 해당 조건문만 실행하지 않고, 반복문은 이어서 실행하는 제어문
+
+
+//for (int i = 1; i <= 20; i++)
+//{
+//	
+//	if (i % 3 == 0)
+//	{
+//		continue;
+//		
+//	}
+//	else
+//		printf("수열 : %d\n", i);
+//}
+#pragma endregion
+
 
 #pragma endregion
 
