@@ -3,181 +3,116 @@
 #include <conio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "Library.h"
-
-#define SIZE 10
 
 void main()
 {
-#pragma region 주소 연산자
+#pragma region 배열
 
-	// 변수의 주소 값을 반환하는 연산자
-	
-	//int x = 10;
-	//printf("%p", &x);
+	// 같은 자료형의 변수들로 이루어진 유한 집합
+	// 배열의 경우 첫 번째 원소는 0부터 시작	
 
-#pragma region scanf_s 함수
-
-	// 표준 입력 함수로, 여러 종류의 데이터를 다양한 서식에 맞춰 입력하는 함수
-	// 표준 입력 함수로 데이터를 입력하게 되면 버퍼에 데이터를 보관하였다가 입력하는 순간
-	// 버퍼 안의 내용을 프로그램에 전송한다
-
-	//int a = 0;
-	//scanf_s("%d", &a);
-	//printf("출력값 : %d", a);
-
-	// 표준 입력 함수는 입력을 수행할 때까지 다음 작업으로 넘어 갈 수 없다
-
-#pragma endregion
-
-#pragma region  포인터
-
-	// 메모리의 주소 값을 저장할 수 있는 변수
-	 
-	//int packet = 10;
-	//int* pointer = &packet;
+	//int array[1000];
+	//int count = sizeof(array) / sizeof(int);
+	//printf("배열의 크기 : %d\n\n", count);
 	//
-	//printf("packet의 주소 : %p\n", &packet);
-	//printf("packetptr의 주소 : %p\n\n", pointer);
-	//printf("packet의 값 : %d\n", packet);
-	//printf("packetptr 역참조 값 : %d\n\n", *pointer);
+	//for (int i = 1; i <= count; i++)
+	//{
+	//	array[i-1] = 10 * i;
+	//	printf("대입 x-%d : %d\n", i, array[i-1]);
+	//}
 	
-	// 포인터 변수도 자신의 메모리 공간을 가지고 있으며
-	// 포인터 변수에 변수의 시작 주소를 저장하게 되면,
-	// 해당 변수의 시작 주소를 가리키게 된다
+	// 배열은 원하는 원소에 원하는 값을 저장할 수 있으며,
+	// 배열의 크기는 컴파일 되는 시점부터 고정된 메모리 공간을 가지게 된다
 
+	//int list[5] = { 1, 2, 3, 4, 5 };
+	//
+	//int* pointer = list;
+	//printf("list[0] : %d\n", list[0]);
+	//printf("list[0] address : %p\n", pointer);
 	//*pointer = 99;
 	//
-	//printf("*packetptr = 99; 이후\n\n");
-	//printf("packet의 값 : %d\n", packet);
-	//printf("packetptr 역참조 값 : %d\n\n\n\n", *pointer);
-
-	// 포인터 변수는 포인터가 가리키는 메모리 공간의 자료형은
-	// 알 수 없으므로, 포인터가 가리키는 메모리의 자료형을 선언 해주어야 함.
-
-	// 포인터 변수의 크기는 중앙 처리 장치가 한 번에 처리할 수 있는 크기로 정해지며,
-	// 한 번에 처리할 수 있는 크기는 운영 체제에 따라 크기가 결정된다.
-
-	//printf("packetptr 변수의 크기 : %u\n", sizeof(packetptr));
-
-	//int storage=0;
-	//pointer = &storage;
+	//printf("list[0] : %d\n\n", list[0]);
 	//
-	//printf("packetptr = &storage; 이후\n\n");
-	//printf("storage의 값 : %d\n", storage);
-	//printf("packetptr 역참조 값 : %d\n\n", *pointer);
-	//*pointer = 20;
-	//printf("*packetptr = 20; 이후\n\n");
-	//printf("storage의 주소 : %p\n", &storage);
-	//printf("packetptr의 주소 : %p\n\n", pointer);
-	//printf("storage의 값 : %d\n", storage);
-	//printf("packetptr 역참조 값 : %d\n", *pointer);
+	//
+	//printf("list[1] : %d\n", list[1]);
+	//printf("list[1] address : %p\n", pointer+1);
+	//pointer++;
+	//*pointer = 100;
+	//
+	//printf("list[1] : %d\n", list[1]);
+
+	// 배열의 크기는 생략할 수 있으며, 초기화 목록에서 설정한 요소에 따라 배열의 크기가 결정됨
+
+	//float container[ ] = { 10.5f,20.8f,35.6f,31.4f };
+	
 
 #pragma endregion
 
-#pragma region 상수 지시 포인터
+#pragma region 문자열
 
-	// 포인터가 가리키는 주소에 저장되어 있는 값을
-	// 변경할 수 없도록 지정되어 있는 포인터
+	// 연속적인 메모리 공간에 저장된 문자 변수의 집합
+	// 문자열의 경우 포인터를 이용하여
+	// 문자열 상수를 가리키도록 할 수 있으며,
+	// 문자열 상수는 데이터 영역에 읽기 전용 공간에 저장되기 때문에,
+	// 문자열의 값을 변경할 수 없다
 
-	// 상수 지시 포인터
-	// 
-	//int height = 10;
-	//int width = 20;
-	//const int* pointer = &height;
-	//
-	//printf("height 값 : %d\n", height);
-	//printf("height 주소값 : %d\n\n", &height);
-	//
-	//printf("width 값 : %d\n", width);
-	//printf("width 주소값 : %d\n\n", &width);
-	//
-	//printf("포인터의 값 : %p\n", pointer);
-	//printf("포인터 역참조 값 : %d\n\n", *pointer);
-	//
-	//pointer = &width;
-	//printf("pointer 주소 교체\n\n");
-	//printf("포인터의 값 : %p\n", pointer);
-	//printf("포인터 역참조 값 : %d\n", *pointer);
+	//const char* Title = "Call of Duty : Modern Warfare";
+	//printf("%s\n", Title);
 
+	// 문자열은 공백도 함께 메모리 공간에 포함하여 크기가 결정되며,
+	// 마지막에 문자열의 끝을 알려주는 제어 문자가 포함된다
+
+	//Title = "Battle Field";
+	
+	//printf("%s\n", Title);
+
+	// 문자열을 저장하게 되면 맨 마지막에 무효의 문자까지 메모리 공간에 저장된다
+
+	//char name[] = "Bob Robert";
+	//char* const name2 = "Bob Robert";
+	//printf("%s\n", name);
+	//
+	//name[0] = 'J';
+	//name[1] = 'i';
+	//name[2] = 'm';
+	//
+	//printf("%s\n", name);
 
 #pragma endregion
 
-#pragma region 포인터 상수
+#pragma region 과제
 
-	// 포인터 변수가 가리키고 있는 주소 값을 변경 할 수 없도록 지정되어 있는 포인터
+	/*
+	* 아스키 코드, 유니코드 조사 및 활용
+	*/
 
-	//int some= 10;
-	//int day = 30;
-	//int* const pointer = &some;
-	//
-	//printf("some 값 : %d\n", some);
-	//printf("some 주소값 : %p\n\n", &some);
-	//
-	//printf("day 값 : %d\n", day);
-	//printf("day 주소값 : %p\n\n", &day);
-	//
-	//printf("pointer 값 : %p\n", pointer);
-	//printf("pointer 역참조 값 : %d\n\n", *pointer);
-	//
-	//*pointer = day;
-	//
-	//printf("pointer 역참조 값 변경\n\n");
-	//printf("pointer 값 : %p\n", pointer);
-	//printf("pointer 역참조 값 : %d\n\n" ,*pointer);
-	//
-	//printf("day 값 : %d\n", day);
-	//printf("day 주소값 : %p\n\n", &day);
+	// 아스키코드(American Standard Code for Information Interchange)
+	// 미국정보교환표준부호
+	// 다양한 문자들을 0~127까지의 숫자로 표현할 수 있게 만든 것
+	// C언어에서 문자를 표현할 때 주로 사용된다.
+	// Ex.
 
-#pragma endregion
+	int character = 'A';
 
-#pragma region 범용 포인터
+	printf("아스키 코드 숫자 : %d\n", character);
+	printf("아스키 코드 문자 : %c\n", character);
 
-// 자료형이 정해지지 않은 상태로 모든 자료형을 저장할 수 있는 포인터
-int integer = 10;
-float realnum = 15.8f;
-char yob ='A';
+	// 표현되는건 문자이지만, 숫자와도 연산할 수 있다.
+	// Ex.
+	
+	character += 1;
+	printf("아스키 코드 숫자 : %d\n", character);
+	printf("아스키 코드 문자 : %c\n", character);
+	//---------------------------------------------------------
 
-void * pointer = &yob;
-
-printf("pointer 값 : %p\n", pointer);
-printf("pointer 역참조 값 : %c\n\n", *(char*)pointer);
-
-*(char*)pointer = 'B';
-
-printf("pointer 값 : %p\n", pointer);
-printf("pointer 역참조 값 : %c\n\n", *(char*)pointer);
-
-pointer = &integer;
-
-printf("pointer 값 : %p\n", pointer);
-printf("pointer 역참조 값 : %d\n\n", *(int*)pointer);
-
-*(int*)pointer = 50;
-
-printf("pointer 값 : %p\n", pointer);
-printf("pointer 역참조 값 : %d\n\n", *(int*)pointer);
-
-pointer = &realnum;
-
-printf("pointer 값 : %p\n", pointer);
-printf("pointer 역참조 값 : %f\n\n", *(float*)pointer);
-
-*(float*)pointer = 30.5f;
-
-printf("pointer 값 : %p\n", pointer);
-printf("pointer 역참조 값 : %f\n\n", *(float*)pointer);
-
-printf("integer 값 : %d\n\n", integer);
-printf("realnum 값 : %f\n\n", realnum);
-printf("yob 값 : %c\n\n", yob);
-
-// 범용 포인터는 메모리 주소에 접근해서 값을 변경 할 수 없으므로
-// 범용 포인터가 가리키는 변수의 자료형으로 변환해주어야 함
+	// 유니코드
+	// 전세계 모든 문자를 일관되게 표현할 수 있도록 설계된 산업 표준
+	// C언어에서는 주로 사용되지 않지만 출력할 수 있는 방법은 있다.
+	// Ex.
+	
+	printf("유니코드(A) : \u0041");
 
 #pragma endregion
 
-	//데이터의 주소 값은 해당 데이터가 저장된 메모리의 시작 주소를 의미함
-#pragma endregion
 
 }
