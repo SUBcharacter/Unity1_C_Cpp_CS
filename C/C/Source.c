@@ -5,186 +5,266 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include <stdbool.h>
 
-typedef struct 
+void Shuffle(int list[], int size)
 {
-	char grade;
-	int health;
-	double attack;
+	srand((unsigned int)time(NULL));
+	int temp = 0;
 
-	// 구조체의 크기는 구조체를 구성하는 멤버 중에서 크기가
-	// 가장 큰 자료형의 배수가 되도록 설정한다
-}Card;
+	for (int i = 0; i < size; i++)
+	{
+		int value = rand() % 10;
+		temp = list[value];
+		list[value] = list[i];
+		list[i] = temp;
+	}
+}
 
-typedef struct
+
+
+void Explanation()
 {
-	double x;
-	double y;
-}Point;
+	system("cls");
 
-typedef struct
+	printf("게 임 설 명 !                 스킵하려면 s를 누르세요.\n\n");
+	char skip = _getch();
+	if (skip == 's')
+		return;
+
+	printf("컴퓨터가 가지고 있는 숫자(1 ~ 50)를 맞추면 되는 게임입니다.\n\n");
+	skip = _getch();
+	if (skip == 's')
+		return;
+	
+	printf("플레이어가 숫자를 입력하면 숫자를 비교해 숫자가 높은지 낮은지를 알려줍니다.\n\n");
+	skip = _getch();
+	if (skip == 's')
+		return;
+
+	printf("총 5번의 기회 안에 맞추지 못하면 패배하게 됩니다.\n\n");
+	skip = _getch();
+	if (skip == 's')
+		return;
+
+	printf("준비 되셨다면 아무 키나 누르십시오....");
+	_getch();
+}
+
+void LifeDisplay(int life)
 {
-	int data;
-	struct Node* nextptr;
+	printf("라이프 : ");
+	for (int i = 0; i < life; i++)
+	{
+		printf("♥");
+	}
+	printf("\n\n");
+}
 
-}Node;
-
-typedef struct
+void Play()
 {
-	int HP;
-	int MP;
-	int DF;
-}Player;
+	srand((unsigned int)time(NULL));
+
+	int randomNumber = rand() % 50 + 1;
+	int life = 10;
+
+	Explanation();
+
+	while (true)
+	{
+		int inputNumber = 0;
+
+		system("cls");
+
+		LifeDisplay(life);
+		printf("숫자를 입력해주세요! : ");
+
+		scanf("%d", &inputNumber);
+
+		if (inputNumber == 1099464864)
+		{
+			printf("디버그 모드 : %d\n\n", randomNumber);
+			printf("계속하려면 아무키 입력\n\n");
+			_getch();
+			continue;
+		}
+
+		if (inputNumber == randomNumber)
+		{
+			system("cls");
+			printf("숫자를 맞추셨습니다!\n\n\n");
+			printf("V I C T O R Y !!\n\n\n");
+			printf("타이틀로 돌아갑니다.\n");
+			_getch();
+			return;
+		}
+		else if (inputNumber > randomNumber && inputNumber <=50)
+		{
+			system("cls");
+			life--;
+			printf("틀리셨습니다..... 이것보단 작은 숫자입니다...\n\n");
+			printf("남은 기회 : %d\n\n", life);
+		}
+		else if(inputNumber < randomNumber && inputNumber<=50)
+		{
+			system("cls");
+			life--;
+			printf("틀리셨습니다..... 이것보단 큰 숫자입니다...\n\n");
+			printf("남은 기회 : %d\n\n", life);
+		}
+		else
+		{
+			printf("범위를 벗어난 숫자입니다. 1 ~ 50 사이의 숫자를 입력해 주십시오.\n\n");
+			_getch();
+			continue;
+		}
+
+		if (life <= 0)
+		{
+			system("cls");
+			printf("아쉽습니다... 기회를 모두 소진 하셨습니다...\n\n");
+			printf("랜덤 숫자는 : %d 였습니다...\n\n\n", randomNumber);
+			printf("D E F E A T...\n\n\n");
+
+			printf("타이틀로 돌아갑니다.\n");
+			_getch();
+			return;
+		}
+		printf("계속하시려면 아무키나 누르십시오.....\n\n");
+		_getch();
+	}
+}
+
+void Title()
+{
+	while (true)
+	{
+		system("cls");
+		printf("1_ 게임 시작\n\n\n");
+		printf("2_ 게임 종료\n\n\n");
+
+		char input = _getch();
+
+		if (input == '1')
+		{
+			Play();
+		}
+		else if (input == '2')
+		{
+			return;
+		}
+		else
+		{
+			printf("잘못 된 입력입니다. 다시 시도 하십시오.\n\n");
+			_getch();
+		}
+	}
+}
 
 int main()
 {
-#pragma region 구조체
+#pragma region 의사 난수
 
-	// 여러 개의 변수를 하나의 집합으로 구조화 한 다음
-	// 하나의 객체를 생성하는 것
-	// 구조체를 선언하기 전에 구조체는 메모리 공간이 생성되지 않으므로,
-	// 구조체 내부에 있는 데이터를 초기화 할 수 없다
-	// 구조체의 각 멤버는 구조체 선언에서 나타나는 순서대로 초기화 해야함
-	// 순서는 왼쪽에서 오른쪽
+	// rand() : 0 ~ 32767 사이의 난수의 값을 반환하는 함수
+	// time(NULL) : 1970년 1월 1일 (00 : 00 : 00) UTC 이후에 지난 초(Second)를 반환하는 함수
+	// srand(seed) : 난수 생성기의 시드를 설정하는 함수
 
-	//Card attacker = { 'S', 5, 6 };
-	//
-	//printf("카드 정보\n\n");
-	//printf("카드 등급 : %c\n", attacker.grade);
-	//printf("카드 체력 : %d\n", attacker.health);
-	//printf("카드 공격력 : %.0lf\n", attacker.attack);
-
-
-#pragma endregion
-
-#pragma region 바이트 패딩
-
-	// 멤버 변수를 메모리에서 CPU로 읽을 때 한 번에
-	// 읽을 수 있도록 컴파일러가 레지스터의 블록에 맞추어 바이트를 패딩해주는 최적화 작업
-	// 구조체 크기의 경우 멤버 변수의 순서에 따라 메모리 크기가
-	// 다르게 설정될 수 있으며, 구조체 크기를 결정하는 형태는
-	// 기본 자료형으로만 구성된다
-
-	//printf("Card 구조체의 크기 : %d", sizeof(Card));
-
-#pragma endregion
-
-#pragma region 두 점 사이의 거리
-
-	//srand((unsigned int)time(NULL)); // 랜덤 시드
+	//srand((unsigned int)time(NULL));
 	//int count = 0;
 	//
-	//for (int i = 0; i < 30; i++)
+	//for (int i = 0; i < 10000; i++)
 	//{
-	//	system("cls");
+	//	int value = rand() % 100+1;
+	//	
 	//
-	//	Point player = { rand() % 10, rand() % 10 }; // 플레이어 랜덤 좌표 생성
-	//	Point enemy = { rand() % 10, rand() % 10 }; // 적 랜덤 좌표 생성
-	//
-	//	// 거리 계산
-	//	double distance = sqrt(pow(fabs(player.x - enemy.x), 2) + pow(fabs(player.y - enemy.y), 2));
-	//
-	//	// 정보 표시
-	//	printf("플레이어 좌표 : (%.0lf, %.0lf)\n\n", player.x, player.y);
-	//	printf("적 좌표 : (%.0lf, %.0lf)\n\n", enemy.x, enemy.y);
-	//	printf("적과의 거리 : %.2lf\n\n", distance);
-	//
-	//	// 전투 여부 판단
-	//	if (distance > 3)
+	//	if (value > 75)
 	//	{
-	//		printf("전투 불가\n");
+	//		printf("value : %d 당첨!\n", value);
+	//		count++;
 	//	}
 	//	else
 	//	{
-	//		count++;
-	//		printf("전투 시작\n");
+	//		printf("value : %d\n", value);
 	//	}
-	//	_getch();
+	//	
 	//}
 	//
-	//printf("전투 횟수 : %d\n", count);
-#pragma endregion
-
-#pragma region 자기 참조 구조체
-
-	// 자기 자신과 같은 타입의 포인터를 멤버로 포함하고 있는 구조체
-
-	//Node* node1 = malloc(sizeof(Node));
-	//node1->data = 30;
-	//node1->nextptr = NULL;
-	//
-	//Node* node2 = malloc(sizeof(Node));
-	//node2->data = node1->data * 2;
-	//node1->nextptr = node2;
-	//node2->nextptr = NULL;
-	//
-	//Node* node3 = malloc(sizeof(Node));
-	//node3->data = node2->data * 2;
-	//node2->nextptr = node3;
-	//node3->nextptr = NULL;
-	//
-	//Node* head = node1;
-	//
-	//while (head!= NULL)
-	//{
-	//	printf("data : %d\n\n", head->data);
-	//	head = head->nextptr;
-	//}
-	//
-	//free(node1);
-	//node1 = NULL;
-	//free(node2);
-	//node2 = NULL;
-	//free(node3);
-	//node3 = NULL;
-
-	//Node node1 = {10,NULL};
-	//Node node2 = {20,NULL};
-	//Node node3 = {30,NULL};
-	//
-	//node1.nextptr = &node2;
-	//node2.nextptr = &node3;
-	//node3.nextptr = NULL;
-	//
-	//Node* currentNode = &node1;
-	//
-	//while (currentNode != NULL)
-	//{
-	//	printf("Node 값 : %d\n\n", currentNode->data);
-	//	currentNode = currentNode->nextptr;
-	//}
-
-	//---------------------------------------------------
-
-	// typedef에 대해
-	// 기존 자료형에 새 이름을 정의해 주는 키워드
-		
-	typedef unsigned int UI;
-
-	UI testing;
-
-	printf("typedef UI testing : %d\n\n\n", 255);
-	
-	// 구조체와 함께 쓰면 구조체의 이름을 struct없이 간단히 쓸 수 있다.
-	// Ex.
-	// typedef struct
-	//{
-	//	int HP;
-	//	int MP;
-	//	int DF;
-	//}Player;
-	
-	Player player = { 100, 50, 30 };
-	
-	printf("플레이어 스탯\n\n");
-	printf("체력 : %d\n\n",player.HP);
-	printf("마나 : %d\n\n",player.MP);
-	printf("방어력 : %d\n\n",player.DF);
-
-	// 복잡한 선언을 단순화 해서 코드 가독성을 올려주고, 코드 작성에서도 편의성을 가질 수 있다.
+	//printf("25%% 확률 10000회 독립시행 당첨 횟수 : %d/10000", count);
 
 #pragma endregion
 
+#pragma region 셔플 함수
 
-	return 0;
+	//srand((unsigned int)time(NULL));
+	//
+	//int list[15] = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 };
+	//
+	//int size = sizeof(list) / sizeof(int);
+	//
+	//int numberTemp = 0;
+	//Shuffle(list, size);
+	//printf("필드 패 :");
+	//for (int i = 0; i < 5; i++)
+	//{
+	//	int numValue = rand() % 15;
+	//	int symbolValue = rand() % 4 + 1;
+	//
+	//	switch (symbolValue)
+	//	{
+	//	case 1: printf("♠"); break;
+	//	case 2: printf("◆"); break;
+	//	case 3: printf("♥"); break;
+	//	case 4: printf("♣"); break;
+	//	}
+	//	
+	//	switch (list[numValue])
+	//	{
+	//	case 1: printf("A "); break;
+	//	case 13: printf("J "); break;
+	//	case 14: printf("Q "); break;
+	//	case 15: printf("K "); break;
+	//	default: printf("%d ", list[numValue]); break;
+	//	}
+	//}
+	//printf("\n\n\n");
+	//
+	//printf("내 패 :");
+	//
+	//for (int i = 0; i < 2; i++)
+	//{
+	//	int numValue = rand() % 15;
+	//	int symbolValue = rand() % 4 + 1;
+	//	switch (symbolValue)
+	//	{
+	//	case 1: printf("♠"); break;
+	//	case 2: printf("◆"); break;
+	//	case 3: printf("♥"); break;
+	//	case 4: printf("♣"); break;
+	//	}
+	//	
+	//	switch (list[numValue])
+	//	{
+	//	case 1: printf("A "); break;
+	//	case 13: printf("J "); break;
+	//	case 14: printf("Q "); break;
+	//	case 15: printf("K "); break;
+	//	default: printf("%d ", list[numValue]); break;
+	//	}
+	//}
+
+#pragma endregion
+
+#pragma region Up & Down Game
+	
+	Title();
+	
+
+#pragma endregion
+
+#pragma region 열거형
+
+	// 열거형 : 
+#pragma endregion
+
+
 }
