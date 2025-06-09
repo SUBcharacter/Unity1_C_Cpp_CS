@@ -34,7 +34,7 @@ void Explanation()
 	skip = _getch();
 	if (skip == 's')
 		return;
-	
+
 	printf("플레이어가 숫자를 입력하면 숫자를 비교해 숫자가 높은지 낮은지를 알려줍니다.\n\n");
 	skip = _getch();
 	if (skip == 's')
@@ -96,14 +96,14 @@ void Play()
 			_getch();
 			return;
 		}
-		else if (inputNumber > randomNumber && inputNumber <=50)
+		else if (inputNumber > randomNumber && inputNumber <= 50)
 		{
 			system("cls");
 			life--;
 			printf("틀리셨습니다..... 이것보단 작은 숫자입니다...\n\n");
 			printf("남은 기회 : %d\n\n", life);
 		}
-		else if(inputNumber < randomNumber && inputNumber<=50)
+		else if (inputNumber < randomNumber && inputNumber <= 50)
 		{
 			system("cls");
 			life--;
@@ -166,7 +166,7 @@ typedef enum
 	// 순서를 할당한 경우 할당 된 숫자부터 1씩 올라감
 	BOW,
 	GUN,
-	KNIFE=3,
+	KNIFE = 3,
 	SWORD,
 	HAMMER
 
@@ -266,9 +266,9 @@ int main()
 #pragma endregion
 
 #pragma region Up & Down Game
-	
+
 	//Title();
-	
+
 
 #pragma endregion
 
