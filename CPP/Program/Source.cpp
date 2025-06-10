@@ -1,123 +1,161 @@
 ﻿#include <iostream>
 using namespace std;
 
-namespace Module
+class GameObject
 {
-	float time = 5.12412f;
+#pragma region 접근 지정자
 
-	void Function()
+	// 클래스 내부에 포함되어 있는 속성에 접근 범위를 제한하는 지정자
+
+	// public : 클래스 내부와 자기가 상속하고 있는 클래스 그리고 클래스 외부에서도 접근을 허용하는 지정자
+	// protected : 클래스 내부와 자기가 상속하고 있는 클래스까지만 접근을 허용하는 지정자
+	// private : 클래스 내부까지만 접근을 허용하는 지정자
+
+#pragma endregion
+private:
+	string name;
+	int x = 0;
+	int y = 0;
+	int z = 0;
+
+protected:
+	static int count;
+public:
+	void SetName(string stream)
 	{
-		cout << "Module Function" << endl;
+		name = stream;
 	}
-}
 
-namespace Library
-{
-	const char* manual = "";
-	void Function()
+	void SetX(int value)
 	{
-		cout << "Library Function" << endl;
+		if (value >= 100)
+		{
+			cout << name << " X Exeception" << endl;
+			return;
+		}
+		x = value;
 	}
-}
+	const int& GetX()
+	{
+		return x;
+	}
 
-using namespace Library;
-using namespace Module;
+	void SetY(int value)
+	{
+		if (value >= 100)
+		{
+			cout << name << " Y Exeception" << endl;
+			return;
+		}
+		y = value;
+	}
+	const int& GetY()
+	{
+		return y;
+	}
 
-int data = 20;
+	void SetZ(int value)
+	{
+		if (value >= 100)
+		{
+			cout << name << " Z Exeception" << endl;
+			return;
+		}
+		z = value;
+	}
+	const int& GetZ()
+	{
+		return z;
+	}
+	void ShowCoord()
+	{
+		cout << name << "  x : " << GetX();
+		cout << ", y : " << GetY();
+		cout << ", z : " << GetZ() << endl << endl;
+	}
+
+	void Increase()
+	{
+		count += 1;
+	}
+};
+
+int GameObject::count = 1;
 
 int main()
 {
-#pragma region 스트림
+#pragma region 참조자
+
+	// 하나의 변수에 도 다른 이름을 지정하는 지정자
 	
-	// 시간의 흐름에 따라 연속적으로 발생하는 데이터의 흐름
-	// 스트림은 운영체제의 의해 생성되며,
-	// 스트림 자체에 버퍼라는 임시 메모리 공간이 존재
+	//int x = 10;
+	//
+	//int& xValue = x;
+	//
+	//cout << "x의 값 : " << x << endl;
+	//cout << "xValue의 값 : "<< xValue << endl;
+	//
+	//cout << "x의 주소 : " << &x << endl;
+	//cout << "xValue의 주소 : "<< &xValue << endl;
 
-	int series = 5;
-
-	//cout << series << " Stream" << endl;
-	//cout << "Program 프로그램" << endl;
-	//int count = 0;
-	//cin >> count;
-	//for (int i = 1; i <= count; i++)
-	//{
-	//	
-	//	cout << "PlayStation " << i << endl << endl;
-	//}
 #pragma endregion
 
-#pragma region 범위 지정 연산자
+#pragma region 클래스
+
+	// 사용자 저의 자료형으로 속성과 함수가 포함되어 있으며,
+	// 클래스를 통해 객체를 생성하여 접근하고 사용하는 집합체
+	// 클래스의 경우 클래스 내부에 있는 변수는 클래스의 메모리 영역에 포함되지만,
+	// 정적변수와 함수의 메모리는 클래스 영역에 포함되지 않는다
+
+
+	GameObject gameObject1;
+	GameObject gameObject2;
+	GameObject gameObject3;
 	
-	// 여러 범위에서 사용되는 식별자를 구분하는데 사용되는 연산자
-	// 범위 지정 연산자는 전역 변수와 같은 이름의 지역 변수가 선언되었을때
-	// 가장 가까운 범위에 선언된 변수의 이름을 사용하는 범위 규칙이 존재해
-	// 전역 변수가 호출되지 않음
-
-	//int data = 10;
+	//gameObject1.z = 10;
+	//gameObject2.z = 30;
+	//gameObject3.z = 15;
 	//
-	//cout << "Data 지역 : " << data << endl;
-	//cout << "Data 전역 : " << ::data << endl;
+	//cout << "gameObject1.z : " << gameObject1.z << endl;
+	//cout << "gameObject2.z : " << gameObject2.z << endl;
+	//cout << "gameObject3.z : " << gameObject3.z << endl;
+
+	// 객체 지향 프로그래밍
+	// 1. 추상화
+	// 2. 캡슐화
+	// 3. 상속
+	// 4. 다형성
+	gameObject1.SetName("GameObject 1");
+	gameObject2.SetName("GameObject 2");
+	gameObject3.SetName("GameObject 3");
+
+	gameObject1.SetX(5);
+	gameObject1.SetY(5);
+	gameObject1.SetZ(5);
+
+	gameObject2.SetX(10);
+	gameObject2.SetY(10);
+	gameObject2.SetZ(10);
+
+	gameObject3.SetX(300);
+	gameObject3.SetY(300);
+	gameObject3.SetZ(300);
+
+	gameObject1.ShowCoord();
+	gameObject2.ShowCoord();
+	gameObject3.ShowCoord();
+
+	cout << "GameObject's size : " << sizeof(GameObject) << "Byte";
 #pragma endregion
 
-#pragma region 이름 공간
+#pragma region 과제 정적멤버 함수
 
-	// 속성을 구분할 수 있도록 유효 범위를 설정하는 영역
-	//Module::Function();
-	//Library::Function();
-	//manual = "매뉴얼";
-	//cout << manual << endl;
-	//cout << Module::time << endl;
-#pragma endregion
-
-#pragma region 동적 할당
-
-	//int* pointer = new int;
-	//*pointer = 100;
-	//
-	//cout << "pointer : " << *pointer << endl;
-	//cout << "pointer : " << pointer << endl;
-	//
-	//delete pointer;
-	//pointer = nullptr;
-
-#pragma region 동적 배열
-
-	//pointer = new int[5];
-	//
-	//for (int i = 0; i < 5; i++)
-	//{
-	//	pointer[i] = (i + 1) * 10;
-	//	cout << "pointer[" << i << "] : " << pointer[i] << endl;
-	//}
-	//
-	//delete[] pointer;
-	//pointer = nullptr;
+	// 
 
 #pragma endregion
 
 
-#pragma endregion
-
-#pragma region 시퀀스 포인트
-
-	// 시퀀스 포인트 : 다음 코드로 넘어가기전, 이전 코드의 행동들이 메모리에 완전히 반영되는 시점
-	// 종류 : ';', ',', '&&,||', '?:', 함수의 리턴
-
-	int a = 1;
-
-	a = a + 3 - 5 + 10; // <- 세미 콜론을 기준으로 코드가 종료(시퀀스 포인트)
-
-	cout << "a의 값 : " << a << endl;
-	a = 1;
-	a = a++ + 3 - 5 + 10; // 시퀀스 포인트 전에 값이 두번 바뀜(정의되지 않은 행동)
-	// a++를 언제 저장하는지 명확하지 않아 어떤 값이 저장 될지 예상 불가
-
-	cout << "a의 값 : " << a << endl;
-	
-	// 실행은 되지만 코드가 복잡해질수록 오류가 나기 쉽고, 가독성에 문제가 생김
-
-#pragma endregion
-
+	return 0;
 }
 
 
