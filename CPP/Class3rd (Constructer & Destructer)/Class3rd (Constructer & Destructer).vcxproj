@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{db8e9129-cb0b-43e8-b0c5-b3899913c8b4}</ProjectGuid>
-    <RootNamespace>RPG</RootNamespace>
+    <ProjectGuid>{22c40f11-fa59-4ac0-97aa-218acd59e4eb}</ProjectGuid>
+    <RootNamespace>Class3rdConstructerDestructer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -123,13 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Title.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="common.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Title.h" />
+    <ClCompile Include="Class3rd (Constructer &amp; Destructer).cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
