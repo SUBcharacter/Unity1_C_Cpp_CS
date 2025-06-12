@@ -1,11 +1,16 @@
 ﻿#include <iostream>
+#include "Scooter.h"
+#include "Boat.h"
+#include "Bicycle.h"
+
 using namespace std;
 
 int main()
 {
-#pragma region 과제 : 멤버 이니셜라이저
 
-	// 초기화와 관련된 최적화에 대해 조사
+#pragma region 과제 : 다중 상속 및 문제점
+
+
 
 #pragma endregion
 
