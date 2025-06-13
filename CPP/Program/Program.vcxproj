@@ -123,7 +123,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Band.cpp" />
+    <ClCompile Include="Consumable.cpp" />
+    <ClCompile Include="FirstAid.cpp" />
+    <ClCompile Include="Potion.cpp" />
     <ClCompile Include="Source.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Band.h" />
+    <ClInclude Include="Consumable.h" />
+    <ClInclude Include="FirstAid.h" />
+    <ClInclude Include="Potion.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
