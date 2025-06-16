@@ -15,33 +15,33 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp">
+    <ClCompile Include="Class5th (Polymorphism).cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Paint.cpp">
+    <ClCompile Include="..\Program\Band.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Pencil.cpp">
+    <ClCompile Include="..\Program\Consumable.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Brush.cpp">
+    <ClCompile Include="..\Program\FirstAid.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Vector2.cpp">
+    <ClCompile Include="..\Program\Potion.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Paint.h">
+    <ClInclude Include="..\Program\Band.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Pencil.h">
+    <ClInclude Include="..\Program\Consumable.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Brush.h">
+    <ClInclude Include="..\Program\FirstAid.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Vector2.h">
+    <ClInclude Include="..\Program\Potion.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

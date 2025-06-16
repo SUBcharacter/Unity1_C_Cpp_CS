@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{7b2d3184-05e5-46fa-a0fc-e1349709b66a}</ProjectGuid>
-    <RootNamespace>Program</RootNamespace>
+    <ProjectGuid>{6646197c-7769-4036-9bc3-f6329294fac3}</ProjectGuid>
+    <RootNamespace>TexasHoldem</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -123,17 +123,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Brush.cpp" />
-    <ClCompile Include="Paint.cpp" />
-    <ClCompile Include="Pencil.cpp" />
-    <ClCompile Include="Source.cpp" />
-    <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="Card.cpp" />
+    <ClCompile Include="Deck.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Texas Hold%27em.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Brush.h" />
-    <ClInclude Include="Paint.h" />
-    <ClInclude Include="Pencil.h" />
-    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="Card.h" />
+    <ClInclude Include="Deck.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="UsingLibrary.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
