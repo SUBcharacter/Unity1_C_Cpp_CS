@@ -1,7 +1,6 @@
 #pragma once
 #include "UsingLibrary.h"
 #include "Card.h"
-#include <vector>
 #include <algorithm>
 #include <random>
 

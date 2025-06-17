@@ -1,7 +1,7 @@
 #pragma once
 #include "UsingLibrary.h"
 #include "Deck.h"
-#include <vector>
+
 
 class Player
 {
@@ -20,6 +20,7 @@ public:
 	const vector<Card>& GetHand() const { return hand; }
 	
 	void AddCard(Card card);
+	void ClearHand();
 	void ShowHand();
 };
 

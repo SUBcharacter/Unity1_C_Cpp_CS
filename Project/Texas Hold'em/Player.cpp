@@ -26,13 +26,17 @@ void Player::AddCard(Card card)
     hand.push_back(card);
 }
 
+void Player::ClearHand()
+{
+    hand.clear();
+}
+
 void Player::ShowHand()
 {
     cout << name << " ÆÐ" << endl << endl;
     for (int i = 0; i < hand.size(); i++)
     {
-        cout << hand[i].GetCard() << '  ';
+        cout << hand[i].GetCard() << "  ";
     }
-    cout << endl;
-    cout << endl;
+    cout << endl << endl;
 }
