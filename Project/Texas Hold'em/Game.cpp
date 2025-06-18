@@ -63,19 +63,118 @@ void Game::ShowGameState(bool showDown)
 
 }
 
-void Game::FirstBet()
+bool Game::CheckPlayerMoney()
 {
-	cout << "[퍼스트 베팅]" << endl << endl;
+	if (player.GetMoney() <= 0)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+void Game::BetFromPlayer(Player& p, int chip)
+{
+	int bettingChip = 0;
+	
+	if (chip >= p.GetMoney())
+	{
+		bettingChip = p.GetMoney();
+		cout << "소지금 보다 많이 베팅하셨습니다. 자동으로 올인 처리됩니다. 올인 금액 : "<< bettingChip << endl << endl;
+	}
+	else
+	{
+		bettingChip = chip;
+	}
+
+	p.ChangeMoney(-bettingChip);
+	pot += bettingChip;
+	
+	
+}
+
+bool Game::FirstBet()
+{
+	cout << "[스타트 베팅]" << endl << endl;
+
+	BetFromPlayer(player, entry / 2);
+	BetFromPlayer(dealer, entry);
+	cout << "플레이어의 차례" << endl;
+	cout << "1_ 레이즈  2_ 콜  3_ 다이" << endl << endl;
+	int choice = 0;
+
+	cin >> choice;
+
+	if (choice == 1) // 레이즈
+	{
+		cout << "레이즈 금액을 입력해 주십시오. 현재 소지금 : " << player.GetMoney() << endl << endl;
+
+		int raise = 0;
+		cin >> raise;
+		bettingPlayer = raise + entry;
+		cout << player.GetName()+ " " << raise << " 레이즈 | -" << raise + (entry / 2) << endl << endl;
+		BetFromPlayer(player, raise + (entry / 2));
+	}
+	else if (choice == 2) // 콜
+	{
+		
+		BetFromPlayer(player, entry / 2);
+		cout << player.GetName() << " 콜 | -" << entry / 2 << endl << endl;
+	}
+	else if (choice == 3) // 다이
+	{
+		cout << player.GetName() << " 다이" << endl << endl;
+		return true;
+	}
+
+	cout << "딜러 결정중 ...." << endl << endl << endl;
+
+	
+
+	cout << "현재 베팅액 : " << pot << endl << endl;
+	cout << "----------------------------------------------------------------" << endl << endl << endl;
+
+	return false;
+}
+
+bool Game::DefaultBet()
+{
+	cout << "[베팅 타임]" << endl << endl;
+
+	cout << "플레이어의 차례" << endl;
+	cout << "1_ 레이즈  2_ 콜  3_ 다이" << endl << endl;
+
+	int choice = 0;
+
+	cin >> choice;
 
 
+
+
+	return false;
+}
+
+void Game::DealerDecision()
+{
 
 }
 
 void Game::Round()
 {
+	
+
 	int round = 0;
 	while (dealer.GetMoney()>0)
 	{
+		system("cls");
+
+		if (CheckPlayerMoney())
+		{
+			cout << "게임 오버! 플레이어가 파산했습니다...." << endl << endl;
+			_getch();
+			return;
+		}
+
 		round++;
 
 		cout << round << " 라운드" << endl << endl;
@@ -83,7 +182,12 @@ void Game::Round()
 		StartNewRound();
 
 		ShowGameState();
-
+		if (FirstBet())
+		{
+			cout << "플레이어의 다이, 다음 라운드로 넘어갑니다." << endl;
+			_getch();
+			continue;
+		}
 		_getch();
 		// 1차 베팅
 

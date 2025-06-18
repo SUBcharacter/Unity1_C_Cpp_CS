@@ -2,6 +2,7 @@
 
 Player::Player()
 {
+    hand.reserve(2);
     name = SetName();
 
 }
@@ -39,4 +40,9 @@ void Player::ShowHand()
         cout << hand[i].GetCard() << "  ";
     }
     cout << endl << endl;
+}
+
+void Player::ChangeMoney(int chip)
+{
+    money += chip;
 }

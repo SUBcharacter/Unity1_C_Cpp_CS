@@ -3,101 +3,123 @@
 #include <math.h>
 #include <conio.h>
 #include <Windows.h>
-
+#include <vector>
+#include <list>
+#include <stack>
+#include <queue>
 using namespace std;
-
-template<typename T>
-bool Same(T left, T right)
-{
-	return left == right;
-}
-
-template<>
-bool Same<const char*>(const char* left, const char* right)
-{
-	return strlen(left) == strlen(right);
-}
-#define SIZE 5
-template<typename T>
-class Container
-{
-private:
-	int index;
-	T operater[SIZE];
-public:
-	Container()
-	{
-		index = 0;
-		for (int i = 0; i < SIZE; i++)
-		{
-			operater[i] = NULL;
-		}
-		cout << "초기화 완료" << endl << endl;
-	}
-
-	void Add(T a)
-	{
-		if (index < SIZE)
-		{
-			operater[index++] = a;
-		}
-		else
-		{
-			cout << "배열 가득참!" << endl << endl;
-		}
-
-
-	}
-
-	void Print()
-	{
-		for (int i = 0; i < SIZE; i++)
-		{
-			cout << "operater[" << i << "] : " << operater[i] << endl;
-		}
-	}
-
-	const T& operater[](int count)
-	{
-		return operater[count];
-	}
-};
 
 int main()
 {
-#pragma region 템플릿
+#pragma region 선형 컨테이너
 
-	// 데이터 형식에 의존하지 않고, 하나의 값이 
-	// 여러 다른 데이터 형식을 가질 수 있는 기술에 중점을 두어
-	// 재사용성을 높일 수 있는 기능
+#pragma region vector container
 
-	//Same<char>('A', 'B') ? cout << "true\n" : cout << "False\n";
-	//Same<int>(5, 5) ? cout << "true\n" : cout << "False\n";
-	//Same<char>(14.5f, 7.5f) ? cout << "true\n" : cout << "False\n";
-	
+	//vector<int> vec;
+	//
+	//vec.reserve(10);
+	//
+	//cout << vec.capacity() << endl;
+	//
+	//vec.push_back(10);
+	//cout << vec.capacity() << endl;
+	//vec.push_back(20);
+	//cout << vec.capacity() << endl;
+	//vec.push_back(30);
+	//cout << vec.capacity() << endl;
+	//
+	//vec.pop_back();
+	//
+	//for (int i = 0; i < vec.size(); i++)
+	//{
+	//	cout << "vec[" << i <<"] : " << vec[i] << endl << endl;
+	//}
 
 #pragma endregion
 
-#pragma region 템플릿 특수화
+#pragma region list container
 
-	// 특정 자료형에 대해 다르게 처리하고 싶은 경우
-	// 특정한 자료형만 다른 형식으로 동작시키는 기능
+	//list<int> list;
+	//
+	//// [20]
+	//list.push_front(20);
+	//for (int val : list) 
+	//{
+	//	cout << val << "  ";
+	//}
+	//cout << endl;
+	//// [20] - [30]
+	//list.push_back(30);
+	//for (int val : list)
+	//{
+	//	cout << val << "  ";
+	//}
+	//cout << endl;
+	//// [10] - [20] - [30]
+	//list.push_front(10);
+	//for (int val : list)
+	//{
+	//	cout << val << "  ";
+	//}
+	//cout << endl;
+	//// [20] - [30]
+	//list.pop_front();
+	//for (int val : list)
+	//{
+	//	cout << val << "  ";
+	//}
+	//cout << endl;
+#pragma endregion
 
-	//Same("CSS", "PUS") ? cout << "True" : cout << "False";
+#pragma region string
+
+	//string contents;
+	//
+	//contents.append("Texas Hold'em");
+	//
+	//cout << contents << endl;
+	//
+	//contents = "Indian Poker";
+	//
+	//cout << contents << endl;
 
 #pragma endregion
 
-#pragma region 클래스 템플릿
+#pragma region 컨테이너 어댑터
 
-	Container<int> con;
+	//stack<int> stack;
+	//
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	stack.push((i + 1) * 10);
+	//}
+	//
+	//while (!stack.empty())
+	//{
+	//	cout << stack.top() << endl;
+	//	stack.pop();
+	//}
 
-	con.Add(10);
-	con.Add(20);
-	con.Add(30);
-	con.Add(40);
-	con.Add(50);
+#pragma endregion
 
-	con.Print();
+#pragma region container Queue
+
+	queue<int> q;
+
+	q.push(10);
+	q.push(20);
+	q.push(30);
+	q.push(40);
+	q.push(50);
+	q.push(60);
+
+	while (!q.empty())
+	{
+		cout << q.front() << "  ";
+		q.pop();
+	}
+
+#pragma endregion
 
 
 #pragma endregion

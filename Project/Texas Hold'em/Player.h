@@ -22,5 +22,6 @@ public:
 	void AddCard(Card card);
 	void ClearHand();
 	void ShowHand();
+	void ChangeMoney(int chip);
 };
 

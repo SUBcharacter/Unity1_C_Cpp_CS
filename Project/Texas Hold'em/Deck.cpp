@@ -3,6 +3,7 @@
 Deck::Deck()
 {
 	currentCardIndex = 0;
+	deck.reserve(52);
 	for (int i = SPADE; i <= CLOVER; i++)
 	{
 		for (int j = TWO; j <= A; j++)
