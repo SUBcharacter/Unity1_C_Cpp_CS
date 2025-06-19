@@ -6,20 +6,32 @@
 class Game
 {
 private:
+	bool isAllin = false;
 	int pot = 0;
 	int entry = 500;
 	int bettingPlayer = 0;
 	int bettingDealer = 0;
+	Acting actPlayer;
+	Acting actDealer;
+
 	Deck deck;
 	Player& player;
 	Player& dealer;
 	vector<Card> communityCard;
+	vector<Card> playerCard;
+	vector<Card> dealerCard;
 
 public:
 	Game(Player& p, Player& d) : player(p), dealer(d) 
 	{
 		communityCard.reserve(5);
+		playerCard.reserve(7);
+		dealerCard.reserve(7);
+		actPlayer = DEFAULT;
+		actDealer = DEFAULT;
 	}
+	int Input();
+
 	void StartNewRound();
 	void DealCommunityCard(int count);
 	void ShowCommunityCard();
@@ -27,9 +39,11 @@ public:
 	bool CheckPlayerMoney();
 	
 	void BetFromPlayer(Player& p, int chip);
-	bool FirstBet();
-	bool DefaultBet();
-	void DealerDecision();
+	void FirstBet();
+	void DefaultBet();
+	void DealerDecision(Acting actPlayer, int entry = 0);
+	bool DecisionCheck();
+
 
 	void Round();
 
