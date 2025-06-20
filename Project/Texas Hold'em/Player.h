@@ -7,6 +7,7 @@ class Player
 {
 protected:
 	string name;
+	HandRank handRank;
 	int money;
 	vector<Card> hand;
 public:
@@ -23,5 +24,7 @@ public:
 	void ClearHand();
 	void ShowHand();
 	void ChangeMoney(int chip);
+	void SetHR(HandRank hr);
+	HandRank GetHR() const { return handRank; }
 };
 

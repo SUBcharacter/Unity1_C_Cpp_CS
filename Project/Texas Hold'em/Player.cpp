@@ -46,3 +46,10 @@ void Player::ChangeMoney(int chip)
 {
     money += chip;
 }
+
+void Player::SetHR(HandRank hr)
+{
+    handRank = hr;
+}
+
+

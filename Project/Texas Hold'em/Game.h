@@ -24,9 +24,9 @@ private:
 public:
 	Game(Player& p, Player& d) : player(p), dealer(d) 
 	{
-		communityCard.reserve(5);
-		playerCard.reserve(7);
-		dealerCard.reserve(7);
+		communityCard.reserve(10);
+		playerCard.reserve(10);
+		dealerCard.reserve(10);
 		actPlayer = DEFAULT;
 		actDealer = DEFAULT;
 	}
@@ -43,6 +43,11 @@ public:
 	void DefaultBet();
 	void DealerDecision(Acting actPlayer, int entry = 0);
 	bool DecisionCheck();
+	void PlayerCard();
+	void ShowPlayerCard();
+
+	void EvalueateHand(Player& p, const vector<Card>& c);
+
 
 
 	void Round();

@@ -7,22 +7,42 @@
 #include <conio.h>
 #include <vector>
 #include <limits>
+#include <map>
 
 using namespace std;
 
 enum Mark
 {
-	SPADE,DIAMOND,HEART,CLOVER
+	CLOVER,
+	HEART,
+	DIAMOND,
+	SPADE
 };
 
 enum Number
 {
-	TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE,TEN,J,Q,K,A
+	TWO,
+	THREE,
+	FOUR,
+	FIVE,
+	SIX,
+	SEVEN,
+	EIGHT,
+	NINE,
+	TEN,
+	J,
+	Q,
+	K,
+	A
 };
 
 enum Acting
 {
-	RAISE,CALL,CHECK,DIE,DEFAULT
+	RAISE,
+	CALL,
+	CHECK,
+	DIE,
+	DEFAULT
 };
 
 enum HandRank
@@ -36,5 +56,5 @@ enum HandRank
 	FULLHOUSE,
 	FOURCARD,
 	STRAIGHTFLUSH,
-	ROYALFLUSH
+	ROTALSTRAIGHTFLUSH
 };

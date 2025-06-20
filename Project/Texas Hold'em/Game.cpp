@@ -33,6 +33,8 @@ void Game::StartNewRound()
 	dealer.AddCard(deck.DrawCard());
 	player.AddCard(deck.DrawCard());
 	dealer.AddCard(deck.DrawCard());
+
+	PlayerCard();
 }
 
 void Game::DealCommunityCard(int count)
@@ -42,6 +44,7 @@ void Game::DealCommunityCard(int count)
 	{
 		communityCard.push_back(deck.DrawCard());
 	}
+	PlayerCard();
 }
 
 void Game::ShowCommunityCard()
@@ -80,6 +83,7 @@ void Game::ShowGameState(bool showDown)
 
 	cout << "[" << player.GetName() << "]  " << "소지금 : " << player.GetMoney() << endl << endl;
 	player.ShowHand();
+	ShowPlayerCard();
 	cout << endl << "-----------------------------------------------------" << endl << endl;
 
 }
@@ -276,6 +280,53 @@ bool Game::DecisionCheck()
 	_getch();
 
 	return true;
+}
+
+void Game::PlayerCard()
+{
+	// 초기화
+	playerCard.clear();
+	dealerCard.clear();
+
+	// 핸드 삽입
+	playerCard.insert(playerCard.end(), player.GetHand().begin(), player.GetHand().end());
+	dealerCard.insert(dealerCard.end(), player.GetHand().begin(), player.GetHand().end());
+
+	// 커뮤니티 카드 삽입
+	playerCard.insert(playerCard.end(), communityCard.begin(), communityCard.end());
+	dealerCard.insert(dealerCard.end(), communityCard.begin(), communityCard.end());
+
+	// 배열 정렬
+	sort(playerCard.begin(), playerCard.end());
+	sort(dealerCard.begin(), dealerCard.end());
+
+}
+
+void Game::ShowPlayerCard()
+{
+	if (!playerCard.empty())
+	{
+		cout << "감지된 카드들\n\n";
+		for (int i = 0; i < playerCard.size(); i++)
+		{
+			cout << playerCard[i].GetCard() << "  ";
+		}
+		cout << "\n\n";
+	}
+	else
+		return;
+}
+
+void Game::EvalueateHand(Player& p, const vector<Card>& cards)
+{
+	map<Number, int> numberCount;
+	map<Mark, vector<Number>> markCount;
+	
+	for (const Card& c : cards)
+	{
+		numberCount[c.GetNumber()]++;
+
+	}
 }
 
 void Game::Round()

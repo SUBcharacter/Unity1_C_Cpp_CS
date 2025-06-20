@@ -56,5 +56,7 @@ public:
 
 	string GetCard();
 	
+	bool operator<(const Card& otherCard) const;
+	
 };
 
