@@ -47,6 +47,7 @@ enum Acting
 
 enum HandRank
 {
+	NONE,
 	HIGHCARD,
 	ONEPAIR,
 	TWOPAIR,

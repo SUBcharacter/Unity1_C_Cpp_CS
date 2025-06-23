@@ -5,14 +5,15 @@
 
 class Player
 {
-protected:
+private:
 	string name;
-	HandRank handRank;
 	int money;
+	HandRank handRank;
+	Card highCard;
 	vector<Card> hand;
 public:
 	Player();
-	Player(string name, int money) : name(name), money(money) {}
+	Player(string name, int money) : name(name), money(money), highCard() { handRank = NONE; }
 	string SetName();
 	void SetMoney(int seedMoney);
 
@@ -25,6 +26,9 @@ public:
 	void ShowHand();
 	void ChangeMoney(int chip);
 	void SetHR(HandRank hr);
+
+	void SetHC(Card& card);
+	Card GetHC();
 	HandRank GetHR() const { return handRank; }
 };
 

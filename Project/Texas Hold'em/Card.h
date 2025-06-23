@@ -5,8 +5,9 @@ class Card
 private:
 	Mark mark;
 	Number number;
+	bool isFromHand = false;
 
-	string SetMark()
+	string SetMarkString()
 	{
 		switch (mark)
 		{
@@ -17,7 +18,7 @@ private:
 		}
 	}
 
-	string SetNumber()
+	string SetNumberString()
 	{
 		switch (number)
 		{
@@ -38,24 +39,32 @@ private:
 	}
 public:
 	
-
+	Card() : mark(CLOVER), number(TWO) {}
 	Card(Mark m, Number n) : mark(m), number(n)
 	{
 
 	}
 
+	Mark GetMark() { return mark; }
 
-	string GetMark()
+	Number GetNumber() { return number; }
+
+
+	string GetMarkString()
 	{
-		return SetMark();
+		return SetMarkString();
 	}
-	string GetNumber()
+	string GetNumberString()
 	{
-		return SetNumber();
+		return SetNumberString();
 	}
 
-	string GetCard();
+	string GetCardString();
 	
+	void SetFH(bool type) { isFromHand = type; }
+
+	bool FromHand() { return isFromHand; }
+
 	bool operator<(const Card& otherCard) const;
 	
 };

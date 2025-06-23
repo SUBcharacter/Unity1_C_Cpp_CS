@@ -21,7 +21,8 @@ void Deck::ShuffleDeck()
 	shuffle(deck.begin(), deck.end(), g);
 }
 
-Card Deck::DrawCard()
+Card Deck::DrawCard(bool isFromHand)
 {
+	deck[currentCardIndex].SetFH(isFromHand);
 	return deck[currentCardIndex++];
 }

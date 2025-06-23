@@ -29,10 +29,10 @@ void Game::StartNewRound()
 
 	deck.ShuffleDeck();
 
-	player.AddCard(deck.DrawCard());
-	dealer.AddCard(deck.DrawCard());
-	player.AddCard(deck.DrawCard());
-	dealer.AddCard(deck.DrawCard());
+	player.AddCard(deck.DrawCard(true));
+	dealer.AddCard(deck.DrawCard(true));
+	player.AddCard(deck.DrawCard(true));
+	dealer.AddCard(deck.DrawCard(true));
 
 	PlayerCard();
 }
@@ -52,7 +52,7 @@ void Game::ShowCommunityCard()
 	cout << "커뮤니티 카드" << endl << endl;
 	for (int i = 0; i < communityCard.size(); i++)
 	{
-		cout << communityCard[i].GetCard() << "  ";
+		cout << communityCard[i].GetCardString() << "  ";
 	}
 	cout << endl << endl << endl;
 }
@@ -309,7 +309,7 @@ void Game::ShowPlayerCard()
 		cout << "감지된 카드들\n\n";
 		for (int i = 0; i < playerCard.size(); i++)
 		{
-			cout << playerCard[i].GetCard() << "  ";
+			cout << playerCard[i].GetCardString() << "  ";
 		}
 		cout << "\n\n";
 	}
@@ -317,17 +317,42 @@ void Game::ShowPlayerCard()
 		return;
 }
 
-void Game::EvalueateHand(Player& p, const vector<Card>& cards)
+void Game::EvaluateCard(Player& p, vector<Card> playerCard)
 {
-	map<Number, int> numberCount;
-	map<Mark, vector<Number>> markCount;
 	
-	for (const Card& c : cards)
-	{
-		numberCount[c.GetNumber()]++;
+#pragma region 스트레이트
 
+	int combo = 1;
+	
+	for (int i = 1; i < playerCard.size(); i++)
+	{
+
+		if (playerCard[i].GetNumber() == playerCard[i - 1].GetNumber())
+		{
+			continue;
+		}
+
+		if (playerCard[i].GetNumber() == playerCard[i - 1].GetNumber() + 1)
+		{
+			combo++;
+			if (combo >= 5)
+			{
+				p.SetHR(STRAIGHT);
+				p.SetHC(playerCard[i]);
+			}
+		}
+		else
+		{
+			combo = 1;
+		}
 	}
+
+#pragma endregion
+
+
 }
+
+
 
 void Game::Round()
 {

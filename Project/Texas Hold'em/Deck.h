@@ -13,6 +13,6 @@ public:
 	Deck();
 	
 	void ShuffleDeck();
-	Card DrawCard();
+	Card DrawCard(bool isFromHand = false);
 };
 

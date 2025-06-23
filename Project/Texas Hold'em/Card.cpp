@@ -1,8 +1,8 @@
 #include "Card.h"
 
-string Card::GetCard()
+string Card::GetCardString()
 {
-	return GetMark() + GetNumber();
+	return GetMarkString() + GetNumberString();
 }
 
 bool Card::operator<(const Card& otherCard) const

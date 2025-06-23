@@ -3,6 +3,7 @@
 Player::Player()
 {
     hand.reserve(2);
+    handRank = NONE;
     name = SetName();
 
 }
@@ -37,7 +38,7 @@ void Player::ShowHand()
     cout << name << " ÆÐ" << endl << endl;
     for (int i = 0; i < hand.size(); i++)
     {
-        cout << hand[i].GetCard() << "  ";
+        cout << hand[i].GetCardString() << "  ";
     }
     cout << endl << endl;
 }
@@ -50,6 +51,16 @@ void Player::ChangeMoney(int chip)
 void Player::SetHR(HandRank hr)
 {
     handRank = hr;
+}
+
+void Player::SetHC(Card& card)
+{
+    highCard = card;
+}
+
+Card Player::GetHC()
+{
+    return highCard;
 }
 
 

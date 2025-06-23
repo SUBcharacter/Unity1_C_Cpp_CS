@@ -46,8 +46,7 @@ public:
 	void PlayerCard();
 	void ShowPlayerCard();
 
-	void EvalueateHand(Player& p, const vector<Card>& c);
-
+	void EvaluateCard(Player& p, vector<Card> playerCard);
 
 
 	void Round();
