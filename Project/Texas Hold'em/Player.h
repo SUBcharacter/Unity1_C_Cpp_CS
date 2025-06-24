@@ -27,7 +27,7 @@ public:
 	void ChangeMoney(int chip);
 	void SetHR(HandRank hr);
 
-	void SetHC(Card& card);
+	void SetHC(const Card& card);
 	Card GetHC();
 	HandRank GetHR() const { return handRank; }
 };

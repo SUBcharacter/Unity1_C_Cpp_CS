@@ -40,7 +40,7 @@ private:
 public:
 	
 	Card() : mark(CLOVER), number(TWO) {}
-	Card(Mark m, Number n) : mark(m), number(n)
+	Card(Mark m, Number n,bool fromHand = false) : mark(m), number(n),isFromHand(fromHand)
 	{
 
 	}
@@ -63,7 +63,7 @@ public:
 	
 	void SetFH(bool type) { isFromHand = type; }
 
-	bool FromHand() { return isFromHand; }
+	bool FromHand() const { return isFromHand; }
 
 	bool operator<(const Card& otherCard) const;
 	

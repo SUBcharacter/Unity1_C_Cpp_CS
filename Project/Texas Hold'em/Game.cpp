@@ -319,35 +319,283 @@ void Game::ShowPlayerCard()
 
 void Game::EvaluateCard(Player& p, vector<Card> playerCard)
 {
-	
-#pragma region 스트레이트
-
-	int combo = 1;
-	
-	for (int i = 1; i < playerCard.size(); i++)
+#pragma region 하이 카드
 	{
+		map<Number, vector<Card>> numMap;
 
-		if (playerCard[i].GetNumber() == playerCard[i - 1].GetNumber())
+		for (auto& card : playerCard)
 		{
-			continue;
+			numMap[card.GetNumber()].push_back(card);
 		}
 
-		if (playerCard[i].GetNumber() == playerCard[i - 1].GetNumber() + 1)
+		sort(numMap.begin(), numMap.end());
+
+		
+	}
+
+
+
+#pragma endregion
+
+
+#pragma region 원 페어 & 투 페어
+
+	{
+		map<Number, vector<Card>> numMap;
+
+		for (auto& card : playerCard)
 		{
-			combo++;
-			if (combo >= 5)
+			numMap[card.GetNumber()].push_back(card);
+		}
+
+		int pairCount = 0;
+		vector<Number> pairNum;
+		for (auto& [num, cards] : numMap)
+		{
+			if (cards.size() == 2)
 			{
-				p.SetHR(STRAIGHT);
-				p.SetHC(playerCard[i]);
+				pairNum.push_back(num);
 			}
 		}
-		else
+		sort(pairNum.begin(), pairNum.end());
+
+		if (!pairNum.empty())
 		{
-			combo = 1;
+			pairCount = pairNum.size();
+
+			if (pairCount == 1)
+			{
+				p.SetHR(ONEPAIR);
+
+				bool pairFromHand = numMap[pairNum[0]][0].FromHand() || numMap[pairNum[0]][1].FromHand();
+				if (!pairFromHand)
+				{
+					vector<Card> kickers;
+
+					for (auto& cards : playerCard)
+					{
+						if (cards.GetNumber() != pairNum.back())
+						{
+							kickers.push_back(cards);
+						}
+					}
+
+					if (!kickers.empty())
+					{
+						sort(kickers.begin(), kickers.end());
+						p.SetHC(kickers.back());
+					}
+				}
+				else
+				{
+					p.SetHC(numMap[pairNum[0]].back());
+				}
+			}
+			else if (pairCount >= 2)
+			{
+				p.SetHR(TWOPAIR);
+
+				vector<Card> highPairHand;
+
+				for (auto& num : pairNum)
+				{
+					for (auto& card : numMap[num])
+					{
+						if (card.FromHand())
+						{
+							highPairHand.push_back(card);
+						}
+					}
+				}
+				if (!highPairHand.empty())
+				{
+					sort(highPairHand.begin(), highPairHand.end());
+					vector<Card> handKicker;
+
+					for (auto& cards : playerCard)
+					{
+						for (auto& num : pairNum)
+						{
+							if (cards.GetNumber() != num)
+							{
+								if (cards.FromHand())
+								{
+									handKicker.push_back(cards);
+								}
+							}
+						}
+					}
+					if (!handKicker.empty())
+					{
+						vector<Card> highCard;
+						highCard.insert(highCard.end(), highPairHand.begin(), highPairHand.end());
+						highCard.insert(highCard.end(), handKicker.begin(), handKicker.end());
+						sort(highCard.begin(), highCard.end());
+						p.SetHC(highCard.back());
+					}
+					else
+					{
+						p.SetHC(highPairHand.back());
+					}
+				}
+			}
+		}
+		
+	}
+
+#pragma endregion
+
+#pragma region 트리플
+
+#pragma endregion
+
+
+#pragma region 스트레이트
+	{
+		int combo = 1;
+
+		for (int i = 1; i < playerCard.size(); i++)
+		{
+
+			if (playerCard[i].GetNumber() == playerCard[i - 1].GetNumber())
+			{
+				continue;
+			}
+
+			if (playerCard[i].GetNumber() == playerCard[i - 1].GetNumber() + 1)
+			{
+				combo++;
+				if (combo >= 5)
+				{
+					p.SetHR(STRAIGHT);
+					p.SetHC(playerCard[i]);
+				}
+			}
+			else
+			{
+				combo = 1;
+			}
+		}
+	}
+#pragma endregion
+
+#pragma region 플러쉬
+	{
+		map<Mark, vector<Card>> markMap;
+
+		for (int i = 0; i < playerCard.size(); i++)
+		{
+			markMap[playerCard[i].GetMark()].push_back(playerCard[i]);
+		}
+
+		for (auto& [mark, cards] : markMap)
+		{
+			if (cards.size() >= 5)
+			{
+				sort(cards.begin(), cards.end());
+				p.SetHR(FLUSH);
+				p.SetHC(cards.back());
+				break;
+			}
+		}
+	}
+#pragma endregion
+
+
+
+#pragma region 스트레이트 플러쉬
+
+	{
+		map<Mark, vector<Card>> markMap;
+
+		for (int i = 0; i < playerCard.size(); i++)
+		{
+			markMap[playerCard[i].GetMark()].push_back(playerCard[i]);
+		}
+
+		for (auto& [mark, cards] : markMap)
+		{
+			if (cards.size() < 5)
+				continue;
+
+			sort(cards.begin(), cards.end());
+
+			int combo = 1;
+
+			for (int i = 1; i < cards.size(); i++)
+			{
+				if (cards[i].GetNumber() == cards[i - 1].GetNumber())
+				{
+					continue;
+				}
+
+				if (cards[i].GetNumber() == cards[i - 1].GetNumber() + 1)
+				{
+					combo++;
+					if (combo >= 5)
+					{
+						p.SetHR(STRAIGHTFLUSH);
+						p.SetHC(cards[i]);
+						
+					}
+				}
+				else
+				{
+					combo = 1;
+				}
+			}
 		}
 	}
 
 #pragma endregion
+
+#pragma region 로티플
+
+	{
+		map<Mark, vector<Card>> markMap;
+
+		for (int i = 0; i < playerCard.size(); i++)
+		{
+			markMap[playerCard[i].GetMark()].push_back(playerCard[i]);
+		}
+
+		for (auto& [mark, cards] : markMap)
+		{
+			if (cards.size() < 5)
+			{
+				continue;
+			}
+
+			sort(cards.begin(), cards.end());
+
+			vector<Number> royalNum = { TEN,J,Q,K,A };
+
+			int combo = 0;
+
+			for (auto& c : cards)
+			{
+				if (c.GetNumber() == royalNum[combo])
+				{
+					combo++;
+				}
+				else if (c.GetNumber() > royalNum[combo])
+					break;
+
+				if (combo == 5)
+				{
+					p.SetHR(ROYALSTRAIGHTFLUSH);
+					p.SetHC(Card(mark, A, true));
+					break;
+				}
+
+				if (combo == 5)
+					break;
+			}
+		}
+	}
+
+#pragma endregion
+
 
 
 }

@@ -8,6 +8,7 @@
 #include <vector>
 #include <limits>
 #include <map>
+#include <algorithm>
 
 using namespace std;
 
@@ -57,5 +58,5 @@ enum HandRank
 	FULLHOUSE,
 	FOURCARD,
 	STRAIGHTFLUSH,
-	ROTALSTRAIGHTFLUSH
+	ROYALSTRAIGHTFLUSH
 };

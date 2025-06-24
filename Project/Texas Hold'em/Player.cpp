@@ -53,9 +53,14 @@ void Player::SetHR(HandRank hr)
     handRank = hr;
 }
 
-void Player::SetHC(Card& card)
+void Player::SetHC(const Card& card)
 {
-    highCard = card;
+    if (card.FromHand())
+    {
+        highCard = card;
+    }
+    else
+        return;
 }
 
 Card Player::GetHC()
