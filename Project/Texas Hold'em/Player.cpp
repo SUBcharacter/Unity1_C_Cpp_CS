@@ -2,7 +2,8 @@
 
 Player::Player()
 {
-    hand.reserve(2);
+    hand.reserve(3);
+    highCard.reserve(7);
     handRank = NONE;
     name = SetName();
 
@@ -55,15 +56,24 @@ void Player::SetHR(HandRank hr)
 
 void Player::SetHC(const Card& card)
 {
-    if (card.FromHand())
-    {
-        highCard = card;
-    }
-    else
-        return;
+    highCard.clear();
+    highCard.push_back(card);
+    sort(highCard.begin(), highCard.end())
 }
 
-Card Player::GetHC()
+void Player::SetHC(const vector<Card>& card)
+{
+    highCard.clear();
+    highCard = card;
+    sort(highCard.begin(), highCard.end());
+}
+
+void Player::ClearHC()
+{
+    highCard.clear();
+}
+
+vector<Card> Player::GetHC()
 {
     return highCard;
 }

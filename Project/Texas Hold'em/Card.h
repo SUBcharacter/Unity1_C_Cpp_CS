@@ -66,6 +66,7 @@ public:
 	bool FromHand() const { return isFromHand; }
 
 	bool operator<(const Card& otherCard) const;
+	bool operator==(const Card& otherCard) const;
 	
 };
 

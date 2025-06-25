@@ -14,3 +14,8 @@ bool Card::operator<(const Card& otherCard) const
 	else
 		return mark < otherCard.mark;
 }
+
+bool Card::operator==(const Card& otherCard) const
+{
+	return number == otherCard.number && mark == otherCard.mark;
+}

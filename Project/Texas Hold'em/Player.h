@@ -9,7 +9,7 @@ private:
 	string name;
 	int money;
 	HandRank handRank;
-	Card highCard;
+	vector<Card> highCard;
 	vector<Card> hand;
 public:
 	Player();
@@ -28,7 +28,9 @@ public:
 	void SetHR(HandRank hr);
 
 	void SetHC(const Card& card);
-	Card GetHC();
+	void SetHC(const vector<Card>& card);
+	void ClearHC();
+	vector<Card> GetHC();
 	HandRank GetHR() const { return handRank; }
 };
 

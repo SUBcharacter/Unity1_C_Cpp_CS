@@ -321,22 +321,16 @@ void Game::EvaluateCard(Player& p, vector<Card> playerCard)
 {
 #pragma region 하이 카드
 	{
-		map<Number, vector<Card>> numMap;
-
 		for (auto& card : playerCard)
 		{
-			numMap[card.GetNumber()].push_back(card);
+			if (card.FromHand())
+			{
+				p.SetHR(HIGHCARD);
+				p.SetHC(card);
+			}
 		}
-
-		sort(numMap.begin(), numMap.end());
-
-		
 	}
-
-
-
 #pragma endregion
-
 
 #pragma region 원 페어 & 투 페어
 
@@ -358,94 +352,133 @@ void Game::EvaluateCard(Player& p, vector<Card> playerCard)
 			}
 		}
 		sort(pairNum.begin(), pairNum.end());
-
+		
 		if (!pairNum.empty())
 		{
 			pairCount = pairNum.size();
-
+		
 			if (pairCount == 1)
 			{
 				p.SetHR(ONEPAIR);
-
-				bool pairFromHand = numMap[pairNum[0]][0].FromHand() || numMap[pairNum[0]][1].FromHand();
-				if (!pairFromHand)
+		
+				vector<Card> pairCard =numMap[pairNum[0]];
+				
+				sort(pairCard.begin(), pairCard.end());
+				
+				vector<Card> handPairCard;
+				
+				for (auto& card : pairCard)
 				{
-					vector<Card> kickers;
-
-					for (auto& cards : playerCard)
+					if (card.FromHand())
 					{
-						if (cards.GetNumber() != pairNum.back())
-						{
-							kickers.push_back(cards);
-						}
+						handPairCard.push_back(card);
 					}
+				}
 
-					if (!kickers.empty())
-					{
-						sort(kickers.begin(), kickers.end());
-						p.SetHC(kickers.back());
-					}
+				if (!handPairCard.empty())
+				{
+					sort(handPairCard.begin(), handPairCard.end());
+					p.SetHC(handPairCard.back());
 				}
 				else
 				{
-					p.SetHC(numMap[pairNum[0]].back());
+					p.SetHC(pairCard.back());
 				}
 			}
 			else if (pairCount >= 2)
 			{
 				p.SetHR(TWOPAIR);
 
-				vector<Card> highPairHand;
+				vector<Card> pairCards;
 
-				for (auto& num : pairNum)
+				for (int i = pairNum.size()-2; i < pairNum.size(); i++)
 				{
+					Number num = pairNum[i];
+					
+					vector<Card> handPairCard;
+					vector<Card> pairCard;
 					for (auto& card : numMap[num])
+					{
+						pairCard.push_back(card);
+					}
+					sort(pairCard.begin(), pairCard.end());
+					for (auto& card : pairCard)
 					{
 						if (card.FromHand())
 						{
-							highPairHand.push_back(card);
+							handPairCard.push_back(card);
 						}
 					}
-				}
-				if (!highPairHand.empty())
-				{
-					sort(highPairHand.begin(), highPairHand.end());
-					vector<Card> handKicker;
-
-					for (auto& cards : playerCard)
+					if (!handPairCard.empty())
 					{
-						for (auto& num : pairNum)
-						{
-							if (cards.GetNumber() != num)
-							{
-								if (cards.FromHand())
-								{
-									handKicker.push_back(cards);
-								}
-							}
-						}
-					}
-					if (!handKicker.empty())
-					{
-						vector<Card> highCard;
-						highCard.insert(highCard.end(), highPairHand.begin(), highPairHand.end());
-						highCard.insert(highCard.end(), handKicker.begin(), handKicker.end());
-						sort(highCard.begin(), highCard.end());
-						p.SetHC(highCard.back());
+						sort(handPairCard.begin(), handPairCard.end());
+						pairCards.push_back(handPairCard.back());
 					}
 					else
 					{
-						p.SetHC(highPairHand.back());
+						pairCards.push_back(pairCard.back());
 					}
 				}
+				p.SetHC(pairCards);
 			}
 		}
-		
+
 	}
 
 #pragma endregion
 
 #pragma region 트리플
+
+	{
+		map<Number, vector<Card>> numMap;
+
+		for (auto& card : playerCard)
+		{
+			numMap[card.GetNumber()].push_back(card);
+		}
+
+		vector<Number> triNum;
+		for (auto& [num, card] : numMap)
+		{
+			if (card.size() == 3)
+			{
+				triNum.push_back(num);
+			}
+		}
+
+		if (triNum.size() == 1)
+		{
+			p.SetHR(TRIPLE);
+
+			vector<Card> triCards;
+
+			for (auto& num : triNum)
+			{
+				for (auto& card : numMap[num])
+				{
+					triCards.push_back(card);
+				}
+			}
+			vector<Card> handCard;
+			for (auto& card : triCards)
+			{
+				if (card.FromHand())
+				{
+					handCard.push_back(card);
+				}
+			}
+			if (!handCard.empty())
+			{
+				sort(handCard.begin(), handCard.end());
+				p.SetHC(handCard.back());
+			}
+			else
+			{
+				sort(triCards.begin(), triCards.end());
+				p.SetHC(triCards.back());
+			}
+		}
+	}
 
 #pragma endregion
 
@@ -465,15 +498,16 @@ void Game::EvaluateCard(Player& p, vector<Card> playerCard)
 			if (playerCard[i].GetNumber() == playerCard[i - 1].GetNumber() + 1)
 			{
 				combo++;
+				p.SetHC(playerCard[i-1]);
 				if (combo >= 5)
 				{
 					p.SetHR(STRAIGHT);
-					p.SetHC(playerCard[i]);
 				}
 			}
 			else
 			{
 				combo = 1;
+				p.ClearHC();
 			}
 		}
 	}
