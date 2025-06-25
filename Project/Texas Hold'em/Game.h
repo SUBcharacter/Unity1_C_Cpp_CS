@@ -1,7 +1,9 @@
 #pragma once
 #include "UsingLibrary.h"
+#include "Card.h"
 #include "Deck.h"
 #include "Player.h"
+#include "EvaluateManager.h"
 
 class Game
 {
@@ -32,10 +34,12 @@ public:
 	}
 	int Input();
 
+	void Title();
 	void StartNewRound();
 	void DealCommunityCard(int count);
 	void ShowCommunityCard();
 	void ShowGameState(bool showDown = false);
+	void ShowHand();
 	bool CheckPlayerMoney();
 	
 	void BetFromPlayer(Player& p, int chip);
@@ -46,8 +50,7 @@ public:
 	void PlayerCard();
 	void ShowPlayerCard();
 
-	void EvaluateCard(Player& p, vector<Card> playerCard);
-
+	void Rewarding(Player& p, Player& d);
 
 	void Round();
 

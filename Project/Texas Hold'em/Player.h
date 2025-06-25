@@ -11,12 +11,14 @@ private:
 	HandRank handRank;
 	vector<Card> highCard;
 	vector<Card> hand;
+
 public:
 	Player();
-	Player(string name, int money) : name(name), money(money), highCard() { handRank = NONE; }
+	Player(string name, int money) : name(name), money(money), highCard(NONE) { handRank = NONE; }
 	string SetName();
 	void SetMoney(int seedMoney);
 
+	string GetStringHandRank();
 	string GetName() const { return name; }
 	int GetMoney() const { return money; }
 	const vector<Card>& GetHand() const { return hand; }
@@ -24,6 +26,7 @@ public:
 	void AddCard(Card card);
 	void ClearHand();
 	void ShowHand();
+	void ShowHighCard();
 	void ChangeMoney(int chip);
 	void SetHR(HandRank hr);
 

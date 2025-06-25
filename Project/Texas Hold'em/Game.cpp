@@ -20,6 +20,11 @@ int Game::Input()
 	return input;
 }
 
+void Game::Title()
+{
+	
+}
+
 void Game::StartNewRound()
 {
 	pot = 0;
@@ -85,7 +90,17 @@ void Game::ShowGameState(bool showDown)
 	player.ShowHand();
 	ShowPlayerCard();
 	cout << endl << "-----------------------------------------------------" << endl << endl;
+	
+}
 
+void Game::ShowHand()
+{
+	for (int i = 0; i < 6; i++)
+	{
+		cout << endl;
+	}
+	dealer.ShowHighCard();
+	player.ShowHighCard();
 }
 
 bool Game::CheckPlayerMoney()
@@ -218,31 +233,31 @@ void Game::DealerDecision(Acting actPlayer, int entry)
 
 	cout << "딜러 결정중 ...." << endl << endl << endl;
 
-	Sleep(1000);
+	Sleep(2500);
 
-	int dealerChoice = (rand() % 2) + 1;
+	int dealerChoice = (rand() % 100) + 1;
 	switch (actPlayer)
 	{
 	case RAISE:
-		if (dealerChoice == 1) // 콜
+		if (dealerChoice >= 30) // 콜
 		{
 			actDealer = CALL;
 			BetFromPlayer(dealer, bettingPlayer - entry);// raise 금액 만큼 더 베팅
 			cout << "딜러 콜! 콜 금액 : " << bettingPlayer - entry << endl << endl;
 		}
-		else if (dealerChoice == 2) // 다이
+		else if (dealerChoice < 30) // 다이
 		{
 			actDealer = DIE;
 			return;
 		}
 		break;
 	case CALL :
-		if (dealerChoice == 1) // 체크
+		if (dealerChoice >= 30) // 체크
 		{
 			actDealer = CHECK;
 			cout << "딜러 체크!" << endl << endl;
 		}
-		else if (dealerChoice == 2) // 다이
+		else if (dealerChoice < 30) // 다이
 		{
 			actDealer = DIE;
 			return;
@@ -290,7 +305,7 @@ void Game::PlayerCard()
 
 	// 핸드 삽입
 	playerCard.insert(playerCard.end(), player.GetHand().begin(), player.GetHand().end());
-	dealerCard.insert(dealerCard.end(), player.GetHand().begin(), player.GetHand().end());
+	dealerCard.insert(dealerCard.end(), dealer.GetHand().begin(), dealer.GetHand().end());
 
 	// 커뮤니티 카드 삽입
 	playerCard.insert(playerCard.end(), communityCard.begin(), communityCard.end());
@@ -317,329 +332,312 @@ void Game::ShowPlayerCard()
 		return;
 }
 
-void Game::EvaluateCard(Player& p, vector<Card> playerCard)
+void Game::Rewarding(Player& p, Player& d)
 {
-#pragma region 하이 카드
+	if (p.GetHR() > d.GetHR())
 	{
-		for (auto& card : playerCard)
+		if (p.GetHR() == ROYALSTRAIGHTFLUSH)
 		{
-			if (card.FromHand())
-			{
-				p.SetHR(HIGHCARD);
-				p.SetHC(card);
-			}
+			cout << "축하드립니다! 극악의 확률을 뚫고 로얄 스트레이트 플러쉬를 달성하셨습니다! 상금 : " << pot << endl << endl << endl;
+			p.ChangeMoney(pot);
+		}
+		else
+		{
+			cout << p.GetName() << "가 승리 하였습니다! 상금 : " << pot << endl << endl << endl;
+			p.ChangeMoney(pot);
+			
+		}
+		
+	}
+	else if (p.GetHR() < d.GetHR())
+	{
+		if (d.GetHR() == ROYALSTRAIGHTFLUSH)
+		{
+			cout << "이런... 딜러가 로얄 스트레이트 플러쉬를 달성했습니다... 딜러 상금 : " << pot << endl << endl << endl;
+			d.ChangeMoney(pot);
+		}
+		else
+		{
+			cout << "딜러가 승리 하였습니다... 딜러 상금 : " << pot << endl << endl << endl;
+			d.ChangeMoney(pot);
 		}
 	}
-#pragma endregion
-
-#pragma region 원 페어 & 투 페어
-
+	else
 	{
-		map<Number, vector<Card>> numMap;
-
-		for (auto& card : playerCard)
+		switch (p.GetHR())
 		{
-			numMap[card.GetNumber()].push_back(card);
-		}
-
-		int pairCount = 0;
-		vector<Number> pairNum;
-		for (auto& [num, cards] : numMap)
-		{
-			if (cards.size() == 2)
+		case HIGHCARD:
+			for (int i = p.GetHC().size()-1;i >= 0 ;i--)
 			{
-				pairNum.push_back(num);
-			}
-		}
-		sort(pairNum.begin(), pairNum.end());
-		
-		if (!pairNum.empty())
-		{
-			pairCount = pairNum.size();
-		
-			if (pairCount == 1)
-			{
-				p.SetHR(ONEPAIR);
-		
-				vector<Card> pairCard =numMap[pairNum[0]];
-				
-				sort(pairCard.begin(), pairCard.end());
-				
-				vector<Card> handPairCard;
-				
-				for (auto& card : pairCard)
+				if (Card::CompareNumber1(p.GetHC()[i], d.GetHC()[i]))
 				{
-					if (card.FromHand())
-					{
-						handPairCard.push_back(card);
-					}
+					cout << p.GetName() << "의 하이카드! 승리 하였습니다! 상금 : " << pot << endl << endl << endl;
+					p.ChangeMoney(pot);
+					return;
+					
 				}
-
-				if (!handPairCard.empty())
+				else if (Card::CompareNumber2(p.GetHC()[i], d.GetHC()[i]))
 				{
-					sort(handPairCard.begin(), handPairCard.end());
-					p.SetHC(handPairCard.back());
+					cout << "딜러의 하이카드.... 아쉽습니다.... 딜러 상금 : " << pot << endl << endl << endl;
+					d.ChangeMoney(pot);
+					return;
+				}
+				else
+					continue;
+			}
+			cout << "스플릿 팟! 판돈을 나눠 갖습니다. 상금 : " << pot / 2 << endl << endl << endl;
+			p.ChangeMoney(pot / 2);
+			d.ChangeMoney(pot / 2);
+
+			break;
+
+		case ONEPAIR:
+			if (Card::CompareNumber1(p.GetHC()[0], d.GetHC()[0]))
+			{
+				cout << p.GetName() << "가 승리 하였습니다! 상금 : " << pot << endl << endl << endl;
+				p.ChangeMoney(pot);
+				
+			}
+			else if (Card::CompareNumber2(p.GetHC()[0], d.GetHC()[0]))
+			{
+				cout << "딜러가 승리 하였습니다... 딜러 상금 : " << pot << endl << endl << endl;
+				d.ChangeMoney(pot);
+			}
+			else
+			{
+				for (int i = 3; i >= 1; i--)
+				{
+					if (Card::CompareNumber1(p.GetHC()[i], d.GetHC()[i]))
+					{
+						cout << p.GetName() << "의 하이카드! 승리 하였습니다! 상금 : " << pot << endl << endl << endl;
+						p.ChangeMoney(pot);
+						return;
+					}
+					else if (Card::CompareNumber2(p.GetHC()[i], d.GetHC()[i]))
+					{
+						cout << "딜러의 하이카드.... 아쉽습니다.... 딜러 상금 : " << pot << endl << endl << endl;
+						d.ChangeMoney(pot);
+						return;
+					}
+					else
+						continue;
+				}
+				cout << "스플릿 팟! 판돈을 나눠 갖습니다. 상금 : " << pot / 2 << endl << endl << endl;
+				p.ChangeMoney(pot / 2);
+				d.ChangeMoney(pot / 2);
+				break;
+			}
+			break;
+
+		case TWOPAIR:
+			if (Card::CompareNumber1(p.GetHC()[0], d.GetHC()[0]))
+			{
+				cout << p.GetName() << "가 승리 하였습니다! 상금 : " << pot << endl << endl << endl;
+				p.ChangeMoney(pot);
+				
+			}
+			else if (Card::CompareNumber2(p.GetHC()[0], d.GetHC()[0]))
+			{
+				cout << "딜러가 승리 하였습니다... 딜러 상금 : " << pot << endl << endl << endl;
+				d.ChangeMoney(pot);
+			}
+			else
+			{
+				if (Card::CompareNumber1(p.GetHC()[1], d.GetHC()[1]))
+				{
+					cout << p.GetName() << "가 승리 하였습니다! 상금 : " << pot << endl << endl << endl;
+					p.ChangeMoney(pot);
+					
+				}
+				else if (Card::CompareNumber2(p.GetHC()[1], d.GetHC()[1]))
+				{
+					cout << "딜러가 승리 하였습니다... 딜러 상금 : " << pot << endl << endl << endl;
+					d.ChangeMoney(pot);
 				}
 				else
 				{
-					p.SetHC(pairCard.back());
-				}
-			}
-			else if (pairCount >= 2)
-			{
-				p.SetHR(TWOPAIR);
-
-				vector<Card> pairCards;
-
-				for (int i = pairNum.size()-2; i < pairNum.size(); i++)
-				{
-					Number num = pairNum[i];
-					
-					vector<Card> handPairCard;
-					vector<Card> pairCard;
-					for (auto& card : numMap[num])
+					if (Card::CompareNumber1(p.GetHC()[2], d.GetHC()[2]))
 					{
-						pairCard.push_back(card);
+						cout << p.GetName() << "가 승리 하였습니다! 상금 : " << pot << endl << endl << endl;
+						p.ChangeMoney(pot);
 					}
-					sort(pairCard.begin(), pairCard.end());
-					for (auto& card : pairCard)
+					else if (Card::CompareNumber2(p.GetHC()[2], d.GetHC()[2]))
 					{
-						if (card.FromHand())
-						{
-							handPairCard.push_back(card);
-						}
-					}
-					if (!handPairCard.empty())
-					{
-						sort(handPairCard.begin(), handPairCard.end());
-						pairCards.push_back(handPairCard.back());
+						cout << "딜러가 승리 하였습니다... 딜러 상금 : " << pot << endl << endl << endl;
+						d.ChangeMoney(pot);
 					}
 					else
 					{
-						pairCards.push_back(pairCard.back());
+						cout << "스플릿 팟! 판돈을 나눠 갖습니다. 상금 : " << pot / 2 << endl << endl << endl;
+						p.ChangeMoney(pot / 2);
+						d.ChangeMoney(pot / 2);
 					}
 				}
-				p.SetHC(pairCards);
 			}
-		}
-
-	}
-
-#pragma endregion
-
-#pragma region 트리플
-
-	{
-		map<Number, vector<Card>> numMap;
-
-		for (auto& card : playerCard)
-		{
-			numMap[card.GetNumber()].push_back(card);
-		}
-
-		vector<Number> triNum;
-		for (auto& [num, card] : numMap)
-		{
-			if (card.size() == 3)
+			break;
+		case TRIPLE:
+			if (Card::CompareNumber1(p.GetHC()[0], d.GetHC()[0]))
 			{
-				triNum.push_back(num);
+				cout << p.GetName() << "가 승리 하였습니다! 상금 : " << pot << endl << endl << endl;
+				p.ChangeMoney(pot);
 			}
-		}
-
-		if (triNum.size() == 1)
-		{
-			p.SetHR(TRIPLE);
-
-			vector<Card> triCards;
-
-			for (auto& num : triNum)
+			else if (Card::CompareNumber2(p.GetHC()[0], d.GetHC()[0]))
 			{
-				for (auto& card : numMap[num])
-				{
-					triCards.push_back(card);
-				}
-			}
-			vector<Card> handCard;
-			for (auto& card : triCards)
-			{
-				if (card.FromHand())
-				{
-					handCard.push_back(card);
-				}
-			}
-			if (!handCard.empty())
-			{
-				sort(handCard.begin(), handCard.end());
-				p.SetHC(handCard.back());
+				cout << "딜러가 승리 하였습니다... 딜러 상금 : " << pot << endl << endl << endl;
+				d.ChangeMoney(pot);
 			}
 			else
 			{
-				sort(triCards.begin(), triCards.end());
-				p.SetHC(triCards.back());
-			}
-		}
-	}
-
-#pragma endregion
-
-
-#pragma region 스트레이트
-	{
-		int combo = 1;
-
-		for (int i = 1; i < playerCard.size(); i++)
-		{
-
-			if (playerCard[i].GetNumber() == playerCard[i - 1].GetNumber())
-			{
-				continue;
-			}
-
-			if (playerCard[i].GetNumber() == playerCard[i - 1].GetNumber() + 1)
-			{
-				combo++;
-				p.SetHC(playerCard[i-1]);
-				if (combo >= 5)
+				for (int i = 2; i >= 1; i--)
 				{
-					p.SetHR(STRAIGHT);
-				}
-			}
-			else
-			{
-				combo = 1;
-				p.ClearHC();
-			}
-		}
-	}
-#pragma endregion
-
-#pragma region 플러쉬
-	{
-		map<Mark, vector<Card>> markMap;
-
-		for (int i = 0; i < playerCard.size(); i++)
-		{
-			markMap[playerCard[i].GetMark()].push_back(playerCard[i]);
-		}
-
-		for (auto& [mark, cards] : markMap)
-		{
-			if (cards.size() >= 5)
-			{
-				sort(cards.begin(), cards.end());
-				p.SetHR(FLUSH);
-				p.SetHC(cards.back());
-				break;
-			}
-		}
-	}
-#pragma endregion
-
-
-
-#pragma region 스트레이트 플러쉬
-
-	{
-		map<Mark, vector<Card>> markMap;
-
-		for (int i = 0; i < playerCard.size(); i++)
-		{
-			markMap[playerCard[i].GetMark()].push_back(playerCard[i]);
-		}
-
-		for (auto& [mark, cards] : markMap)
-		{
-			if (cards.size() < 5)
-				continue;
-
-			sort(cards.begin(), cards.end());
-
-			int combo = 1;
-
-			for (int i = 1; i < cards.size(); i++)
-			{
-				if (cards[i].GetNumber() == cards[i - 1].GetNumber())
-				{
-					continue;
-				}
-
-				if (cards[i].GetNumber() == cards[i - 1].GetNumber() + 1)
-				{
-					combo++;
-					if (combo >= 5)
+					if (Card::CompareNumber1(p.GetHC()[i], d.GetHC()[i]))
 					{
-						p.SetHR(STRAIGHTFLUSH);
-						p.SetHC(cards[i]);
-						
+						cout << p.GetName() << "의 하이카드! 승리 하였습니다! 상금 : " << pot << endl << endl << endl;
+						p.ChangeMoney(pot);
+						return;
 					}
+					else if (Card::CompareNumber2(p.GetHC()[i], d.GetHC()[i]))
+					{
+						cout << "딜러의 하이카드.... 아쉽습니다.... 딜러 상금 : " << pot << endl << endl << endl;
+						d.ChangeMoney(pot);
+						return;
+					}
+					else
+						continue;
+				}
+				cout << "스플릿 팟! 판돈을 나눠 갖습니다. 상금 : " << pot / 2 << endl << endl << endl;
+				p.ChangeMoney(pot / 2);
+				d.ChangeMoney(pot / 2);
+			}
+			break;
+		case STRAIGHT:
+			if (Card::CompareNumber1(p.GetHC()[4], d.GetHC()[4]))
+			{
+				cout << p.GetName() << "가 승리 하였습니다! 상금 : " << pot << endl << endl << endl;
+				p.ChangeMoney(pot);
+			}
+			else if (Card::CompareNumber2(p.GetHC()[4], d.GetHC()[4]))
+			{
+				cout << "딜러가 승리 하였습니다... 딜러 상금 : " << pot << endl << endl << endl;
+				d.ChangeMoney(pot);
+			}
+			else
+			{
+				cout << "스플릿 팟! 판돈을 나눠 갖습니다. 상금 : " << pot / 2 << endl << endl << endl;
+				p.ChangeMoney(pot / 2);
+				d.ChangeMoney(pot / 2);
+			}
+			break;
+		case FLUSH:
+			for (int i = 4; i >= 0; i--)
+			{
+				if (Card::CompareNumber1(p.GetHC()[i], d.GetHC()[i]))
+				{
+					cout << p.GetName() << "가 승리 하였습니다! 상금 : " << pot << endl << endl << endl;
+					p.ChangeMoney(pot);
+					return;
+				}
+				else if (Card::CompareNumber2(p.GetHC()[i], d.GetHC()[i]))
+				{
+					cout << "딜러가 승리 하였습니다... 딜러 상금 : " << pot << endl << endl << endl;
+					d.ChangeMoney(pot);
+					return;
+				}
+				else
+					continue;
+			}
+			cout << "스플릿 팟! 판돈을 나눠 갖습니다. 상금 : " << pot / 2 << endl << endl << endl;
+			p.ChangeMoney(pot / 2);
+			d.ChangeMoney(pot / 2);
+			break;
+		case FULLHOUSE:
+			if (Card::CompareNumber1(p.GetHC()[0], d.GetHC()[0]))
+			{
+				cout << p.GetName() << "가 승리 하였습니다! 상금 : " << pot << endl << endl << endl;
+				p.ChangeMoney(pot);
+			}
+			else if (Card::CompareNumber2(p.GetHC()[0], d.GetHC()[0]))
+			{
+				cout << "딜러가 승리 하였습니다... 딜러 상금 : " << pot << endl << endl << endl;
+				d.ChangeMoney(pot);
+			}
+			else
+			{
+				if (Card::CompareNumber1(p.GetHC()[1], d.GetHC()[1]))
+				{
+					cout << p.GetName() << "가 승리 하였습니다! 상금 : " << pot << endl << endl << endl;
+					p.ChangeMoney(pot);
+				}
+				else if (Card::CompareNumber2(p.GetHC()[1], d.GetHC()[1]))
+				{
+					cout << "딜러가 승리 하였습니다... 딜러 상금 : " << pot << endl << endl << endl;
+					d.ChangeMoney(pot);
 				}
 				else
 				{
-					combo = 1;
+					cout << "스플릿 팟! 판돈을 나눠 갖습니다. 상금 : " << pot / 2 << endl << endl << endl;
+					p.ChangeMoney(pot / 2);
+					d.ChangeMoney(pot / 2);
 				}
 			}
-		}
-	}
-
-#pragma endregion
-
-#pragma region 로티플
-
-	{
-		map<Mark, vector<Card>> markMap;
-
-		for (int i = 0; i < playerCard.size(); i++)
-		{
-			markMap[playerCard[i].GetMark()].push_back(playerCard[i]);
-		}
-
-		for (auto& [mark, cards] : markMap)
-		{
-			if (cards.size() < 5)
+			break;
+		case FOURCARD:
+			if (Card::CompareNumber1(p.GetHC()[0], d.GetHC()[0]))
 			{
-				continue;
+				cout << p.GetName() << "가 승리 하였습니다! 상금 : " << pot << endl << endl << endl;
+				p.ChangeMoney(pot);
 			}
-
-			sort(cards.begin(), cards.end());
-
-			vector<Number> royalNum = { TEN,J,Q,K,A };
-
-			int combo = 0;
-
-			for (auto& c : cards)
+			else if (Card::CompareNumber2(p.GetHC()[0], d.GetHC()[0]))
 			{
-				if (c.GetNumber() == royalNum[combo])
-				{
-					combo++;
-				}
-				else if (c.GetNumber() > royalNum[combo])
-					break;
-
-				if (combo == 5)
-				{
-					p.SetHR(ROYALSTRAIGHTFLUSH);
-					p.SetHC(Card(mark, A, true));
-					break;
-				}
-
-				if (combo == 5)
-					break;
+				cout << "딜러가 승리 하였습니다... 딜러 상금 : " << pot << endl << endl << endl;
+				d.ChangeMoney(pot);
 			}
+			else
+			{
+				if (Card::CompareNumber1(p.GetHC()[1], d.GetHC()[1]))
+				{
+					cout << p.GetName() << "가 승리 하였습니다! 상금 : " << pot << endl << endl << endl;
+					p.ChangeMoney(pot);
+				}
+				else if (Card::CompareNumber2(p.GetHC()[1], d.GetHC()[1]))
+				{
+					cout << "딜러가 승리 하였습니다... 딜러 상금 : " << pot << endl << endl << endl;
+					d.ChangeMoney(pot);
+				}
+				else
+				{
+					cout << "스플릿 팟! 판돈을 나눠 갖습니다. 상금 : " << pot / 2 << endl << endl << endl;
+					p.ChangeMoney(pot / 2);
+					d.ChangeMoney(pot / 2);
+				}
+			}
+			break;
+		case STRAIGHTFLUSH:
+			if (Card::CompareNumber1(p.GetHC()[4], d.GetHC()[4]))
+			{
+				cout << p.GetName() << "가 승리 하였습니다! 상금 : " << pot << endl << endl << endl;
+				p.ChangeMoney(pot);
+			}
+			else if (Card::CompareNumber2(p.GetHC()[4], d.GetHC()[4]))
+			{
+				cout << "딜러가 승리 하였습니다... 딜러 상금 : " << pot << endl << endl << endl;
+				d.ChangeMoney(pot);
+			}
+			else
+			{
+				cout << "스플릿 팟! 판돈을 나눠 갖습니다. 상금 : " << pot / 2 << endl << endl << endl;
+				p.ChangeMoney(pot / 2);
+				d.ChangeMoney(pot / 2);
+			}
+			break;
 		}
+		return;
 	}
-
-#pragma endregion
-
-
-
 }
-
-
 
 void Game::Round()
 {
 	
-
 	int round = 0;
 	while (dealer.GetMoney()>0) // 딜러 소지금 확인
 	{
@@ -719,8 +717,15 @@ void Game::Round()
 
 		ShowGameState(true);
 		
+		_getch();
+
+		EvaluateCard(player, playerCard);
+		EvaluateCard(dealer, dealerCard);
+
+		ShowHand();
 		// 우위 확인
 
+		Rewarding(player, dealer);
 		_getch();
 
 		// 상금 수령

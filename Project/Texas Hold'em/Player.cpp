@@ -1,5 +1,22 @@
 #include "Player.h"
 
+string Player::GetStringHandRank()
+{
+    switch (handRank)
+    {
+    case HIGHCARD:return "하이 카드"; break;
+    case ONEPAIR:return "원 페어"; break;
+    case TWOPAIR:return "투 페어"; break;
+    case TRIPLE:return "트리플"; break;
+    case STRAIGHT:return "스트레이트"; break;
+    case FLUSH:return "플러쉬"; break;
+    case FULLHOUSE:return "풀 하우스"; break;
+    case FOURCARD:return "포 카드"; break;
+    case STRAIGHTFLUSH:return "스트레이트 플러쉬"; break;
+    case ROYALSTRAIGHTFLUSH:return "로얄 스트레이트 플러쉬"; break;
+    }
+}
+
 Player::Player()
 {
     hand.reserve(3);
@@ -44,6 +61,16 @@ void Player::ShowHand()
     cout << endl << endl;
 }
 
+void Player::ShowHighCard()
+{
+    cout << "<" << name << ">" << "[" << GetStringHandRank() << "]\n\n";
+    for (auto& card : highCard)
+    {
+        cout << card.GetCardString() << "  ";
+    }
+    cout << endl << endl << endl;
+}
+
 void Player::ChangeMoney(int chip)
 {
     money += chip;
@@ -58,7 +85,7 @@ void Player::SetHC(const Card& card)
 {
     highCard.clear();
     highCard.push_back(card);
-    sort(highCard.begin(), highCard.end())
+    sort(highCard.begin(), highCard.end());
 }
 
 void Player::SetHC(const vector<Card>& card)

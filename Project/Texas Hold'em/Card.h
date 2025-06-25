@@ -67,6 +67,8 @@ public:
 
 	bool operator<(const Card& otherCard) const;
 	bool operator==(const Card& otherCard) const;
-	
+
+	static bool CompareNumber1(Card& a, Card& b);
+	static bool CompareNumber2(Card& a, Card& b);
 };
 
