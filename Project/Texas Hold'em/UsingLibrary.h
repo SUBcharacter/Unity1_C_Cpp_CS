@@ -9,6 +9,7 @@
 #include <limits>
 #include <map>
 #include <algorithm>
+#include "UIManager.h";
 
 using namespace std;
 

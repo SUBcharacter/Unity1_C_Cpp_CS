@@ -1,6 +1,5 @@
 #pragma once
 #include "UsingLibrary.h"
-#include "Card.h"
 #include "Deck.h"
 #include "Player.h"
 #include "EvaluateManager.h"
@@ -9,6 +8,8 @@ class Game
 {
 private:
 	bool isAllin = false;
+	bool isPlayerDie = false;
+	bool isDealerDie = false;
 	int pot = 0;
 	int entry = 500;
 	int bettingPlayer = 0;
@@ -34,13 +35,12 @@ public:
 	}
 	int Input();
 
-	void Title();
 	void StartNewRound();
 	void DealCommunityCard(int count);
 	void ShowCommunityCard();
-	void ShowGameState(bool showDown = false);
+	void ShowGameState(int round, bool showDown = false);
 	void ShowHand();
-	bool CheckPlayerMoney();
+	bool CheckPlayerMoney(Player& pd);
 	
 	void BetFromPlayer(Player& p, int chip);
 	void FirstBet();

@@ -129,7 +129,9 @@
     <ClCompile Include="EvaluateManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayManager.cpp" />
     <ClCompile Include="Texas Hold%27em.cpp" />
+    <ClCompile Include="UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Card.h" />
@@ -137,6 +139,8 @@
     <ClInclude Include="EvaluateManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayManager.h" />
+    <ClInclude Include="UIManager.h" />
     <ClInclude Include="UsingLibrary.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

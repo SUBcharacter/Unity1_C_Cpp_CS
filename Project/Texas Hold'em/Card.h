@@ -49,6 +49,7 @@ public:
 
 	Number GetNumber() { return number; }
 
+	
 
 	string GetMarkString()
 	{
@@ -62,7 +63,7 @@ public:
 	string GetCardString();
 	
 	void SetFH(bool type) { isFromHand = type; }
-
+	
 	bool FromHand() const { return isFromHand; }
 
 	bool operator<(const Card& otherCard) const;

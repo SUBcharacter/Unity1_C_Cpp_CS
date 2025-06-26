@@ -20,11 +20,6 @@ int Game::Input()
 	return input;
 }
 
-void Game::Title()
-{
-	
-}
-
 void Game::StartNewRound()
 {
 	pot = 0;
@@ -54,42 +49,52 @@ void Game::DealCommunityCard(int count)
 
 void Game::ShowCommunityCard()
 {
-	cout << "커뮤니티 카드" << endl << endl;
+	
 	for (int i = 0; i < communityCard.size(); i++)
 	{
 		cout << communityCard[i].GetCardString() << "  ";
 	}
-	cout << endl << endl << endl;
+	
 }
 
-void Game::ShowGameState(bool showDown)
+void Game::ShowGameState(int round, bool showDown)
 {
-	cout << "[딜러]  " << "소지금 : " << dealer.GetMoney() << endl << endl;
+	GotoXY(0, 0);
+	cout << round << " 라운드" << endl << endl;
+	GotoXY(90, 0);
+	cout << "[딜러]"; 
+	GotoXY(95, 0);
+	cout << "소지금 : " << dealer.GetMoney();
 	if (showDown)
 	{
+		GotoXY(85, 2);
 		dealer.ShowHand();
 	}
 	else
 	{
+		GotoXY(85, 3);
 		cout << "(비공개)" << endl << endl << endl;
 	}
 	
-
+	GotoXY(27, 7);
 	cout << "[커뮤니티 카드]  " << endl << endl;
 	if (communityCard.empty())
 	{
+		GotoXY(28, 12);
 		cout << "(카드 공개 전)" << endl << endl << endl;
 	}
 	else
 	{
+		GotoXY(20, 12);
 		ShowCommunityCard();
 	}
 	
-
-	cout << "[" << player.GetName() << "]  " << "소지금 : " << player.GetMoney() << endl << endl;
+	GotoXY(0, 19);
+	cout << "[" << player.GetName() << "]  ";
+	GotoXY(5, 19);
+	cout <<"소지금 : " << player.GetMoney() << endl << endl;
+	GotoXY(3, 22);
 	player.ShowHand();
-	ShowPlayerCard();
-	cout << endl << "-----------------------------------------------------" << endl << endl;
 	
 }
 
@@ -103,9 +108,9 @@ void Game::ShowHand()
 	player.ShowHighCard();
 }
 
-bool Game::CheckPlayerMoney()
+bool Game::CheckPlayerMoney(Player& pd)
 {
-	if (player.GetMoney() <= 0)
+	if (pd.GetMoney() <= 0)
 	{
 		return true;
 	}
@@ -120,6 +125,7 @@ void Game::BetFromPlayer(Player& p, int chip)
 	if (chip >= p.GetMoney())
 	{
 		bettingChip = p.GetMoney();
+		GotoXY(50, 20);
 		cout << "소지금 보다 많이 베팅하셨습니다. 자동으로 올인 처리됩니다. 올인 금액 : "<< bettingChip << endl << endl;
 		isAllin = true;
 	}
@@ -136,6 +142,7 @@ void Game::BetFromPlayer(Player& p, int chip)
 
 void Game::FirstBet()
 {
+	GotoXY(80, 7);
 	cout << "[스타트 베팅]" << endl << endl;
 
 	BetFromPlayer(player, entry / 2);
@@ -639,24 +646,52 @@ void Game::Round()
 {
 	
 	int round = 0;
-	while (dealer.GetMoney()>0) // 딜러 소지금 확인
+	while (true) // 딜러 소지금 확인
 	{
 		system("cls");
 
-		if (CheckPlayerMoney())
+		if (CheckPlayerMoney(player))
 		{
+			GotoXY(75,5);
+			cout << R"(
+		          ,--,     .--.           ,---.         .---..-.   .-.,---.  ,---.    
+		        .' .'     / /\ \ |\    /| | .-'        / .-. )\ \ / / | .-'  | .-.\   
+		        |  |  __ / /__\ \|(\  / | | `-.        | | |(_)\ V /  | `-.  | `-'/   
+		        \  \ ( _)|  __  |(_)\/  | | .-'        | | | |  ) /   | .-'  |   (    
+		         \  `-) )| |  |)|| \  / | |  `--.      \ `-' / (_)    |  `--.| |\ \   
+		         )\____/ |_|  (_)| |\/| | /( __.'       )---'         /( __.'|_| \)\  
+		        (__)             '-'  '-'(__)          (_)           (__)        (__) 
+)";
+			GotoXY(40, 14);
 			cout << "게임 오버! 플레이어가 파산했습니다...." << endl << endl;
+			isPlayerDie = true;
+			_getch();
+			return;
+		}
+		else if (CheckPlayerMoney(dealer))
+		{
+			GotoXY(75, 5);
+			cout << R"(
+	      _  _   ____    ____  __    ______ .___________.  ______   .______     ____    ____   _  _   
+	    _| || |_ \   \  /   / |  |  /      ||           | /  __  \  |   _  \    \   \  /   / _| || |_ 
+	   |_  __  _| \   \/   /  |  | |  ,----'`---|  |----`|  |  |  | |  |_)  |    \   \/   / |_  __  _|
+	    _| || |_   \      /   |  | |  |         |  |     |  |  |  | |      /      \_    _/   _| || |_ 
+	   |_  __  _|   \    /    |  | |  `----.    |  |     |  `--'  | |  |\  \----.   |  |    |_  __  _|
+	     |_||_|      \__/     |__|  \______|    |__|      \______/  | _| `._____|   |__|      |_||_|                                                                                             
+)";
+			GotoXY(30, 15);
+			cout << "축하합니다! 딜러를 파산 시키셨습니다. 총 상금 : " << player.GetMoney() << endl << endl;
+			isDealerDie = true;
 			_getch();
 			return;
 		}
 
 		round++;
-
-		cout << round << " 라운드" << endl << endl;
+		
 
 		StartNewRound();
 
-		ShowGameState();
+		ShowGameState(round);
 
 		// 1차 베팅
 		FirstBet();
@@ -670,7 +705,7 @@ void Game::Round()
 
 		DealCommunityCard(3);
 
-		ShowGameState();
+		ShowGameState(round);
 
 		// 족보 확인
 
@@ -685,7 +720,7 @@ void Game::Round()
 
 		DealCommunityCard(1);
 		
-		ShowGameState();
+		ShowGameState(round);
 
 		// 족보 확인
 		
@@ -700,7 +735,7 @@ void Game::Round()
 
 		DealCommunityCard(1);
 		
-		ShowGameState();
+		ShowGameState(round);
 
 		// 족보 확인
 
@@ -715,24 +750,24 @@ void Game::Round()
 		
 		// 쇼다운
 
-		ShowGameState(true);
+		ShowGameState(true,round);
 		
 		_getch();
+
+		
+		// 우위 확인
 
 		EvaluateCard(player, playerCard);
 		EvaluateCard(dealer, dealerCard);
 
 		ShowHand();
-		// 우위 확인
 
+		// 상금 수령
 		Rewarding(player, dealer);
 		_getch();
 
-		// 상금 수령
 
-
-
-		// 딜러 소지금 확인 
+		
 	}
 	
 

@@ -5,6 +5,7 @@ string Card::GetCardString()
 	return GetMarkString() + GetNumberString();
 }
 
+
 bool Card::operator<(const Card& otherCard) const
 {
 	if (number != otherCard.number)

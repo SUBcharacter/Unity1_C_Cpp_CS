@@ -19,16 +19,29 @@ string Player::GetStringHandRank()
 
 Player::Player()
 {
+    system("cls");
     hand.reserve(3);
     highCard.reserve(7);
     handRank = NONE;
+    GotoXY(75, 4);
+    cout << R"(
+                                
+                            _   __                        _____      __  __  _            
+                           / | / /___ _____ ___  ___     / ___/___  / /_/ /_(_)___  ____ _
+                          /  |/ / __ `/ __ `__ \/ _ \    \__ \/ _ \/ __/ __/ / __ \/ __ `/
+                         / /|  / /_/ / / / / / /  __/   ___/ /  __/ /_/ /_/ / / / / /_/ / 
+                        /_/ |_/\__,_/_/ /_/ /_/\___/   /____/\___/\__/\__/_/_/ /_/\__, /  
+                                                                                 /____/   
+                        
+        )";
     name = SetName();
 
 }
 
 string Player::SetName()
 {
-    cout << "플레이어의 이름을 설정해 주세요." << endl << endl;
+    GotoXY(30, 14);
+    cout << "플레이어의 이름을 설정해 주세요. : ";
 
     string name;
     cin >> name;
@@ -53,12 +66,10 @@ void Player::ClearHand()
 
 void Player::ShowHand()
 {
-    cout << name << " 패" << endl << endl;
     for (int i = 0; i < hand.size(); i++)
     {
         cout << hand[i].GetCardString() << "  ";
     }
-    cout << endl << endl;
 }
 
 void Player::ShowHighCard()
