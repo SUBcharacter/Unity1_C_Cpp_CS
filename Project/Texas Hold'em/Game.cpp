@@ -54,7 +54,6 @@ void Game::DealCommunityCard(int count)
 	{
 		communityCard.push_back(deck.DrawCard());
 	}
-	PlayerCard();
 }
 
 void Game::ShowCommunityCard()
@@ -451,7 +450,7 @@ void Game::Rewarding(Player& p, Player& d)
 			d.ChangeMoney(pot);
 		}
 	}
-	else
+	else if (p.GetHR() == d.GetHR())
 	{
 		switch (p.GetHR())
 		{
@@ -917,6 +916,7 @@ void Game::Round()
 		
 		// 우위 확인
 
+		PlayerCard();
 		EvaluateCard(player, playerCard);
 		EvaluateCard(dealer, dealerCard);
 
