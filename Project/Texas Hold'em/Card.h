@@ -63,7 +63,7 @@ public:
 	string GetCardString();
 	
 	void SetFH(bool type) { isFromHand = type; }
-	
+	void PrintCard(int x, int y);
 	bool FromHand() const { return isFromHand; }
 
 	bool operator<(const Card& otherCard) const;

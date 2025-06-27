@@ -23,6 +23,14 @@ Player::Player()
     hand.reserve(3);
     highCard.reserve(7);
     handRank = NONE;
+    
+    name = SetName();
+
+}
+
+string Player::SetName()
+{
+    ShowCursor();
     GotoXY(75, 4);
     cout << R"(
                                 
@@ -34,19 +42,26 @@ Player::Player()
                                                                                  /____/   
                         
         )";
-    name = SetName();
-
-}
-
-string Player::SetName()
-{
-    GotoXY(30, 14);
-    cout << "플레이어의 이름을 설정해 주세요. : ";
 
     string name;
-    cin >> name;
+    while (true)
+    {
+        GotoXY(30, 14);
+        cout << "플레이어의 이름을 설정해 주세요. : ";
 
-    return name;
+        getline(cin, name);
+
+        if (!name.empty())
+        {
+            HideCursor();
+            return name;
+        }
+        else
+        {
+            GotoXY(30, 14);
+            cout << "                                  ";
+        }
+    }
 }
 
 void Player::SetMoney(int seedMoney)
@@ -64,22 +79,19 @@ void Player::ClearHand()
     hand.clear();
 }
 
-void Player::ShowHand()
+void Player::ShowHand(int x, int y)
 {
+    int X = x;
     for (int i = 0; i < hand.size(); i++)
     {
-        cout << hand[i].GetCardString() << "  ";
+        hand[i].PrintCard(X, y);
+        X += 8;
     }
 }
 
-void Player::ShowHighCard()
+void Player::ShowHighRank()
 {
     cout << "<" << name << ">" << "[" << GetStringHandRank() << "]\n\n";
-    for (auto& card : highCard)
-    {
-        cout << card.GetCardString() << "  ";
-    }
-    cout << endl << endl << endl;
 }
 
 void Player::ChangeMoney(int chip)

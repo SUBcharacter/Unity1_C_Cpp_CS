@@ -5,3 +5,5 @@
 #include <conio.h>
 
 void GotoXY(int x, int y);
+void HideCursor();
+void ShowCursor();

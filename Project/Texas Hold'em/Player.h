@@ -25,8 +25,8 @@ public:
 	
 	void AddCard(Card card);
 	void ClearHand();
-	void ShowHand();
-	void ShowHighCard();
+	void ShowHand(int x, int y);
+	void ShowHighRank();
 	void ChangeMoney(int chip);
 	void SetHR(HandRank hr);
 

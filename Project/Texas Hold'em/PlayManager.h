@@ -7,3 +7,4 @@ void Title();
 void Play();
 void GameDescription();
 void DifficultySet(Player& p);
+

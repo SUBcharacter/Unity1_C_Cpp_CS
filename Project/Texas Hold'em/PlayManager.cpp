@@ -2,6 +2,7 @@
 
 void Title()
 {
+	HideCursor();
 	while (true)
 	{
 		system("cls");
@@ -25,13 +26,13 @@ void Title()
 
 		GotoXY(50, 22);
 		int input;
-		cin >> input;
+		input = _getch();
 
-		if (input == 1)
+		if (input == '1')
 		{
 			Play();
 		}
-		else if(input == 2)
+		else if(input == '2')
 		{
 			cout << "게임을 종료합니까? (Y/N)\n\n";
 			int yesOrNo;
@@ -72,6 +73,7 @@ void Play()
 
 	Game gameManager(player, dealer);
 
+	ShowCursor();
 	gameManager.Round();
 }
 
@@ -128,10 +130,9 @@ void DifficultySet(Player& p)
 
 		int input = 0;
 		GotoXY(40, 22);
-		cin >> input;
-		cin.ignore(1000, '\n');
+		input = _getch();
 
-		if (input == 1)
+		if (input == '1')
 		{
 			GotoXY(40, 25);
 			cout << "대부 난이도를 선택하셨습니다. 계속하시겠습니까? (Y/N)\n\n";
@@ -152,7 +153,7 @@ void DifficultySet(Player& p)
 				_getch();
 			}
 		}
-		else if (input == 2)
+		else if (input == '2')
 		{
 			GotoXY(40, 25);
 			cout << "일반인 난이도를 선택하셨습니다. 계속하시겠습니까? (Y/N)\n\n";
@@ -173,7 +174,7 @@ void DifficultySet(Player& p)
 				_getch();
 			}
 		}
-		else if (input == 3)
+		else if (input == '3')
 		{
 			GotoXY(40, 25);
 			cout << "한량 난이도를 선택하셨습니다. 계속하시겠습니까? (Y/N)\n\n";
@@ -200,3 +201,4 @@ void DifficultySet(Player& p)
 		}
 	}
 }
+

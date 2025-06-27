@@ -319,8 +319,16 @@ bool STR(Player& p, vector<Card> playerCard)
 			}
 			else
 			{
-				straightCards.clear();
-				straightCards.push_back(playerCard[i]);
+				if (straightCards.size() >= 5)
+				{
+					break;
+				}
+				else
+				{
+					straightCards.clear();
+					straightCards.push_back(playerCard[i]);
+				}
+				
 			}
 		}
 		if (straightCards.size() >= 5)
