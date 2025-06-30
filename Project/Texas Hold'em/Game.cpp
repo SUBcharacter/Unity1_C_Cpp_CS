@@ -3,36 +3,44 @@
 int Game::Input()
 {
 	ShowCursor();
-	int input = 0;
-
+	string input;
+	int choice = 0;
 	int x = 28 + player.GetName().length();
 	while (true)
 	{
+		GotoXY(x, 21);
+		getline(cin, input);
 		
-		cin >> input;
-		if (input < 1 || input >3)
-		{
-			GotoXY(x, 22);
-			cout << "잘못된 입력입니다. 다시 시도 하십시오.\n\n";
-			_getch();
-			GotoXY(x, 21);
-			cout << "       ";
-			cout << "                                               ";
 
+		if (!input.empty())
+		{
+			choice = stoi(input);
+			if (choice < 1 || choice >3)
+			{
+				GotoXY(x, 22);
+				cout << "잘못된 입력입니다. 다시 시도 하십시오.\n\n";
+				_getch();
+				GotoXY(x, 21);
+				cout << "       ";
+				cout << "                                               ";
+
+			}
+			else
+				break;
 		}
-		else
-			break;
 	}
+	
 
 	GotoXY(x, 21);
 	cout << "       ";
 	HideCursor();
-	return input;
+	return choice;
 }
 
 void Game::StartNewRound()
 {
 	pot = 0;
+	isAllin = false;
 	communityCard.clear();
 	player.ClearHand();
 	dealer.ClearHand();
@@ -162,7 +170,7 @@ void Game::FirstBet()
 	cout << "플레이어의 차례";
 	GotoXY(x, 20);
 	cout << "1_ 레이즈  2_ 콜  3_ 다이" << endl << endl;
-	GotoXY(x, 21);
+	
 	int choice = 0;
 
 	choice = Input();
@@ -173,9 +181,20 @@ void Game::FirstBet()
 		actPlayer = RAISE;
 		GotoXY(x, 23);
 		cout << "레이즈 금액을 입력해 주십시오. 현재 소지금 : " << player.GetMoney() << endl << endl;
-		GotoXY(x, 24);
+		string input;
 		int raise = 0;
-		cin >> raise;
+		while (true)
+		{
+			GotoXY(x, 24);
+			raise = 0;
+			getline(cin, input);
+
+			if (input.empty())
+				continue;
+
+			raise = stoi(input);
+			break;
+		}
 		HideCursor();
 		bettingPlayer = raise + entry;
 		GotoXY(x, 23);
@@ -249,8 +268,20 @@ void Game::DefaultBet()
 		cout << "레이즈 금액을 입력해 주십시오. 현재 소지금 : " << player.GetMoney() << endl << endl;
 		GotoXY(x, 24);
 		int raise = 0;
+		string input;
 		ShowCursor();
-		cin >> raise;
+		while (true)
+		{
+			GotoXY(x, 24);
+			raise = 0;
+			getline(cin, input);
+
+			if (input.empty())
+				continue;
+
+			raise = stoi(input);
+			break;
+		}
 		HideCursor();
 		GotoXY(x, 23);
 		cout << "                                                                ";
