@@ -836,10 +836,10 @@ void Game::Round()
 {
 	
 	int round = 0;
-	while (true) // 딜러 소지금 확인
+	while (true)
 	{
 		system("cls");
-
+		// 각 플레이어의 재화 확인
 		if (CheckPlayerMoney(player))
 		{
 			GotoXY(75,5);
