@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{7b2d3184-05e5-46fa-a0fc-e1349709b66a}</ProjectGuid>
-    <RootNamespace>Program</RootNamespace>
+    <ProjectGuid>{2531e8f4-be97-4c62-a59c-3fb8d23d9afb}</ProjectGuid>
+    <RootNamespace>Class9thLinearContainer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -123,13 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Packet.cpp" />
-    <ClCompile Include="Resource.cpp" />
-    <ClCompile Include="Source.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Packet.h" />
-    <ClInclude Include="Resource.h" />
+    <ClCompile Include="Class9th (Linear Container).cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

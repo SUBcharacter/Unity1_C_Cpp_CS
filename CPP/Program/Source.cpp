@@ -1,127 +1,55 @@
 ﻿#include <iostream>
-#define _USE_MATH_DEFINES
-#include <math.h>
-#include <conio.h>
-#include <Windows.h>
-#include <vector>
-#include <list>
-#include <stack>
-#include <queue>
+#include "Packet.h"
+#include "Resource.h"
 using namespace std;
 
 int main()
 {
-#pragma region 선형 컨테이너
+#pragma region Smart Pointer
 
-#pragma region vector container
+#pragma region unique Pointer
 
-	//vector<int> vec;
+	// 특정한 객체를 하나의 스마트 포인터만 가리킬 수 있도록 되어 있는 포인터
+	// 복사 불가, 소유권 이전 가능
+
+	//unique_ptr<Packet> ptr1 = make_unique<Packet>();
+	//unique_ptr<Packet> ptr2;
 	//
-	//vec.reserve(10);
+	//ptr1->SetNumber(30);
+	//ptr1->GetNumber();
 	//
-	//cout << vec.capacity() << endl;
+	//ptr1->Receive(move(ptr2));
 	//
-	//vec.push_back(10);
-	//cout << vec.capacity() << endl;
-	//vec.push_back(20);
-	//cout << vec.capacity() << endl;
-	//vec.push_back(30);
-	//cout << vec.capacity() << endl;
-	//
-	//vec.pop_back();
-	//
-	//for (int i = 0; i < vec.size(); i++)
-	//{
-	//	cout << "vec[" << i <<"] : " << vec[i] << endl << endl;
-	//}
+	//ptr2->SetNumber(60);
+	//ptr2->GetNumber();
 
 #pragma endregion
 
-#pragma region list container
+#pragma region Shared Pointer
 
-	//list<int> list;
-	//
-	//// [20]
-	//list.push_front(20);
-	//for (int val : list) 
-	//{
-	//	cout << val << "  ";
-	//}
-	//cout << endl;
-	//// [20] - [30]
-	//list.push_back(30);
-	//for (int val : list)
-	//{
-	//	cout << val << "  ";
-	//}
-	//cout << endl;
-	//// [10] - [20] - [30]
-	//list.push_front(10);
-	//for (int val : list)
-	//{
-	//	cout << val << "  ";
-	//}
-	//cout << endl;
-	//// [20] - [30]
-	//list.pop_front();
-	//for (int val : list)
-	//{
-	//	cout << val << "  ";
-	//}
-	//cout << endl;
-#pragma endregion
+	// 하나의 자원 객체를 여러 포인터 객체가 가리킬 수 있으며,
+	// 모든 포인터 객체가 자원 객체를 필요하지 않을 때 자원 객체를
+	// 해제하도록 설계되어 있는 포인터
 
-#pragma region string
+	shared_ptr<Resource> oil = make_shared<Resource>();
+	shared_ptr<Resource> mineral = make_shared<Resource>();
 
-	//string contents;
-	//
-	//contents.append("Texas Hold'em");
-	//
-	//cout << contents << endl;
-	//
-	//contents = "Indian Poker";
-	//
-	//cout << contents << endl;
+	oil->SetAmount(100);
+	mineral->SetAmount(150);
+
+	oil->GetAmount();
+	mineral->GetAmount();
+
+	cout << "Used Count : " << oil.use_count() << endl;
+
+	oil->partner = mineral;
+	mineral->partner = oil;
+	
+
 
 #pragma endregion
 
-#pragma region 컨테이너 어댑터
-
-	//stack<int> stack;
-	//
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	stack.push((i + 1) * 10);
-	//}
-	//
-	//while (!stack.empty())
-	//{
-	//	cout << stack.top() << endl;
-	//	stack.pop();
-	//}
-
-#pragma endregion
-
-#pragma region container Queue
-
-	queue<int> q;
-
-	q.push(10);
-	q.push(20);
-	q.push(30);
-	q.push(40);
-	q.push(50);
-	q.push(60);
-
-	while (!q.empty())
-	{
-		cout << q.front() << "  ";
-		q.pop();
-	}
-
-#pragma endregion
-
-
+	
 #pragma endregion
 
 
