@@ -10,7 +10,7 @@ void Resource::GetAmount()
 	cout << "this Resource's amount is " << amount << endl;
 }
 
-void Resource::Share()
+void Resource::Share(const shared_ptr<Resource>& pointer)
 {
-
+	partner = pointer;
 }

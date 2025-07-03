@@ -13,7 +13,7 @@ public:
 
 	void SetAmount(int a);
 	void GetAmount();
-	void Share();
+	void Share(const shared_ptr<Resource>& pointer);
 
 	~Resource() { cout << "Release Resource" << endl; }
 

@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{7b2d3184-05e5-46fa-a0fc-e1349709b66a}</ProjectGuid>
-    <RootNamespace>Program</RootNamespace>
+    <ProjectGuid>{658db10d-8fc0-4383-867a-6e26191285c7}</ProjectGuid>
+    <RootNamespace>Class8thSmartPointer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -123,7 +123,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="..\Program\Character.cpp" />
+    <ClCompile Include="..\Program\Packet.cpp" />
+    <ClCompile Include="..\Program\Resource.cpp" />
+    <ClCompile Include="Class8th (Smart Pointer).cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Program\Character.h" />
+    <ClInclude Include="..\Program\Packet.h" />
+    <ClInclude Include="..\Program\Resource.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

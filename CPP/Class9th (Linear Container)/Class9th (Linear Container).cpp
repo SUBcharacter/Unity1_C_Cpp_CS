@@ -7,6 +7,7 @@
 #include <list>
 #include <stack>
 #include <queue>
+#include <deque>
 using namespace std;
 
 int main()
@@ -104,20 +105,46 @@ int main()
 
 #pragma region container Queue
 
-	queue<int> q;
+	//queue<int> q;
+	//
+	//q.push(10);
+	//q.push(20);
+	//q.push(30);
+	//q.push(40);
+	//q.push(50);
+	//q.push(60);
+	//
+	//while (!q.empty())
+	//{
+	//	cout << q.front() << "  ";
+	//	q.pop();
+	//}
 
-	q.push(10);
-	q.push(20);
-	q.push(30);
-	q.push(40);
-	q.push(50);
-	q.push(60);
+#pragma endregion
 
-	while (!q.empty())
-	{
-		cout << q.front() << "  ";
-		q.pop();
-	}
+#pragma region Deque Container
+
+	//deque<int> container;
+	//
+	//for (int i = 0; i < 5; i++)
+	//{
+	//	container.push_back((i + 1) * 10);
+	//}
+	//
+	//container.push_front(5);
+	//container.push_front(1);
+	//
+	//container.push_back(60);
+	//container.push_back(75);
+	//
+	//for (int i = 0; i < container.size(); i++)
+	//{
+	//	cout << "container[" << i << "] : " << container[i] << endl;
+	//}
+
+#pragma endregion
+
+#pragma region Priority Queue Container
 
 #pragma endregion
 
