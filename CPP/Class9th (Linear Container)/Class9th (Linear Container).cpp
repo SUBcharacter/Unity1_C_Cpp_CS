@@ -10,6 +10,7 @@
 #include <deque>
 using namespace std;
 
+
 int main()
 {
 #pragma region 선형 컨테이너
@@ -101,24 +102,22 @@ int main()
 	//	stack.pop();
 	//}
 
-#pragma endregion
-
 #pragma region container Queue
 
-	//queue<int> q;
-	//
-	//q.push(10);
-	//q.push(20);
-	//q.push(30);
-	//q.push(40);
-	//q.push(50);
-	//q.push(60);
-	//
-	//while (!q.empty())
-	//{
-	//	cout << q.front() << "  ";
-	//	q.pop();
-	//}
+//queue<int> q;
+//
+//q.push(10);
+//q.push(20);
+//q.push(30);
+//q.push(40);
+//q.push(50);
+//q.push(60);
+//
+//while (!q.empty())
+//{
+//	cout << q.front() << "  ";
+//	q.pop();
+//}
 
 #pragma endregion
 
@@ -146,7 +145,25 @@ int main()
 
 #pragma region Priority Queue Container
 
+	//priority_queue<int> top;
+	//top.push(20);
+	//top.push(10);
+	//top.push(31);
+	//top.push(45);
+	//top.push(20);
+	//
+	//while (!top.empty())
+	//{
+	//	cout << "top's priority value : " << top.top() << endl;
+	//
+	//	top.pop();
+	//}
+
+
 #pragma endregion
+#pragma endregion
+
+
 
 
 #pragma endregion
