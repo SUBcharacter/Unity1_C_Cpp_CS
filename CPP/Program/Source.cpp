@@ -1,68 +1,37 @@
 ﻿#include <iostream>
-#include <set>
-#include <unordered_set>
-#include <unordered_map>
+#include <vector>
 
 using namespace std;
 
-
-
 int main()
 {
-#pragma region 연관 컨테이너
+#pragma region 반복자
 
-#pragma region unordered set
+	vector<int> vec;
 
-	unordered_set<const char*> inven;
+	vec.push_back(10);
+	vec.push_back(20);
+	vec.push_back(30);
+	vec.push_back(40);
+	vec.push_back(50);
+	vec.push_back(60);
+	vec.push_back(70);
+	vec.push_back(80);
+	vec.push_back(90);
+	vec.push_back(100);
 
-	inven.max_load_factor(2.0f);
+	vector<int>::iterator vecIter;
 
-	inven.insert("AK-47");
-	inven.insert("HK416");
-	inven.insert("ppsh-41");
-	inven.insert("Moshin Naghant");
-	inven.insert("L85A1");
-	inven.insert("MP5SD");
-	inven.insert("MP7");
-	inven.insert("AS Val");
-	inven.insert("M4A1");
-	inven.insert("SCAR-L");
-	inven.insert("MCX");
-
-	for (const auto& gun : inven)
+	for (vecIter = vec.begin(); vecIter != vec.end(); vecIter++)
 	{
-		cout << gun << endl;
-		cout << "bucket count : " << inven.bucket_count() << endl;
-		cout << "load factor : " << inven.load_factor() << endl << endl;
+
+		cout << *vecIter << " " << endl;
 	}
 
-	const char* find = "SCAR-L";
-
-	if (inven.find(find) != inven.end())
-	{
-		cout << "Founded gun " << find << endl;
-	}
-	else
-		cout << "Can't found gun " << find << endl;
+	
 
 #pragma endregion
-
-#pragma region set
-
-	// 
-
-#pragma endregion
-
-
-#pragma endregion
-
-#pragma region 과제 (재고 탐사, 이중 해싱)
-
-#pragma endregion
-
 
 
 	return 0;
 }
-
-
