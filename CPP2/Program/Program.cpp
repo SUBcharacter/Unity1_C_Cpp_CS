@@ -22,7 +22,11 @@ public:
     List()
     {
         size = 0;
+<<<<<<< Updated upstream
         head = NULL;
+=======
+        head = nullptr;
+>>>>>>> Stashed changes
         tail = nullptr;
     }
 };
