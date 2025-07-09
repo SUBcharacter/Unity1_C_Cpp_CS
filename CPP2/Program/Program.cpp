@@ -86,6 +86,11 @@ public:
         size--;
     }
 
+    bool empty()
+    {
+        return size == 0;
+    }
+
     ~list()
     {
         while (head != nullptr)
