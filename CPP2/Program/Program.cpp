@@ -2,143 +2,95 @@
 
 using namespace std;
 
+/*
+* 필요한 것
+* - 벡터의 크기
+* - 벡터가 저장할 수 있는 메모리 공간
+* - 동적 배열을 하기 위한 포인터 변수
+*/
+
 template<typename T>
-class List
+class Vector
 {
 private:
-    struct Node
-    {
-        T data;
-        Node* nextNode;
-
-        Node(T d)
-        {
-            data = d;
-            nextNode = nullptr;
-        }
-    };
-
-    int _size;
-    Node* head;
+    T* _data;
+    size_t _size;
+    size_t _capacity;
 
 public:
 
-    List()
+    Vector()
     {
         _size = 0;
-        head = nullptr;
+        _capacity = 0;
+        _data = nullptr;
     }
 
-    void push_front(T data)
+    void resize(size_t newSize)
     {
-        Node* newNode = new Node(data);
-
-        if (head == nullptr)
+        if (_size > newSize)
         {
-            head = newNode;
-            newNode->nextNode = head;
+            _size = newSize;
+            return;
+        }
+
+        if (newSize > _capacity)
+        {
+            T* newData = new T[newSize];
+
+            for (size_t i = 0; i < _size; i++)
+            {
+                newData[i] = NULL;
+                newData[i] = _data[i];
+            }
+            for (size_t i = _size; i < newSize; i++)
+            {
+                newData[i] = T();
+            }
+
+            delete[] _data;
+            _data = newData;
+            _capacity = newSize;
         }
         else
         {
-            Node* currentNode = head;
-
-            while (currentNode->nextNode != head)
+            for (size_t i = _size; i < newSize; i++)
             {
-                currentNode = currentNode->nextNode;
+                _data[i] = T();
             }
-            currentNode->nextNode = newNode;
-            newNode->nextNode = head;
-            head = newNode;
         }
-        _size++;
+        
+        _size = newSize;
     }
 
     void push_back(T data)
     {
-        Node* newNode = new Node(data);
-
-        if (head == nullptr)
+        if (_capacity == 0)
         {
-            head = newNode;
-            newNode->nextNode = head;
+            _capacity++;
+            _data = new T[_capacity];
         }
-        else
+        else if (_size >= _capacity)
         {
-            Node* currentNode = head;
-            while (currentNode->nextNode != head)
-            {
-                currentNode = currentNode->nextNode;
-            }
-            currentNode->nextNode = newNode;
-            newNode->nextNode = head;
+            resize(_capacity * 2);
         }
-
+        _data[_size] = data;
         _size++;
     }
 
-    void pop_front()
+    ~Vector()
     {
-        if (head == nullptr)
-            return;
-
-        Node* deleteNode = head;
-
-        if (_size == 1)
+        if (_data != nullptr)
         {
-            head = nullptr;
+            delete[] _data;
         }
-        else
-        {
-            Node* currentNode = head;
-
-            while (currentNode->nextNode != head)
-            {
-                currentNode = currentNode->nextNode;
-            }
-            currentNode->nextNode = head->nextNode;
-            head = head->nextNode;
-        }
-        
-
-        delete deleteNode;
-        deleteNode = nullptr;
-        _size--;
-
     }
 
-    void pop_back()
-    {
-        if (head == nullptr)
-            return;
-
-        Node* deleteNode = head;
-
-        if (_size == 1)
-        {
-            head = nullptr;
-        }
-        else
-        {
-            Node* currentNode = head;
-
-            while (currentNode->nextNode->nextNode != head)
-            {
-                currentNode = currentNode->nextNode;
-            }
-            deleteNode = currentNode->nextNode;
-            currentNode->nextNode = head;
-        }
-
-        delete deleteNode;
-        deleteNode = nullptr;
-
-        _size--;
-    }
 };
-
 
 int main()
 {
+    
 
     return 0;
 }
