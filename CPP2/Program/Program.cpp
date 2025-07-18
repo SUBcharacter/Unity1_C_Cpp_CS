@@ -1,96 +1,74 @@
-﻿#include <iostream>
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
 
 using namespace std;
 
-/*
-* 필요한 것
-* - 벡터의 크기
-* - 벡터가 저장할 수 있는 메모리 공간
-* - 동적 배열을 하기 위한 포인터 변수
-*/
-
-template<typename T>
-class Vector
+class String
 {
 private:
-    T* _data;
+    char* _data;
     size_t _size;
-    size_t _capacity;
 
 public:
-
-    Vector()
+    String() 
     {
-        _size = 0;
-        _capacity = 0;
         _data = nullptr;
+        _size = 0;
+    }
+    String(const char* d)
+    {
+        _size = strlen(d);
+        _data = new char[_size + 1];
+        strcpy(_data, d);
     }
 
-    void resize(size_t newSize)
+    size_t size()
     {
-        if (_size > newSize)
+        return _size;
+    }
+
+    size_t length()
+    {
+        return _size;
+    }
+
+
+
+    void operator=(const char* other)
+    {
+        _size = strlen(other) + 1;
+        if (_data = nullptr)
         {
-            _size = newSize;
-            return;
-        }
-
-        if (newSize > _capacity)
-        {
-            T* newData = new T[newSize];
-
-            for (size_t i = 0; i < _size; i++)
+            _data = new char[_size];
+            for (int i = 0; i < _size; i++)
             {
-                newData[i] = NULL;
-                newData[i] = _data[i];
+                _data[i] = other[i];
             }
-            for (size_t i = _size; i < newSize; i++)
-            {
-                newData[i] = T();
-            }
-
-            delete[] _data;
-            _data = newData;
-            _capacity = newSize;
         }
         else
         {
-            for (size_t i = _size; i < newSize; i++)
+            delete[] _data;
+            _data = new char[_size];
+            for (int i = 0; i < _size; i++)
             {
-                _data[i] = T();
+                _data[i] = other[i];
             }
         }
-        
-        _size = newSize;
     }
 
-    void push_back(T data)
+    friend ostream& operator<<(ostream& os, const String& str)
     {
-        if (_capacity == 0)
-        {
-            _capacity++;
-            _data = new T[_capacity];
-        }
-        else if (_size >= _capacity)
-        {
-            resize(_capacity * 2);
-        }
-        _data[_size] = data;
-        _size++;
+        os << str._data;
+        return os;
     }
-
-    ~Vector()
-    {
-        if (_data != nullptr)
-        {
-            delete[] _data;
-        }
-    }
-
 };
 
 int main()
 {
-    
+    String str;
+    str = "출력 하고 싶어요";
 
+    cout << str;
+    
     return 0;
 }
