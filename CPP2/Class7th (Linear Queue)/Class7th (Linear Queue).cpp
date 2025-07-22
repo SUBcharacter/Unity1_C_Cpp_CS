@@ -1,6 +1,6 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
-#define SIZE 6
+#define SIZE 5
 
 using namespace std;
 
@@ -16,54 +16,60 @@ public:
     Queue()
     {
         _front = 0;
-        rear = 0;
+        rear = -1;
         for (int i = 0; i < SIZE; i++)
         {
-            _data[i] = T();
+            _data[i] = NULL;
         }
     }
 
-    bool full()
+    int size()
     {
-        return ((rear + 1 + SIZE) % SIZE) == _front;
+        return rear - front + 1;
     }
 
-    bool empty()
+    const T& front()
     {
-        return _front == rear;
+        if (isEmpty())
+        {
+            exit(1);
+        }
+        else
+        {
+            return _data[_front];
+        }
+
+    }
+
+    bool isEmpty()
+    {
+        return _front > rear;
+    }
+
+    bool isFull()
+    {
+        return rear == SIZE - 1;
     }
 
     void push(T data)
     {
-        if (full())
+        if (isFull())
         {
             cout << "Warning : Queue Overflow" << endl;
             return;
         }
 
-        _data[rear] = data;
-
-        rear = (rear + 1 + SIZE) % SIZE;
+        _data[++rear] = data;
     }
 
     void pop()
     {
-        if (empty())
+        if (isEmpty())
         {
             return;
         }
 
-        _front = (_front + 1 + SIZE) % SIZE;
-    }
-
-    const T& front()
-    {
-        return _data[_front];
-    }
-
-    void size()
-    {
-        return (rear - _front + SIZE) % SIZE;
+        ++_front;
     }
 };
 
@@ -72,19 +78,18 @@ int main()
 {
     Queue<int> que;
 
-    que.push(40);
-    que.push(60);
-    que.push(20);
-    que.push(40);
+    que.push(30);
+    que.push(10);
+    que.push(50);
+    que.push(80);
     que.push(40);
 
-    while (!que.empty())
+    while (que.isEmpty() == false)
     {
         cout << que.front() << endl;
 
         que.pop();
     }
-    
 
     return 0;
 }

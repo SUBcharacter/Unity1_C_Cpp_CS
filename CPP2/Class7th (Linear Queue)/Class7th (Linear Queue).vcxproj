@@ -21,10 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{44881b7c-1d8d-4c0e-80f8-1f9fc4ba4364}</ProjectGuid>
-    <RootNamespace>Class6thString</RootNamespace>
+    <ProjectGuid>{c99e5509-12ba-4314-9d22-b4e8a9388b1d}</ProjectGuid>
+    <RootNamespace>Class7thLinearQueue</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>Class5th (String)</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -124,7 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Class6th (String).cpp" />
+    <ClCompile Include="Class7th (Linear Queue).cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
