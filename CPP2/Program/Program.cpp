@@ -5,86 +5,133 @@
 using namespace std;
 
 template<typename T>
-class Queue
+class PriorityQueue
 {
-private:
-    int _front;
-    int rear;
-    T _data[SIZE];
+    int index;
+    int capacity;
+
+    T* container;
 
 public:
-    Queue()
+    PriorityQueue()
     {
-        _front = 0;
-        rear = 0;
-        for (int i = 0; i < SIZE; i++)
+        index = 0;
+        capacity = 0;
+        container = nullptr;
+    }
+
+    void resize(int newSize)
+    {
+        T* newContainer = new T[newSize];
+
+        for (int i = 0; i < index && i < newSize; i++)
         {
-            _data[i] = T();
+            newContainer[i] = container[i];
+        }
+
+        delete[] container;
+
+        container = newContainer;
+        capacity = newSize;
+
+        if (index > newSize)
+        {
+            index = newSize;
         }
     }
-
-    bool full()
+    
+    const T& top()
     {
-        return ((rear + 1 + SIZE) % SIZE) == _front;
-    }
+        if (index == 0)
+        {
+            throw out_of_range("Queue is empty");
+        }
 
-    bool empty()
-    {
-        return _front == rear;
+        return container[0];
     }
 
     void push(T data)
     {
-        if (full())
+        if (index == capacity)
         {
-            cout << "Warning : Queue Overflow" << endl;
-            return;
+            int newCap = capacity == 0 ? 1 : capacity * 2;
+            resize(newCap);
         }
 
-        _data[rear] = data;
+        int i = index;
 
-        rear = (rear + 1 + SIZE) % SIZE;
+        container[i] = data;
+
+        while (i > 0)
+        {
+            int parent = (i - 1) / 2;
+
+            if (container[parent] < container[i])
+            {
+                swap(container[parent], container[i]);
+                i = parent;
+            }
+            else
+            {
+                break;
+            }
+        }
+        index++; 
     }
 
     void pop()
     {
-        if (empty())
-        {
+        if (index == 0)
             return;
+
+        container[0] = container[index - 1];
+        index--;
+
+        int i = 0;
+
+        while (true)
+        {
+            int left = 2 * i + 1;
+            int right = 2 * i + 1;
+            int largest = i;
+
+            if (left < index && container[left] > container[largest])
+            {
+                largest = left;
+            }
+
+            if (right < index && container[right] > container[largest])
+            {
+                largest = right;
+            }
+
+            if (largest != i)
+            {
+                swap(container[largest], container[i])
+                {
+                    i = largest;
+                }
+            }
+            else
+            {
+                break;
+            }
+
         }
-
-        _front = (_front + 1 + SIZE) % SIZE;
     }
 
-    const T& front()
+    ~PriorityQueue()
     {
-        return _data[_front];
-    }
-
-    void size()
-    {
-        return (rear - _front + SIZE) % SIZE;
+        if (container != nullptr)
+        {
+            delete[] container;
+        }
     }
 };
 
-
 int main()
 {
-    Queue<int> que;
 
-    que.push(40);
-    que.push(60);
-    que.push(20);
-    que.push(40);
-    que.push(40);
-
-    while (!que.empty())
-    {
-        cout << que.front() << endl;
-
-        que.pop();
-    }
-    
 
     return 0;
 }
