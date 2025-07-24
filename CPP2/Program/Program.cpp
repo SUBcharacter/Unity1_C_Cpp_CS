@@ -4,127 +4,87 @@
 
 using namespace std;
 
-template<typename T>
-class PriorityQueue
+template<typename KEY, typename VALUE>
+class HashTable
 {
-    int index;
-    int capacity;
+private:
+    struct Node
+    {
+        KEY key;
+        VALUE data;
+        Node* next;
+    };
 
-    T* container;
+    struct Bucket
+    {
+        int count;
+        Node* head;
+    };
+
+    template<typename T>
+    const int& hash_function(T key)
+    {
+        hash<T> hasher; 
+        size_t hash_value = hasher(key);
+
+        return static_cast<int>(hash_value % SIZE);
+    }
+
+    Bucket buc[SIZE];
 
 public:
-    PriorityQueue()
+    HashTable()
     {
-        index = 0;
-        capacity = 0;
-        container = nullptr;
-    }
-
-    void resize(int newSize)
-    {
-        T* newContainer = new T[newSize];
-
-        for (int i = 0; i < index && i < newSize; i++)
+        for (int i = 0; i < SIZE; i++)
         {
-            newContainer[i] = container[i];
-        }
-
-        delete[] container;
-
-        container = newContainer;
-        capacity = newSize;
-
-        if (index > newSize)
-        {
-            index = newSize;
-        }
-    }
-    
-    const T& top()
-    {
-        if (index == 0)
-        {
-            throw out_of_range("Queue is empty");
-        }
-
-        return container[0];
-    }
-
-    void push(T data)
-    {
-        if (index == capacity)
-        {
-            int newCap = capacity == 0 ? 1 : capacity * 2;
-            resize(newCap);
-        }
-
-        int i = index;
-
-        container[i] = data;
-
-        while (i > 0)
-        {
-            int parent = (i - 1) / 2;
-
-            if (container[parent] < container[i])
-            {
-                swap(container[parent], container[i]);
-                i = parent;
-            }
-            else
-            {
-                break;
-            }
-        }
-        index++; 
-    }
-
-    void pop()
-    {
-        if (index == 0)
-            return;
-
-        container[0] = container[index - 1];
-        index--;
-
-        int i = 0;
-
-        while (true)
-        {
-            int left = 2 * i + 1;
-            int right = 2 * i + 1;
-            int largest = i;
-
-            if (left < index && container[left] > container[largest])
-            {
-                largest = left;
-            }
-
-            if (right < index && container[right] > container[largest])
-            {
-                largest = right;
-            }
-
-            if (largest != i)
-            {
-                swap(container[largest], container[i])
-                {
-                    i = largest;
-                }
-            }
-            else
-            {
-                break;
-            }
-
+            buc[i].count = 0;
+            buc[i].head = nullptr;
         }
     }
 
-    ~PriorityQueue()
+    Node* create_node(KEY key, VALUE value)
     {
-        if (container != nullptr)
+        Node* newNode = new Node();
+        newNode->key = key;
+        newNode->data = value;
+        newNode->next = nullptr;
+
+        return newNode;
+    }
+
+    void insert(KEY key, VALUE value)
+    {
+        int hashIndex = hash_function(key);
+
+        Node* newNode = create_node(key, value);
+
+        if (buc[hashIndex].count == 0)
         {
-            delete[] container;
+            buc[hashIndex].head = newNode;
+        }
+        else
+        {
+            newNode->next = buc[hashIndex].head;
+            buc[hashIndex].head = newNode;
+        }
+
+        buc[hashIndex].count++;
+    }
+
+    ~HashTable()
+    {
+        for (int i = 0; i < SIZE; i++)
+        {
+            Node* current = buc[i].head;
+
+            while (current->next != nullptr)
+            {
+                Node* temp = current;
+                current = current->next;
+                delete temp;
+            }
+            buc[i].head = nullptr;
+            buc[i].count = 0;
         }
     }
 };
