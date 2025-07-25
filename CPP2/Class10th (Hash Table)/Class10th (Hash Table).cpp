@@ -24,7 +24,7 @@ private:
     template<typename T>
     const int& hash_function(T key)
     {
-        hash<T> hasher; 
+        hash<T> hasher;
         size_t hash_value = hasher(key);
 
         return static_cast<int>(hash_value % SIZE);
@@ -109,7 +109,7 @@ public:
             cout << "not key found" << endl;
         }
 
-        
+
     }
 
     ~HashTable()
@@ -131,7 +131,7 @@ public:
                     delete temp;
                 }
             }
-            
+
             buc[i].head = nullptr;
             buc[i].count = 0;
         }
