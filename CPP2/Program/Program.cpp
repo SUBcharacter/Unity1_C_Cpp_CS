@@ -4,149 +4,148 @@
 
 using namespace std;
 
-template<typename KEY, typename VALUE>
-class HashTable
+template<typename T>
+class AdjacencyMatrix
 {
 private:
-    struct Node
-    {
-        KEY key;
-        VALUE data;
-        Node* next;
-    };
+    int vertice; // 정점의 개수
+    int capacity; // 최대 용량
+    T* vertex;
+    int** matrix;
 
-    struct Bucket
-    {
-        int count;
-        Node* head;
-    };
-
-    template<typename T>
-    const int& hash_function(T key)
-    {
-        hash<T> hasher; 
-        size_t hash_value = hasher(key);
-
-        return static_cast<int>(hash_value % SIZE);
-    }
-
-    Bucket buc[SIZE];
 
 public:
-    HashTable()
+    AdjacencyMatrix()
     {
-        for (int i = 0; i < SIZE; i++)
-        {
-            buc[i].count = 0;
-            buc[i].head = nullptr;
-        }
+        vertice = 0;
+        capacity = 0;
+        vertex = nullptr;
+        
     }
 
-    Node* create_node(KEY key, VALUE value)
+    void InitResize()
     {
-        Node* newNode = new Node();
-        newNode->key = key;
-        newNode->data = value;
-        newNode->next = nullptr;
-
-        return newNode;
-    }
-
-    void insert(KEY key, VALUE value)
-    {
-        int hashIndex = hash_function(key);
-
-        Node* newNode = create_node(key, value);
-
-        if (buc[hashIndex].count == 0)
+        matrix = new int* [vertice];
+        for (int i = 0; i < vertice; i++)
         {
-            buc[hashIndex].head = newNode;
-        }
-        else
-        {
-            newNode->next = buc[hashIndex].head;
-            buc[hashIndex].head = newNode;
-        }
-
-        buc[hashIndex].count++;
-    }
-
-    void erase(KEY key)
-    {
-        int hashIndex = hash_function(key);
-
-        Node* current = buc[hashIndex].head;
-        Node* previous = nullptr;
-
-        if (current == nullptr)
-        {
-            return;
-        }
-        else
-        {
-            while (current != nullptr)
+            matrix[i] = new int[vertice];
+            for (int j = 0; j < vertice; j++)
             {
-                if (current->key == key)
-                {
-                    if (previous == nullptr)
-                    {
-                        buc[hashIndex].head = current->next;
-
-                    }
-                    else
-                    {
-                        previous->next = current->next;
-                    }
-
-                    delete current;
-                    buc[hashIndex].count--;
-                    return;
-                }
-
-                previous = current;
-                current = current->next;
+                matrix[i][j] = 0;
             }
-            cout << "not key found" << endl;
         }
+    }
+
+    void resize()
+    {
+        int** newMat = new int* [vertice];
+        for (int i = 0; i < vertice; i++)
+        {
+            newMat[i] = new int[vertice];
+            for (int j = 0; j < vertice; j++)
+            {
+                if (matrix != nullptr && i < vertice-1 && j < vertice-1)
+                {
+                    newMat[i][j] = matrix[i][j];
+                }
+                else
+                {
+                    newMat[i][j] = 0;
+                }
+            }
+        }
+        
+        if (matrix != nullptr)
+        {
+            for (int i = 0; i < vertice; i++)
+            {
+                delete[] matrix[i];
+            }
+            delete[] matrix;
+        }
+
+        matrix = newMat;
+    }
+
+    void resize(int newSize)
+    {
+        T* newData = new T[newSize];
+
+        int limit = (newSize < vertice) ? newSize : vertice;
+        for (int i = 0; i < limit; i++)
+        {
+            newData[i] = vertex[i];
+        }
+
+        delete[] vertex;
+        vertex = newData;
+        capacity = newSize;
 
         
     }
 
-    ~HashTable()
-    {
-        for (int i = 0; i < SIZE; i++)
-        {
-            Node* current = buc[i].head;
 
-            if (buc[i].head == nullptr)
+
+    void push(T data)
+    {
+        if (capacity <= 0)
+        {
+            resize(1);
+        }
+        else if (vertice >= capacity)
+        {
+            resize(capacity * 2);
+        }
+
+        vertex[vertice++] = data;
+        resize();
+    }
+
+    void edge(int i, int j)
+    {
+        if (vertice == 0 || vertex == nullptr)
+        {
+            cout << "Warning : No Exist Vertice" << endl;
+            return;
+        }
+        if (i >= vertice || j >= vertice)
+        {
+            cout << "Warning : Out of Range Vertice" << endl;
+            return;
+        }
+        
+        resize();
+
+        matrix[i][j] = 1;
+        matrix[j][i] = 1;
+    }
+
+    void print()
+    {
+        for (int i = 0; i < vertice; i++)
+        {
+            for (int j = 0; j < vertice; j++)
             {
-                continue;
+                cout << matrix[i][j] << " ";
             }
-            else
-            {
-                while (current->next != nullptr)
-                {
-                    Node* temp = current;
-                    current = current->next;
-                    delete temp;
-                }
-            }
-            
-            buc[i].head = nullptr;
-            buc[i].count = 0;
+            cout << endl;
         }
     }
+
 };
 
 int main()
 {
-    HashTable<const char*, int> ht;
+    AdjacencyMatrix<int> adj;
 
-    ht.insert("MovingPlatform", 40);
-    ht.insert("JumpPlatform", 40);
-    ht.insert("StaticPlatform", 40);
+    adj.push(5);
+    adj.push(7);
+    adj.push(12);
 
-    ht.erase("StaticPlatform");
+    adj.edge(0, 1);
+    adj.edge(0, 2);
 
+
+    adj.print();
     return 0;
 }
