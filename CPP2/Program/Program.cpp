@@ -5,93 +5,77 @@
 using namespace std;
 
 template<typename T>
-class AdjacencyList
+class Set
 {
 private:
     struct Node
     {
-        int index;
-        Node* next;
+        T data;
+        Node* left;
+        Node* right;
 
-        Node(int i, Node* n = nullptr) 
-        {
-            this->index = i;
-            next = n;
-        }
+        Node(T d) : data(d), left(nullptr), right(nullptr) {}
     };
 
-    int vertice; // 정점의 개수
-    T vertex[SIZE]; // 정점의 집합
-    Node* list[SIZE]; // 인접 리스트
+    int size;
+    Node* root;
+
+    Node* insert(Node* node, T data)
+    {
+        if (node == nullptr)
+        {
+            return new Node(value);
+        }
+
+        if (data < node->data)
+        {
+            node->left = insert(node->left, data);
+        }
+        else if (data > node->data)
+        {
+            node->right = insert(node->left, data);
+        }
+
+        return node;
+    }
 
 public:
-    AdjacencyList()
+    Set()
     {
-        vertice = 0;
-        for (int i = 0; i < SIZE; i++)
-        {
-            list[i] = NULL;
-            vertex[i] = NULL;
-        }
+        size = 0;
+        root = nullptr;
     }
 
-    void push(T data)
+    void insert(T data)
     {
-        if (vertice >= SIZE)
-        {
-            cout << "Warning : contact out of range" << endl;
+        root = insert(root, data);
+    }
+
+    void destroy(Node* node)
+    {
+        if (node == nullptr)
             return;
-        }
-        vertex[vertice] = data;
-        list[vertice] = nullptr;
-        vertice++;
+
+        destroy(node->left);
+        destroy(node->right);
+        delete node;
     }
 
-    void edge(int i, int j)
+    ~Set()
     {
-        if (size <= 0)
-        {
-            cout << "adjacency list is empty" << endl;
-        }
-        else if (i >= vertice || j >= vertice)
-        {
-            cout << "Warning : Invalied vertex index" << endl;
-            return;
-        }
-        else
-        {
-            list[i] = new Node(j, list[i]);
-            list[j] = new Node(i, list[j]);
-        }
+        destroy(root);
     }
 
-    ~AdjacencyList()
-    {
-        for (int i = 0; i < SIZE; i++)
-        {
-            Node* current = list[i];
-            while (current != nullptr)
-            {
-                Node* temp = current;
-                current = current->next;
-                delete temp;
-            }
-            list[i] = nullptr;
-        }
-    }
 };
 
 int main()
 {
-    AdjacencyList<int> adl;
+    Set<int> set;
 
-    adl.push(5);
-    adl.push(7);
-    adl.push(12);
-
-    adl.edge(0, 2);
-    adl.edge(0, 1);
-
+    set.insert(30);
+    set.insert(50);
+    set.insert(90);
+    set.insert(100);
 
     return 0;
 }
