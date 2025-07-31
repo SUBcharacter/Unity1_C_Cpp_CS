@@ -24,7 +24,7 @@ private:
     {
         if (node == nullptr)
         {
-            return new Node(value);
+            return new Node(data);
         }
 
         if (data < node->data)
@@ -33,9 +33,65 @@ private:
         }
         else if (data > node->data)
         {
-            node->right = insert(node->left, data);
+            node->right = insert(node->right, data);
         }
 
+        return node;
+    }
+
+    Node* findMin(Node* node)
+    {
+        if (node == nullptr)
+            return nullptr;
+
+        while(node->left != nullptr)
+        {
+            node = node->left;
+        }
+        return node;
+    }
+
+    Node* erase(Node* node, T data)
+    {
+        if (node == nullptr)
+        {
+            return nullptr;
+        }
+
+        if (data < node->data)
+        {
+            node = erase(node->left,data);
+        }
+        else if (data > node->data)
+        {
+            node = erase(node->right,data);
+        }
+        else
+        {
+            if (node->left == nullptr && node->right == nullptr)
+            {
+                delete node;
+                return nullptr;
+            }
+            else if (node->left == nullptr)
+            {
+                Node* temp = node->right;
+                delete node;
+                return temp;
+            }
+            else if (node->right == nullptr)
+            {
+                Node* temp = node->left;
+                delete node;
+                return temp;
+            }
+            else
+            {
+                Node* minNode = findMin(node->right);
+                node->data = minNode->data;
+                node->right = erase(node->right, minNode->data);
+            }
+        }
         return node;
     }
 
@@ -49,6 +105,11 @@ public:
     void insert(T data)
     {
         root = insert(root, data);
+    }
+
+    void erase(T data)
+    {
+        root = erase(root, data);
     }
 
     void destroy(Node* node)
