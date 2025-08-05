@@ -8,22 +8,23 @@ string Solution(const string str)
 
     for (int i = 0; i < str.length(); i++)
     {
-        if (map.find(str[i]) == map.end())
-        {
-            map[str[i]] = i;
-        }
+        map[str[i]] = i;
     }
 
     string result;
+    
 
-    for (auto m : map)
+    for (int i = 0; i < str.length(); i++)
     {
-        result.push_back(m.first);
+        if (map[str[i]] == i)
+        {
+            result.push_back(str[i]);
+        }
     }
 
     return result;
 }
 int main()
 {
-    cout << Solution("static");
+    cout << Solution("BaNana");
 }
