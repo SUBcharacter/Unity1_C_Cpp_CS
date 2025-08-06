@@ -404,3 +404,97 @@ arr의 크기만큼 반복하는 동안 stk이 비지 않은 상태에서 마지
 4-1
 OX퀴즈 판별기
 
+char* Solution(const char* question)
+{
+	int x1, y1, z1;
+	float x2, y2, z2;
+	char op;
+	
+	if (sscanf(question, "%d %c %d = %d", &x1, &op, &y1, &z1) == 4)
+	{
+		switch (op)
+		{
+		case '+': return (x1 + y1 == z1) ? "O" : "X"; break;
+		case '-': return (x1 - y1 == z1) ? "O" : "X"; break;
+		case '*': return (x1 * y1 == z1) ? "O" : "X"; break;
+		case '/': return (y1 != 0 && x1 / y1 == z1) ? "O" : "X"; break;
+		}
+	}
+	else if (sscanf(question, "%d %c %f = %f", &x1, &op, &y2, &z2) == 4)
+	{
+		switch (op)
+		{
+		case '+': return (x1 + y2 == z2) ? "O" : "X"; break;
+		case '-': return (x1 - y2 == z2) ? "O" : "X"; break;
+		case '*': return (x1 * y2 == z2) ? "O" : "X"; break;
+		case '/': return (y2 != 0 && x1 / y2 == z2) ? "O" : "X"; break;
+		}
+	}
+	else if (sscanf(question, "%f %c %d = %f", &x2, &op, &y1, &z2) == 4)
+	{
+		switch (op)
+		{
+		case '+': return (x2 + y1 == z2) ? "O" : "X"; break;
+		case '-': return (x2 - y1 == z2) ? "O" : "X"; break;
+		case '*': return (x2 * y1 == z2) ? "O" : "X"; break;
+		case '/': return (y1 != 0 && x2 / y1 == z2) ? "O" : "X"; break;
+		}
+	}
+	else if (sscanf(question, "%f %c %f = %f", &x2, &op, &y2, &z2) == 4)
+	{
+		switch (op)
+		{
+		case '+': return (x2 + y2 == z2) ? "O" : "X"; break;
+		case '-': return (x2 - y2 == z2) ? "O" : "X"; break;
+		case '*': return (x2 * y2 == z2) ? "O" : "X"; break;
+		case '/': return (y2 != 0 && x2 / y2 == z2) ? "O" : "X"; break;
+		}
+	}
+}
+
+
+- 핵심 로직 및 설명
+내가 짠 코드중에서 가장 더러운 코드라고 볼 수 있을 것 같다.
+더러워진 이유는 단 하나. 문제에는 숫자가 어떤 자료형이 들어올지를 알려주지 않았다. 그렇기에
+임의로 int와 float의 경우를 전부 판단해서 작성하였다. 이 부분 양해 바람.
+첫번째로 int형의 숫자들과 float형의 숫자들, 연산자를 받아올 char 변수까지 선언해주고,
+sscanf를 통해 question의 포맷대로 각 숫자와 연산자를 변수에 저장 시키고, 제대로 되었다면 if문으로 진입
+만약 자료형이 달라 하나라도 잘못 받아오게 되면 4가 아니게 될테니 다음 포맷으로 가서 검사하도록 설계했다.
+다음, 받아온 연산자를 switch문으로 숫자들을 연산한 결과(bool)를 삼항 연산자로 판단해서 맞으면 O, 틀리면 X
+char* 로 반환 해주게끔 했다.
+
+
+
+4-2 : C# 문제 1
+숫자 문자열 정렬 + 유효성 필터
+
+public int[] solution(string my_string)
+{
+    List<int> list = new List<int>();
+
+    for (int i = 0; i < my_string.Length; i++)
+    {
+        if (char.IsDigit(my_string[i]))
+        {
+            list.Add(my_string[i] - '0');
+        } 
+    }
+
+    list.Sort();
+
+    int[] result = new int[list.Count];
+
+    for(int i = 0; i < list.Count;i++)
+    {
+        result[i] = list[i];
+    }
+
+    return result;
+}
+
+
+- 핵심 로직 및 설명
+일단 숫자를 받아 정렬 시켜줄 List<int>를 만들고, 
+my_string의 원소들을 읽어 숫자라면 int형으로 바꿔서 넣어준다.
+그다음 sort()함수를 이용해서 오름차순 정렬해주고, list의 크기만큼 정수배열을 만들어
+차례차례 넣어주고 반환 해주면 끝이다.

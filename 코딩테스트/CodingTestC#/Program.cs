@@ -1,29 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
+
+public class SoundOption
+{
+    float BGM;
+    float SE;
+    
+    void init()
+
+    void SetBGMVolume(float rate)
+    {
+        BGM = rate;
+    }
+
+    void SetSEVolume(float rate) 
+    {
+        SE = rate;
+    }
+
+}
 
 public class Solution
 {
-    public List<(int number, int count)> solution(int[] numbers)
+    public int[] solution(string my_string)
     {
-        Dictionary<int ,int> dict = new Dictionary<int, int> ();
-        
-        foreach(int i in numbers)
+        List<int> list = new List<int>();
+
+        for (int i = 0; i < my_string.Length; i++)
         {
-            if(dict.ContainsKey(i))
+            if (char.IsDigit(my_string[i]))
             {
-                dict[i]++;
-            }
-            else
-            {
-                dict[i] = 1;
-            }
+                list.Add(my_string[i] - '0');
+            } 
         }
 
-        List<(int number, int count)> result = dict
-            .OrderByDescending(pair => pair.Value)
-            .Select(pair => (pair.Key, pair.Value))
-            .ToList();
+        list.Sort();
+
+        int[] result = new int[list.Count];
+
+        for(int i = 0; i < list.Count;i++)
+        {
+            result[i] = list[i];
+        }
 
         return result;
     }
@@ -33,13 +53,6 @@ public class Program
 {
     public static void Main()
     {
-        var sol = new Solution();
-        var counts = sol.solution([2, 1, 2, 1, 2, 3]);
-
-        foreach(var i in counts)
-        {
-            Console.WriteLine($"number : {i.number} , count : {i.count}");
-        }
-        
+        Dictionary<1>
     }
 }
