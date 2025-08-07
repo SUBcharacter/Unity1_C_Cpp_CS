@@ -3,74 +3,35 @@
 
 using namespace std;
 
-void sieve(int n)
+int find(int array[], int left, int right, int target)
 {
-	vector<bool> eratos(n + 1, false);
+	if (left > right)
+		return -1;
 
-	eratos[0] = eratos[1] = true;
+	int mid = (left + right) / 2;
 
-	for (int i = 2; i * i < n; i++)
+	if (array[mid] == target)
 	{
-		if (!eratos[i])
-		{
-			for (int j = i * i; j <= n; j += i)
-			{
-				eratos[j] = true;
-			}
-		}
+		return mid;
 	}
-
-	for (int i = 0; i < n; i++)
+	else if (array[mid] < target)
 	{
-		if (!eratos[i])
-		{
-			cout << i << " ";
-		}
+		return find(array, mid + 1, right, target);
 	}
+	else
+		return find(array, left, mid - 1, target);
 }
 
 int main()
 {
-#pragma region 에라토스테네스의 채
+#pragma region 이분 탐색
 
-	int mean[50];
+	// 탐색 범위를 반으로 나누어 찾는 값을 포함하는 범위를
+	// 좁혀나가는 방식으로 동작하는 알고리즘
 
-	for (int i = 0; i < 50; i++)
-	{
-		if (i == 0 || i == 1)
-		{
-			mean[i] = 1;
-		}
-		else
-		{
-			mean[i] = 0;
-		}
-		
-	}
+	int list[] = { 1, 5, 13, 22, 58 };
 
-	for (int i = 2; i < 50; i++)
-	{
-		if (mean[i] == 1)
-		{
-			continue;
-		}
-		for (int j = i * 2; j < 50; j += i)
-		{
-			mean[j] = 1;
-		}
-	}
-
-	for (int i = 0; i < 50; i++)
-	{
-		if (mean[i] == 0)
-		{
-			cout << i << " ";
-		}
-	}
-
-	cout << endl;
-
-	sieve(15);
+	cout << list[find(list, 0, (sizeof(list) / sizeof(int)), 22)];
 
 #pragma endregion
 
