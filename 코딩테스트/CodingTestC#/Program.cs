@@ -1,25 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Numerics;
 
 public class SoundOption
 {
-    float BGM;
-    float SE;
-    
-    void init()
+    float BGM = 100.0f;
+    float SE = 100.0f;
 
-    void SetBGMVolume(float rate)
+    public void LoadSetting(Dictionary<string,float> dict)
+    {
+        int index = 0;
+        float[] values = new float[2];
+
+        foreach(var key in dict.Keys)
+        {
+            values[index++] = dict[key];
+        }
+
+        BGM = values[0];
+        SE = values[1];
+    }
+
+    public Dictionary<string,float> SaveOption()
+    {
+        var saveOption = new Dictionary<string,float>();
+
+        saveOption["BGM"] = BGM;
+        saveOption["SE"] = SE;
+
+        return saveOption;
+    }
+
+    public void SetBGMVolume(float rate)
     {
         BGM = rate;
     }
 
-    void SetSEVolume(float rate) 
+    public void SetSEVolume(float rate)
     {
         SE = rate;
     }
-
 }
 
 public class Solution
@@ -53,6 +75,29 @@ public class Program
 {
     public static void Main()
     {
-        Dictionary<1>
+        Dictionary<string, float> dict = new Dictionary<string, float>
+        {
+            { "BGM" , 30.0f},
+            {"SE" , 50.0f}
+        };
+
+        var soundManager = new SoundOption();
+
+        soundManager.LoadSetting(dict);
+
+        Console.WriteLine(soundManager.BGM);
+        Console.WriteLine(soundManager.SE);
+
+        soundManager.SetBGMVolume(60.0f);
+        soundManager.SetSEVolume(20.0f);
+
+        Console.WriteLine(soundManager.BGM);
+        Console.WriteLine(soundManager.SE);
+
+        dict = soundManager.SaveOption();
+
+        Console.WriteLine(dict["BGM"]);
+        Console.WriteLine(dict["SE"]);
+
     }
 }

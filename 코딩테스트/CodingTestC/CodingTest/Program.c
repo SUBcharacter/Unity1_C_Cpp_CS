@@ -25,7 +25,7 @@ float Solution(Schedule schedule[], int size)
 		}
 	}
 
-	int timeLine[25] = {0};
+	int timeLine[24] = {0};
 
 	for (int i = 0; i < size; i++)
 	{

@@ -21,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Class7th (Sieve of Eratosth
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Class8th (Divide and Conquer)", "..\Class8th (Divide and Conquer)\Class8th (Divide and Conquer).vcxproj", "{24F802FC-7BD5-487F-B454-9ABBF3F18F04}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Class9th (Binary Search)", "..\Class9th (Binary Search)\Class9th (Binary Search).vcxproj", "{4D6EE3BC-E573-4926-A3D0-644C7F4B01DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -101,6 +103,14 @@ Global
 		{24F802FC-7BD5-487F-B454-9ABBF3F18F04}.Release|x64.Build.0 = Release|x64
 		{24F802FC-7BD5-487F-B454-9ABBF3F18F04}.Release|x86.ActiveCfg = Release|Win32
 		{24F802FC-7BD5-487F-B454-9ABBF3F18F04}.Release|x86.Build.0 = Release|Win32
+		{4D6EE3BC-E573-4926-A3D0-644C7F4B01DA}.Debug|x64.ActiveCfg = Debug|x64
+		{4D6EE3BC-E573-4926-A3D0-644C7F4B01DA}.Debug|x64.Build.0 = Debug|x64
+		{4D6EE3BC-E573-4926-A3D0-644C7F4B01DA}.Debug|x86.ActiveCfg = Debug|Win32
+		{4D6EE3BC-E573-4926-A3D0-644C7F4B01DA}.Debug|x86.Build.0 = Debug|Win32
+		{4D6EE3BC-E573-4926-A3D0-644C7F4B01DA}.Release|x64.ActiveCfg = Release|x64
+		{4D6EE3BC-E573-4926-A3D0-644C7F4B01DA}.Release|x64.Build.0 = Release|x64
+		{4D6EE3BC-E573-4926-A3D0-644C7F4B01DA}.Release|x86.ActiveCfg = Release|Win32
+		{4D6EE3BC-E573-4926-A3D0-644C7F4B01DA}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

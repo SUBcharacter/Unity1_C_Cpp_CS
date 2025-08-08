@@ -498,3 +498,125 @@ public int[] solution(string my_string)
 my_string의 원소들을 읽어 숫자라면 int형으로 바꿔서 넣어준다.
 그다음 sort()함수를 이용해서 오름차순 정렬해주고, list의 크기만큼 정수배열을 만들어
 차례차례 넣어주고 반환 해주면 끝이다.
+
+
+
+4-3 : C# 문제 2
+사용자의 사운드 설정을 저장하고 불러오는 클래스를 설계하세요.
+
+public class SoundOption
+{
+    float BGM = 100.0f;
+    float SE = 100.0f;
+
+    public void LoadSetting(Dictionary<string,float> dict)
+    {
+        int index = 0;
+        float[] values = new float[2];
+
+        foreach(var key in dict.Keys)
+        {
+            values[index++] = dict[key];
+        }
+
+        BGM = values[0];
+        SE = values[1];
+    }
+
+    public Dictionary<string,float> SaveOption()
+    {
+        var saveOption = new Dictionary<string,float>();
+
+        saveOption["BGM"] = BGM;
+        saveOption["SE"] = SE;
+
+        return saveOption;
+    }
+
+    public void SetBGMVolume(float rate)
+    {
+        BGM = rate;
+    }
+
+    public void SetSEVolume(float rate)
+    {
+        SE = rate;
+    }
+}
+
+
+- 핵심 로직 및 설명
+설명에 앞서서 딕셔너리 위주로 저장, 불러오기를 구현했다.
+일단 BGM, SE 수치를 저장할 float형 변수를 선언해서 비교를 위한 기본값 100을 넣어 주었다.
+BGM과 SE를 설정해주는 함수는 거의 한줄로 끝나기 때문에 어려울게 없었다.
+문제는 Dictionary. 통계 강의를 들으면서 어렴풋이 기억나는 형식이지만, 용법을 모른다.
+
+=================================================================
+
+10-1
+일정 구간별 난이도 판별기
+
+typedef struct
+{
+	int start;
+	int finish;
+	int difficult;
+}Schedule;
+
+float Solution(Schedule schedule[], int size)
+{
+	int startTime = 10000;
+	int finishTime = 0;
+
+	for (int i = 0; i < size; i++)
+	{
+		if (schedule[i].start < startTime)
+		{
+			startTime = schedule[i].start;
+		}
+		if (schedule[i].finish > finishTime)
+		{
+			finishTime = schedule[i].finish;
+		}
+	}
+
+	int timeLine[24] = {0};
+
+	for (int i = 0; i < size; i++)
+	{
+		for (int t = schedule[i].start; t < schedule[i].finish; t++)
+		{
+			if (timeLine[t] < schedule[i].difficult)
+			{
+				timeLine[t] = schedule[i].difficult;
+			}
+		}
+	}
+
+	int totalDiff = 0;
+	int totalTime = 0;
+
+	for (int t = startTime; t < finishTime; t++)
+	{
+		if (timeLine[t] > 0)
+		{
+			totalDiff += timeLine[t];
+			totalTime++;
+		}
+	}
+
+	return (float)totalDiff / totalTime;
+
+}
+
+
+- 핵심 로직 및 설명
+중요포인트는 '어떻게 최대 난이도를 갱신 할 것인가' 이다.
+구조체를 만들어 배열 처리를 간단하게 해주고, 전체 스케쥴의 시작 시간, 종료 시간을 구해준다.
+이렇게 함으로써 전체 스케쥴 시간의 구간을 구할 수 있게 된다. 이를 이용해서,
+받은 배열을 순회하면서 각 스케쥴의 난이도를 timeLine배열 안에 저장한다. timeLine은 크기가 24인 배열이고,
+인덱스가 시간 정각을 의미한다. 9~11시 라면 이 시간 간극 만큼 반복하면서 timeLine에 난이도를 저장한다.
+만약 같은 timeLine에 있는 난이도가 지금 스케쥴의 난이도 보다 높다면 업데이트를 해주고 아니면 넘어가도록 만들었다.
+이제 timeLine안에는 시간대별 스케쥴 난이도가 들어가 있다. 이제 이것들을 찾아서 합과 함께 작업 시간을 나눠주면 된다.
+아까전에 구한 스케쥴 시작 시간과 종료시간을 이용해 timeLine을 순회 하면서 난이도가 0이상인 것들을
+totalDiff안에 더해넣는다. 그와 동시에 totalTime도 1씩 올려준다. 마지막으로 float형으로 바꿔서 결과를 반환 해주면 끝이다.

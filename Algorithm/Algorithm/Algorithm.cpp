@@ -3,35 +3,49 @@
 
 using namespace std;
 
-int find(int array[], int left, int right, int target)
-{
-	if (left > right)
-		return -1;
 
-	int mid = (left + right) / 2;
-
-	if (array[mid] == target)
-	{
-		return mid;
-	}
-	else if (array[mid] < target)
-	{
-		return find(array, mid + 1, right, target);
-	}
-	else
-		return find(array, left, mid - 1, target);
-}
 
 int main()
 {
-#pragma region 이분 탐색
+#pragma region 계수 정렬
 
-	// 탐색 범위를 반으로 나누어 찾는 값을 포함하는 범위를
-	// 좁혀나가는 방식으로 동작하는 알고리즘
+	// 데이터의 값을 비교하지 않고 각 원소에 데이터가 몇 개 있는지
+	// 개수를 세어 저장한 다음 정렬하는 알고리즘
 
-	int list[] = { 1, 5, 13, 22, 58 };
+	int list[8] = {1, 3, 2, 2, 4, 5, 1, 2};
+	int size = sizeof(list) / sizeof(list[0]);
 
-	cout << list[find(list, 0, (sizeof(list) / sizeof(int)), 22)];
+	vector<int> radix(6+1,0);
+
+	for (int i = 0; i < size; i++)
+	{
+		radix[list[i]-1]++;
+	}
+
+	for (int i = 0; i < radix.size(); i++)
+	{
+		cout << radix[i] << " ";
+	}
+	cout << endl;
+
+	int index = 0;
+
+	for (int i = 0; i < radix.size(); i++)
+	{
+		for (int j = 0; j < radix[i]; j++)
+		{
+			list[index++] = i+1;
+		}
+	}
+
+	cout << endl;
+
+	for (int i = 0; i < size; i++)
+	{
+		cout << list[i] << " ";
+	}
+
+	cout << endl;
 
 #pragma endregion
 
