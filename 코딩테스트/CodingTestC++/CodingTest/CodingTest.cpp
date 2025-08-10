@@ -1,30 +1,63 @@
 ﻿#include <iostream>
-#include <unordered_map>
+#include <Windows.h>
+
 using namespace std;
 
-string Solution(const string str)
+class Component
 {
-    unordered_map<char, int> map;
+public:
+    Component() {}
 
-    for (int i = 0; i < str.length(); i++)
+    virtual void Update() = 0;
+    virtual void Move() = 0;
+    virtual void Jump() = 0;
+
+    ~Component() {}
+};
+
+class InputComponent : public Component
+{
+public:
+    InputComponent() {}
+
+    void Move() override
     {
-        map[str[i]] = i;
-    }
-
-    string result;
-    
-
-    for (int i = 0; i < str.length(); i++)
-    {
-        if (map[str[i]] == i)
+        if (GetAsyncKeyState(VK_LEFT))
         {
-            result.push_back(str[i]);
+            cout << "왼쪽" << endl;
+        }
+        else if (GetAsyncKeyState(VK_RIGHT))
+        {
+            cout << "오른쪽" << endl;
         }
     }
 
-    return result;
-}
+    void Jump() override
+    {
+        if (GetAsyncKeyState(VK_SPACE))
+        {
+            cout << "점프" << endl;
+        }
+    }
+
+    void Update() override
+    {
+        Move();
+        Jump();
+    }
+    
+    ~InputComponent() {}
+};
+
 int main()
 {
-    cout << Solution("BaNana");
+    Component* input = new InputComponent();
+
+    while (true)
+    {
+        input->Update();
+        Sleep(500);
+    }
+
+    delete input;
 }

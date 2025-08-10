@@ -1,0 +1,506 @@
+5-1
+문제: A로 B만들기
+
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+
+int solution(const char* before, const char* after) {
+    int size = strlen(before);
+    
+    if(size != strlen(after))
+    {
+        return 0;
+    }
+    
+    int ascii[256] = {0};
+    
+    for(int i =0; i<size; i++)
+    {
+        ascii[before[i]]++;
+        ascii[after[i]]--;
+    }
+    
+    for(int i =0; i< 256 ; i++)
+    {
+        if(ascii[i] != 0)
+        {
+            return 0;
+        }
+    }
+    
+    return 1;
+}
+
+- 핵심 로직 및 설명
+핵심은 'before의 요소들이 after의 요소들과 똑같은가?' 이다. 요소들이 전부 같다면 after를 만들 수 있는 조건이 갖추어진다.
+문제는 'before이 after가 될 수 있나요?' 를 물어본것. 그렇다면 각 요소들의 등장횟수를 알아낸다면 요소들이 똑같다는 것이다.
+ascii코드를 이용할 것인데, 아스키 코드는 숫자로도 표현이 가능하다. 따라서 int형의 배열을 아스키 코드만큼의 크기로 설정하고,
+for문을 돌려 before와 after의 요소가 ascii 배열의 인덱스와 일치하는 곳에다 +1과 -1을 해준다. 
+등장횟수가 같다면 마지막에는 ascii배열은 모두 0만 들어가 있을 것이기 때문에, 이를 이용하는 것이다.
+나머지는 ascii배열을 순회하면서 0이 아니라면 즉각 0을 반환하고 무사히 순회 했다면 1을 반환해주면 끝이다.
+
+
+
+5-2 : C# 문제 1
+소문자 변환
+
+using System;
+using System.Text;
+
+public class Solution {
+    public string solution(string myString) {
+        StringBuilder result = new StringBuilder();
+
+        for(int i = 0; i< myString.Length; i++)
+        {
+            result.Append(char.ToLower(myString[i]));
+        }
+
+        return result.ToString();
+    }
+}
+
+- 핵심 로직 및 설명
+C#에는 StringBuilder가 있었다. 전에도 설명했듯, C#의 string은 '불변' 속성을 가지고 있다. 읽기 전용이라는 뜻. 따라서 새로운 공간을 만들어서 저장해야하는데, 그것이 StringBuilder의 역할이다. 하는 법은 너무 간단하다. StringBuilder로 선언된 result에 myString의 한자씩,
+char.ToLower()함수로 만들어서 Append로 추가해주면 된다. 마지막에는 ToString()으로 string으로 변환 시킨후 반환 하면 끝이다.
+
+
+
+5-3 : C# 문제 2
+UI 창 여러 개 중 하나만 활성화되는 상태 전환 구조를 설계하세요.
+
+public class UIManager
+{
+    Dictionary<string, bool> UIlist;
+
+    public UIManager()
+    {
+        UIlist = new Dictionary<string, bool>();
+
+        UIlist["Health"] = true;
+        UIlist["Mana"] = true;
+        UIlist["Pause"] = true;
+        UIlist["EXP"] = true;
+    }
+
+    public void open(string name)
+    {
+        foreach(var key in UIlist.Keys)
+        {
+            if(key != name)
+            {
+                UIlist[key] = false;
+                Console.WriteLine(key + "비활성화!");
+            }
+            else
+            {
+                UIlist[key] = true;
+                Console.WriteLine(key + " 활성화!");
+            }
+            Console.Write("\n");
+        }
+    }
+}
+
+- 핵심 로직 및 설명
+UI들을 담아두는 곳은 Dictionary<string,bool>로 했다. 이유는 두가지. 딕셔너리는 어느정도 다루기 쉬웠고, 키값에 따른 활성화 여부를 보기 위해선, 이름에 맞게 작동시킬 필요가 있으므로 string과 bool을 사용했다.
+UIlist를 선언해서 UI들을 저장할 공간을 만들어주고, 기본 생성자를 만들어서 초기화를 해주었다. 멤버변수로 선언만 하게되면, 공간 할당이 안되기에, 실수로 접근하면 미정의 동작으로 이어질 수 있다. 따라서 기본 생성자에서 new DIctionary<>()를 해주고, 간단하게 UI키 들을 넣어서 true로 넣어주었다.
+이제 open()으로 넘어가서, foreach문을 사용해서 받아온 name을 키값과 비교한다. 같다면 해당 키를 true로 만든뒤 활성화 되었다는 출력을, 틀리다면 false로 만든 후, 상태를 출력 하게끔 했다.
+
+
+
+5-4 : C++ 문제 1
+배열 자르기
+
+#include <string>
+#include <vector>
+
+using namespace std;
+
+vector<int> solution(vector<int> numbers, int num1, int num2) {
+    vector<int> answer;
+    
+    for(int i = num1 ; i <= num2 ; i++)
+    {
+        answer.push_back(numbers[i]);
+    }
+    
+    return answer;
+}
+
+- 핵심 로직 및 설명
+이전 C#으로 풀어본 문제이다. int형의 numbers를 넘겨 받아서 num1번째 인덱스 부터 num2번째 인덱스까지 추출하여 반환 하는 함수를 만들면 되는 문제이다.
+int 형의 vector를 선언해주고, for문으로 반복하는데, num1 부터 num2까지 가는동안 answer에다 해당 요소를 추가해주면 된다.
+마무리로 반환까지.
+
+
+
+5-5 : C++ 문제 2
+상태 머신 기초 구조
+
+enum State
+{
+    IDLE,
+    RUNNING,
+    JUMPING
+};
+
+class Player
+{
+private:
+    State state;
+
+public:
+    Player()
+    {
+        state = IDLE;
+    }
+
+    void ChangeState(string newState)
+    {
+        if (newState == "IDLE")
+        {
+            state = IDLE;
+            cout << "Current State : " << newState << endl;
+        }
+        else if (newState == "RUNNING")
+        {
+            state = RUNNING;
+            cout << "Current State : " << newState << endl;
+        }
+        else if (newState == "JUMPING")
+        {
+            state = JUMPING;
+            cout << "Current State : " << newState << endl;
+        }
+        else
+        {
+            cerr << "State Doesn't Exist" << endl;
+        }
+    }
+};
+
+- 핵심 로직 및 설명
+서로 다른 속성을 가진 상태를 표현 하기 위해서는 가독성과 인식하기 편한 열거형을 쓰는것이 좋다고 생각했다.
+따라서 State라는 열거형을 만들고, Player클래스 멤버변수에 추가했다. 생성자에서 초기화 값은 임의적으로 IDLE로 정해두었다.
+ChangeState() 함수는 string형의 문자열을 받아, 문자열이 뜻하는 상태로 갱신해주는 함수이다. 
+처음에는 switch 문을 사용하려 했으나, string을 조건으로 넣을 수는 없었으므로, 단순한 조건문으로 처리하기로 했다.
+각 상태에 따른 분기를 만들고, 해당 분기에 들어서면 state를 갱신하고, 로그를 출력한다. 해당하는 상태가 없다면 갱신되지 않고, 오류메세지가 출력되게 했다.
+
+=================================================================
+
+여섯번째 과제가 다섯번째 과제의 문제와 내용이 같음, 따라서 굳이 한번더 작성하지 않음
+
+=================================================================
+
+7-1 : C 공통문제
+스케줄 충돌 감지기
+#include <stdio.h>
+#include <stdbool.h>
+
+bool ScheduleConflict(int schedule[][2], int size)
+{
+	int startTime = 25;
+	int finishTime = 0;
+
+	for (int i = 0; i < size; i++)
+	{
+		if (schedule[i][0] < startTime)
+			startTime = schedule[i][0];
+		if (schedule[i][1] > finishTime)
+			finishTime = schedule[i][1];
+	}
+
+	int timeLine[24] = { 0 };
+
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = schedule[i][0]; j < schedule[i][1]; j++)
+		{
+			timeLine[j]++;
+		}
+	}
+
+	for (int i = startTime; i < finishTime; i++)
+	{
+		if (timeLine[i] > 1)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+int main()
+{
+	int schedule[3][2] = { {9, 11}, {13, 15}, {10, 12} };
+
+	int size = sizeof(schedule) / sizeof(schedule[0]);
+
+	if (ScheduleConflict(schedule, size))
+	{
+		printf("스케쥴 충돌 감지");
+	}
+	else
+	{
+		printf("스케쥴 충돌 없음");
+	}
+
+	return 0;
+}
+
+- 핵심 로직 및 설명
+일단 중요한건 2차원 배열의 행 수를 알아내는것이 제일 중요한데, 매개변수로 받는 이상 포인터가 되어버려, sizeof를 이용한 방법은 힘들어진다.
+따라서 매개변수를 추가하여 사이즈를 받아오게끔 해준다.
+이 함수의 목적은 스케쥴의 배열을 받아와서 구간별로 검사 후 겹치는 스케쥴이 있는지를 판별하기 위해서이다. 
+따라서 bool타입으로 true, false를 반환하여 차후 확장시에 활용성을 높일 수 있게끔 했다.
+첫번째로 전체 스케쥴이 언제 시작해서 언제 끝나는지를 알아야 한다. 그래서 startTime, finishTime을 만들어서,
+for문 으로 각 스케쥴별로 최하, 최상 시간을 구한다. 스케쥴 시작시간이 startTIme보다 낮으면 갱신, finishTime도 똑같이 해준다.
+다음으로 timeLine이라는 int형 배열을 만들어준다. 이 배열은 인덱스를 시간축으로 해서, 각 구간별 스케쥴의 개수를 기록하기 위함이다.
+만약 timeLine의 요소에 1보다 큰 수가 들어가 있다면 그곳은 스케쥴이 겹쳐졌다고 볼 수 있다.
+for문을 돌려서 각 스케쥴별 구간에 따라 timeLine에 +1씩 해주고, 이후, 먼저 구해줬던 startTime과, finishTime을 돌며 timeLine에 해당하는 인덱스에서 1보다 큰 숫자를 발견하면 true를, 문제없이 순회했다면 false를 반환 해준다. main함수에서 이와 같이 사용할 수 있다.
+
+
+
+7-2 : C# 문제 1
+퀘스트 우선순위 정렬기
+
+struct Quest : IComparable<Quest>
+{
+    public string name;
+    public int difficulty;
+    public bool isUrgent;
+
+    public int CompareTo(Quest other)
+    {
+        int urgent = other.isUrgent.CompareTo(this.isUrgent);
+        if (urgent != 0)
+        {
+            return urgent;
+        }
+        return other.difficulty.CompareTo(this.difficulty);
+    }
+}
+
+public static void Main()
+{
+    Quest[] quests = new Quest[]
+    {
+        new Quest {name = "채집", difficulty = 3, isUrgent = false },
+        new Quest {name = "긴급출동", difficulty = 5, isUrgent = true},
+        new Quest {name = "보스전", difficulty = 9, isUrgent = false},
+        new Quest {name = "방어", difficulty = 7, isUrgent = true},
+    };
+
+    Array.Sort(quests);
+
+    for(int i = 0; i<quests.Length; i++)
+    {
+        Console.WriteLine(quests[i].name);
+    }
+}
+
+- 핵심 로직 및 설명
+이번 문제는 C#을 어느 정도 다뤄보지 않았다면 꽤 힘들것이라 생각이 든다. 나 또한 꽤 힘들게 풀었다.
+구조체를 특정 조건에 맞게끔 정렬하는것이 주목표인데, 비슷한 것을 알고 있다. 
+엑셀은 특정 조건, 여러개 조건에 맞게 정렬할 수 있는 기능이 있다. 
+이것이 생각나서, 정렬에 관한 것들을 좀 찾아봤다. 
+사용할 주요 함수는 Array.Sort(). 하지만 정렬조건을 주지 않으면 제대로 정렬이 되지 않는다. 
+따라서 정렬 조건을 주어야 하는데, 이 정렬조건을 주는 방법은 여러개가 있지만, 나는 구조체 안에 CompareTo라는 함수를 만들어 줬다. CompareTo함수는 객체와 객체간에 우열을 가릴때 int형으로 그 우열을 반환 해준다. 
+a와 b 객체가 있다면 음수는 a<b, 양수는 a>b, 0이라면 a=b가 된다. 
+a.CompareTo(b)가 되었을때 음수가 나온다면, a가 b보다 작다는 뜻이므로, 정렬시에 앞쪽으로 오게 된다. 기본적으로 오름차순을 위한 함수인 것.
+문제의 정렬 조건은, '긴급도가 있는 것 먼저'->'난이도 먼저' 순이다. 맨처음으로 판단해야 할것은 isUrgent이고, 그다음 difficulty를 비교해야한다. 
+중요 포인트는 우리가 원하는 것은 내림차순, CompareTo는 오름차순이 기준이므로, this와 other의 위치를 바꿔주면 오름차순으로 바뀌게 된다. bool형은 내부적으로 1(true)과 0(false)로 되어 있기 때문에 비교가 가능하다. 먼저 isUrgent를 비교하고, 이후, difficulty를 비교해 높은것부터 정렬한다. 이후 Main함수에 와서 Array.Sort만 불러주면 기준에 따라서 정렬되고, 출력까지 해주었다.
+
+
+
+7-3 : C# 문제 2
+데이터 동기화 매니저 설계
+
+public class SyncManager
+{
+    public Dictionary<string, int> clientData;
+    public Dictionary<string, int> serverData;
+
+    public SyncManager()
+    {
+        clientData = new Dictionary<string, int>();
+        serverData = new Dictionary<string, int>();
+
+        clientData["AP"] = 50;
+        clientData["Level"] = 89;
+        clientData["Gold"] = 150000;
+    }
+
+    public void Sync(Dictionary<string, int> dict)
+    {
+	UpdateData(dict)
+        clientData = serverData;
+        Console.WriteLine("서버 동기화 완료");
+    }
+
+    public void UpdateData(Dictionary<string, int> dict)
+    {
+        serverData = dict;
+        Console.WriteLine("서버로 부터 데이터 받아오는 중...");
+    }
+}
+
+public static void Main()
+{
+    Dictionary<string, int> data = new Dictionary<string, int>();
+    data["AP"] = 100;
+    data["Level"] = 90;
+    data["Gold"] = 200000;
+
+    SyncManager syncManager = new SyncManager();
+
+    Console.WriteLine(syncManager.clientData["AP"]);
+    Console.WriteLine(syncManager.clientData["Level"]);
+    Console.WriteLine(syncManager.clientData["Gold"]);
+
+    syncManager.Sync(data);
+
+    Console.WriteLine(syncManager.clientData["AP"]);
+    Console.WriteLine(syncManager.clientData["Level"]);
+    Console.WriteLine(syncManager.clientData["Gold"]);
+}
+
+- 핵심 로직 및 설명
+문제의 전제 조건은 '서버로 부터 받아온 데이터를 클라이언트에 동기화 시킬것'이다. 때문에 서버로 부터 받아온 데이터를 저장해서 클라이언트에 적용시키는 과정이 필요하다.
+UpdateData는 서버로 부터 받아온 딕셔너리 데이터를 SyncManager의 serverData에 저장 시키는 용도이다. 현재 시점의 서버 데이터를 저장하는 이유는, 실시간으로 서버로 부터 직접 데이터를 받을 경우, 서로 다른 시점의 데이터를 받아 들이게 된다. 따라서 특정 시점의 데이터를 받을 수 없어, 데이터들간 시간차가 생겨버린다. 따라서 특정 시점의 데이터를 한번에 받고 저장한 뒤 클라이언트와 동기화 시키는것이 안정적일거라 생각했다.
+이후 Sync()함수를 사용해 UpdateData함수 실행후 동기화 작업, 로그 까지 전부 띄우게 한다.
+Main함수에서는 실험을 위해 임시로 데이터를 만들어서 동기화 하는 작업을 진행했다.
+
+
+
+7-4 : C++ 문제 1
+최빈값 구하기
+
+#include <string>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+int solution(vector<int> array) {
+    
+    unordered_map<int,int> map;
+    
+    for(auto a : array)
+    {
+        map[a]++;
+    }
+    
+    int result = 0;
+    int count = 0;
+    bool multi = false;
+    
+    for(auto m : map)
+    {
+        if(m.second > count)
+        {
+            count = m.second;
+            result = m.first;
+            multi = false;
+        }
+        else if(m.second == count)
+        {
+            multi = true;
+        }
+    }
+    
+    if(multi)
+    {
+        return -1;
+    }
+    
+    return result;
+}
+
+- 핵심 로직 및 설명
+숫자별 빈도를 기록하는 것이 이번 문제의 핵심이다. 그를 위해선 키와 값으로 분류해서 숫자별로 빈도수를 셀 필요가 있다. 
+이를 위해서 unordered_map을 사용했다. vector의 크기가 얼마나 될지 모르고, 일반 map으로는 탐색속도가 그다지 좋지 않아서 선택했다.
+vector에서 뽑아낸 숫자를 키값으로 해서 빈도수를 저장해야 한다. for문으로 vector를 순회 하면서 키값과 동시에 빈도수를 계산한다.
+그다음, 최빈값을 저장할 result, 빈도수를 비교할 count, 중복 최빈값을 판단할 multi를 선언 해주고, map을 순회 하면서,
+이전에 저장되어있던 최빈값의 빈도수보다 높다면 업데이트와 함께 multi를 비활성화 시켜준다. 만약 최빈값이 겹친다면, multi를 기준으로 해서 추후 -1을 반환 할 것이다. for문이 끝났다면 중복최빈값이 있는지를 확인하고 없다면 그대로 result를 반환 해주면 된다.
+
+
+
+7-5 : C++ 문제 2
+게임 내 다양한 객체에 입력을 매핑하는 시스템을 설계하세요.
+
+#include <iostream>
+#include <Windows.h>
+
+using namespace std;
+
+class Component
+{
+public:
+    Component() {}
+
+    virtual void Update() = 0;
+    virtual void Move() = 0;
+    virtual void Jump() = 0;
+
+    ~Component() {}
+};
+
+class InputComponent : public Component
+{
+public:
+    InputComponent() {}
+
+    void Move() override
+    {
+        if (GetAsyncKeyState(VK_LEFT))
+        {
+            cout << "왼쪽" << endl;
+        }
+        else if (GetAsyncKeyState(VK_RIGHT))
+        {
+            cout << "오른쪽" << endl;
+        }
+    }
+
+    void Jump() override
+    {
+        if (GetAsyncKeyState(VK_SPACE))
+        {
+            cout << "점프" << endl;
+        }
+    }
+
+    void Update() override
+    {
+        Move();
+        Jump();
+    }
+    
+    ~InputComponent() {}
+};
+
+int main()
+{
+    Component* input = new InputComponent();
+
+    while (true)
+    {
+        input->Update();
+        Sleep(500);
+    }
+    delete input;
+}
+
+-핵심 로직 및 설명
+그다지 특별히 주요한 포인트는 없다. 다만, 상속을 얼마나 잘 이해하고 있는가가 이번 문제의 목적이다.
+Component라는 클래스를 부모로 수많은 컴포넌트를 만들어 낼 수 있게끔 하는 것이 상속이다. 
+이번에 만드는 것은 입력을 담당하는 컴포넌트이다. 다형성을 위한 껍데기 부모를 만들어 놓고, InputComponent를 만들어 상속 시켜준다.
+이후 Move() 함수와 Jump()함수를 만드는 것인데, 상속된 클래스를 어떻게 쓸지가 관건이다. 포인터로 불러내어서 그곳에다 자식을 할당 시키느냐, 아니면 그냥 자식을 불러서 쓰느냐 둘중 하나 인데, 부모 포인터를 기준으로 자식들을 불러오는 것은 편의성 면에서 매우 좋다.
+단순히 부모 포인터를 선언해주면 상속된 모든 클래스들을 뽑아 사용할 수 있기 때문인데, 이러한 다형성을 이용해서 작업할 것이기 때문에,
+공통된 함수들을 먼저 가상 함수로 만들어 주고, 이후, 상속된 InputComponent에 해당하는 함수를 설계해주면된다. 이번 문제의 목적은
+'키 입력시 객체가 잘 작동 하는가'에 있으므로, 단순하게 키를 입력 받았을때 해당하는 로그가 출력되도록 했다. Update() 함수를 다시 만들어서 move와 jump를 한번에 작동 시킬 수 있도록 해주고, 이를 토대로 main에서 작동시키도록 했다. 결과는 만족스럽게 잘 나왔다.
+각 생성자와 소멸자에 대한 이야기가 빠졌는데, 따로 특별히 선언한 멤버변수도 없고, 동적 할당 시킨 멤버도 없기에, 단순하게 메인에서 포인터로 선언된 input을 delete해주면 메모리 걱정은 없다. 만약, 이런 클래스들을 다른 클래스에다 적용 시킨다면 동적할당 후 사용할 것인데, 그럴때에는 적절하게 소멸자에 delete를 해주면 누수는 일어나지 않는다.

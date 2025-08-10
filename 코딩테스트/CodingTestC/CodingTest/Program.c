@@ -1,62 +1,56 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include <stdbool.h>
 
-typedef struct
+bool ScheduleConflict(int schedule[][2], int size)
 {
-	int start;
-	int finish;
-	int difficult;
-}Schedule;
+	int rowSize = size;
 
-float Solution(Schedule schedule[], int size)
-{
-	int startTime = 10000;
+	int startTime = 25;
 	int finishTime = 0;
 
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < rowSize; i++)
 	{
-		if (schedule[i].start < startTime)
+		if (schedule[i][0] < startTime)
+			startTime = schedule[i][0];
+		if (schedule[i][1] > finishTime)
+			finishTime = schedule[i][1];
+	}
+
+	int timeLine[24] = { 0 };
+
+	for (int i = 0; i < rowSize; i++)
+	{
+		for (int j = schedule[i][0]; j < schedule[i][1]; j++)
 		{
-			startTime = schedule[i].start;
-		}
-		if (schedule[i].finish > finishTime)
-		{
-			finishTime = schedule[i].finish;
+			timeLine[j]++;
 		}
 	}
 
-	int timeLine[24] = {0};
-
-	for (int i = 0; i < size; i++)
+	for (int i = startTime; i < finishTime; i++)
 	{
-		for (int t = schedule[i].start; t < schedule[i].finish; t++)
+		if (timeLine[i] > 1)
 		{
-			if (timeLine[t] < schedule[i].difficult)
-			{
-				timeLine[t] = schedule[i].difficult;
-			}
+			return true;
 		}
 	}
-
-	int totalDiff = 0;
-	int totalTime = 0;
-
-	for (int t = startTime; t < finishTime; t++)
-	{
-		if (timeLine[t] > 0)
-		{
-			totalDiff += timeLine[t];
-			totalTime++;
-		}
-	}
-
-	return (float)totalDiff / totalTime;
-
+	return false;
 }
+
 int main()
 {
-	Schedule schedule[] = { {9, 11, 2}, {10, 12, 5}, {13, 14, 1} };
-	printf("%.2f", Solution(schedule, sizeof(schedule)/sizeof(Schedule)));
+	int schedule[3][2] = { {9, 11}, {13, 15}, {10, 12} };
+
+	int size = sizeof(schedule) / sizeof(schedule[0]);
+
+	if (ScheduleConflict(schedule, size))
+	{
+		printf("스케쥴 충돌 감지");
+	}
+	else
+	{
+		printf("스케쥴 충돌 없음");
+	}
 
 	return 0;
 }

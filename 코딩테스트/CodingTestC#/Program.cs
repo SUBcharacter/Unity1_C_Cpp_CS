@@ -1,103 +1,63 @@
 ﻿using System;
+
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Numerics;
+using System.Text;
 
-public class SoundOption
+public class SyncManager
 {
-    float BGM = 100.0f;
-    float SE = 100.0f;
+    public Dictionary<string, int> clientData;
+    public Dictionary<string, int> serverData;
 
-    public void LoadSetting(Dictionary<string,float> dict)
+    public SyncManager()
     {
-        int index = 0;
-        float[] values = new float[2];
+        clientData = new Dictionary<string, int>();
+        serverData = new Dictionary<string, int>();
 
-        foreach(var key in dict.Keys)
-        {
-            values[index++] = dict[key];
-        }
-
-        BGM = values[0];
-        SE = values[1];
+        clientData["AP"] = 50;
+        clientData["Level"] = 89;
+        clientData["Gold"] = 150000;
     }
 
-    public Dictionary<string,float> SaveOption()
+    public void Sync(Dictionary<string, int> dict)
     {
-        var saveOption = new Dictionary<string,float>();
-
-        saveOption["BGM"] = BGM;
-        saveOption["SE"] = SE;
-
-        return saveOption;
+        UpdateData(dict);
+        clientData = serverData;
+        Console.WriteLine("서버 동기화 완료");
     }
 
-    public void SetBGMVolume(float rate)
+    public void UpdateData(Dictionary<string, int> dict)
     {
-        BGM = rate;
-    }
-
-    public void SetSEVolume(float rate)
-    {
-        SE = rate;
+        serverData = dict;
+        Console.WriteLine("서버로 부터 데이터 받아오는 중...");
     }
 }
 
 public class Solution
 {
-    public int[] solution(string my_string)
-    {
-        List<int> list = new List<int>();
-
-        for (int i = 0; i < my_string.Length; i++)
-        {
-            if (char.IsDigit(my_string[i]))
-            {
-                list.Add(my_string[i] - '0');
-            } 
-        }
-
-        list.Sort();
-
-        int[] result = new int[list.Count];
-
-        for(int i = 0; i < list.Count;i++)
-        {
-            result[i] = list[i];
-        }
-
-        return result;
-    }
+    
 }
 
 public class Program
 {
     public static void Main()
     {
-        Dictionary<string, float> dict = new Dictionary<string, float>
-        {
-            { "BGM" , 30.0f},
-            {"SE" , 50.0f}
-        };
+        Dictionary<string, int> data = new Dictionary<string, int>();
+        data["AP"] = 100;
+        data["Level"] = 90;
+        data["Gold"] = 200000;
 
-        var soundManager = new SoundOption();
+        SyncManager syncManager = new SyncManager();
 
-        soundManager.LoadSetting(dict);
+        Console.WriteLine(syncManager.clientData["AP"]);
+        Console.WriteLine(syncManager.clientData["Level"]);
+        Console.WriteLine(syncManager.clientData["Gold"]);
 
-        Console.WriteLine(soundManager.BGM);
-        Console.WriteLine(soundManager.SE);
+        syncManager.Sync(data);
 
-        soundManager.SetBGMVolume(60.0f);
-        soundManager.SetSEVolume(20.0f);
-
-        Console.WriteLine(soundManager.BGM);
-        Console.WriteLine(soundManager.SE);
-
-        dict = soundManager.SaveOption();
-
-        Console.WriteLine(dict["BGM"]);
-        Console.WriteLine(dict["SE"]);
-
+        Console.WriteLine(syncManager.clientData["AP"]);
+        Console.WriteLine(syncManager.clientData["Level"]);
+        Console.WriteLine(syncManager.clientData["Gold"]);
     }
 }
