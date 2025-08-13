@@ -1199,3 +1199,201 @@ int main()
 for문으로 각 요소를 순회하면서 taskTime의 크기가 60보다 작고, taskCount가 3보다 작을 경우
 taskTime에 요소를 더하고, taskCount를 하나 올린다. 조건중 하나라도 만족하지 못하면 새 그룹이 생겨야 함으로,
 groupCount를 하나 올리고, 현재 요소를 시작점으로 초기화 한다.
+
+
+
+8-2 : C# 문제 1
+일정 예약 충돌 탐지기
+
+public class Scheduler
+{
+    public Dictionary<string,List<int>> schedules;
+
+    public Scheduler()
+    {
+        schedules = new Dictionary<string, List<int>>();
+    }
+
+    public void AddSchedule(string name, int start, int end)
+    {
+        if(schedules.Count > 0 )
+        {
+            int[] timeLine = new int[24];
+
+            foreach(var key in schedules.Keys)
+            {
+                for(int i = schedules[key][0]; i < schedules[key][1]; i++)
+                {
+                    timeLine[i]++;
+                }
+            }
+
+            for(int i = start; i <end; i++)
+            {
+                timeLine[i]++;
+            }
+
+            for(int i = 0; i < timeLine.Length; i++)
+            {
+                if (timeLine[i] >= 2)
+                {
+                    Console.WriteLine("스케쥴 충돌 감지 : 스케쥴을 추가 할 수 없습니다.");
+                    return;
+                }
+            }
+
+            schedules[name] = new List<int>();
+            schedules[name].Add(start);
+            schedules[name].Add(end);
+
+            Console.WriteLine("스케쥴 추가 완료");
+        }
+        else
+        {
+            schedules[name] = new List<int>();
+            schedules[name].Add(start);
+            schedules[name].Add(end);
+
+            Console.WriteLine("스케쥴 추가 완료");
+        }
+    }
+}
+
+- 핵심 로직 및 설명
+핵심 : 추가 할 스케쥴의 시간대를 먼저 검사 후 추가
+설명 :
+스케쥴을 담아 둘 곳은, Dictionary이다. string으로 키를 만들고, List<int>로 시간대를 저장 할 수 있게끔 했다.
+생성자에서 공간을 만들어 준 다음 작업을 시작한다.
+AddSchedule은 string형의 이름, 시작 시간, 종료 시간을 매개변수로 받아온다.
+검사에 들어가기 전에, 스케쥴의 수가 0 이상 인지를 확인한다. 0이라면 검사할 것이 없으니 바로 추가한다.
+스케쥴의 수가 0이상 이라면, timeLine을 만들어 각 스케쥴에 해당하는 요소에 +1을 해주고,
+마지막으로 추가할 스케쥴의 타임라인을 추가해준다.
+이후 timeLine을 순회하면, 겹치는 곳의 요소는 무조건 2 이상의 값을 가지고 있을 것이다.
+AddSchedule은 이 검사를 통과하지 못하면 스케쥴에 추가 되지 않기 때문에, schedules에는 겹치는 스케쥴이 없다.
+하지만 새로 들어온 스케쥴이 기존 스케쥴과 겹치게 되면 감지할 수 있기에, 충돌을 감지하면 스케쥴을 추가하지 않고,
+리턴 시켜서 추가하지 않게끔 한다.
+검사를 통과 했다면 스케쥴이 등록 된다. 각 상황에 맞게 로그도 출력 된다.
+
+
+
+8-3 : C# 문제 2
+ 네트워크 패킷 큐 시뮬레이터
+
+public class PacketManager
+{
+    public Queue<string> packetQueue;
+
+    public PacketManager()
+    {
+        packetQueue = new Queue<string>();
+    }
+
+    public void EnqueuePacket(string packet)
+    {
+        if(packetQueue.Count >= 10)
+        {
+            packetQueue.Dequeue();
+            packetQueue.Enqueue(packet);
+        }
+        else
+        {
+            packetQueue.Enqueue(packet);
+        }
+    }
+
+    public void ProcessPacket()
+    {
+        if(packetQueue.Count == 0)
+            return;
+
+        Console.WriteLine("[처리됨]" + packetQueue.Dequeue());
+    }
+}
+
+public class Program
+{
+    public static void Main()
+    {
+        var packetManager = new PacketManager();
+
+        packetManager.EnqueuePacket("채팅 1");
+        packetManager.EnqueuePacket("채팅 2");
+        packetManager.EnqueuePacket("채팅 3");
+        packetManager.EnqueuePacket("채팅 4");
+        packetManager.EnqueuePacket("채팅 5");
+        packetManager.EnqueuePacket("채팅 6");
+        packetManager.EnqueuePacket("채팅 7");
+        packetManager.EnqueuePacket("채팅 8");
+        packetManager.EnqueuePacket("채팅 9");
+        packetManager.EnqueuePacket("채팅 10");
+        packetManager.EnqueuePacket("채팅 11");
+
+        for(int i = 0; i < 10; i++)
+        {
+            packetManager.ProcessPacket();
+        }
+    }
+}
+
+- 핵심 로직 및 설명
+핵심 : Queue의 활용법 숙지
+설명 :
+Queue의 활용법 만 안다면 다루는 것은 너무 쉽다.
+받아오는 데이터는 string형 이므로, Queue<string>형의 멤버 변수를 만들어서 초기화 해준다.
+EnqueuePacket은 string형의 데이터를 받아와서 내부 큐에다 추가해주는 함수다.
+packetQueue의 크기가 10개 초과인 경우 오래된 큐를 날려버려야 한다.
+다행히 Queue는 FIFO의 속성을 가지고 있어, Dequeue라는 함수로 가볍게 추출 및 제거가 가능하다.
+Dequeue로 맨앞의 오래된 큐를 날려버리고 새로운 큐를 Enqueue로 등록 하면 된다.
+큐의 크기가 10이하일 경우 그냥 추가만 해주면 되게끔 했다.
+ProcessPacket()은 받아온 패킷을 실행 해주는 것이다.
+큐에 아무것도 없다면 미정의 동작을 막기위해 리턴 해주고, 아니라면 처리 로그를 띄워줌과 동시에
+큐를 없애준다.
+
+
+
+8-4 : C++ 문제 1
+단어 길이 기준 정렬기
+
+void SortWord(vector<string>& words)
+{
+    sort(words.begin(), words.end(),
+        [](string& a, string& b)
+        {
+            if (a.length() == b.length())
+            {
+                return a < b;
+            }
+
+            return a.length() < b.length();
+        }
+        );
+}
+
+int main()
+{
+   vector<string> str = { "apple", "kiwi", "banana", "an", "and", "ant"};
+
+    SortWord(str);
+
+    for (auto s : str)
+    {
+        cout << s << endl;
+    }
+}
+
+- 핵심 로직 및 설명
+핵심 : 람다를 사용한 정렬 조건 설정
+설명 : 
+람다 라는걸 처음 써보는 문제이다.
+람다는 즉석에서 함수를 만들어서 바로 쓸 수 있는 문법이다. 이를 이용해 연산자 오버로딩과 같은 함수를
+정렬 기준으로 넣어서 정렬할 수 있도록 했다.
+단순히 sort 함수를 쓴 것 뿐인 함수이지만, 조건 설정은 '단어의 길이가 짧게, 같다면 사전 순서대로'이다.
+비교할 두 단어의 길이를 보고 같다면 알파벳 순으로 비교한 결과를, 그 이외의 경우에는 길이 순서대로
+오름차순으로 정렬했다.
+and와 ant 같은 한글자를 제외하고 같은 알파벳을 가진 경우도 이에 대응할 수 있도록 설계했다.
+
+
+
+8-5 : C++ 문제 2
+컴포넌트 기반 상태 업데이트 시스템
+

@@ -5,59 +5,58 @@ using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-public class SyncManager
+public class PacketManager
 {
-    public Dictionary<string, int> clientData;
-    public Dictionary<string, int> serverData;
+    public Queue<string> packetQueue;
 
-    public SyncManager()
+    public PacketManager()
     {
-        clientData = new Dictionary<string, int>();
-        serverData = new Dictionary<string, int>();
-
-        clientData["AP"] = 50;
-        clientData["Level"] = 89;
-        clientData["Gold"] = 150000;
+        packetQueue = new Queue<string>();
     }
 
-    public void Sync(Dictionary<string, int> dict)
+    public void EnqueuePacket(string packet)
     {
-        UpdateData(dict);
-        clientData = serverData;
-        Console.WriteLine("서버 동기화 완료");
+        if(packetQueue.Count > 10)
+        {
+            packetQueue.Dequeue();
+            packetQueue.Enqueue(packet);
+        }
+        else
+        {
+            packetQueue.Enqueue(packet);
+        }
     }
 
-    public void UpdateData(Dictionary<string, int> dict)
+    public void ProcessPacket()
     {
-        serverData = dict;
-        Console.WriteLine("서버로 부터 데이터 받아오는 중...");
-    }
-}
+        if(packetQueue.Count == 0)
+            return;
 
-public class Solution
-{
-    
+        Console.WriteLine("[처리됨]" + packetQueue.Dequeue());
+    }
 }
 
 public class Program
 {
     public static void Main()
     {
-        Dictionary<string, int> data = new Dictionary<string, int>();
-        data["AP"] = 100;
-        data["Level"] = 90;
-        data["Gold"] = 200000;
+        var packetManager = new PacketManager();
 
-        SyncManager syncManager = new SyncManager();
+        packetManager.EnqueuePacket("채팅 1");
+        packetManager.EnqueuePacket("채팅 2");
+        packetManager.EnqueuePacket("채팅 3");
+        packetManager.EnqueuePacket("채팅 4");
+        packetManager.EnqueuePacket("채팅 5");
+        packetManager.EnqueuePacket("채팅 6");
+        packetManager.EnqueuePacket("채팅 7");
+        packetManager.EnqueuePacket("채팅 8");
+        packetManager.EnqueuePacket("채팅 9");
+        packetManager.EnqueuePacket("채팅 10");
+        packetManager.EnqueuePacket("채팅 11");
 
-        Console.WriteLine(syncManager.clientData["AP"]);
-        Console.WriteLine(syncManager.clientData["Level"]);
-        Console.WriteLine(syncManager.clientData["Gold"]);
-
-        syncManager.Sync(data);
-
-        Console.WriteLine(syncManager.clientData["AP"]);
-        Console.WriteLine(syncManager.clientData["Level"]);
-        Console.WriteLine(syncManager.clientData["Gold"]);
+        for(int i = 0; i < 10; i++)
+        {
+            packetManager.ProcessPacket();
+        }
     }
 }

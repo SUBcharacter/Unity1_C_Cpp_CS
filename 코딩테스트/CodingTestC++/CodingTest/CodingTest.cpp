@@ -1,4 +1,6 @@
 ﻿#include <iostream>
+#include <vector>
+#include <algorithm>
 #include <Windows.h>
 
 using namespace std;
@@ -6,58 +8,81 @@ using namespace std;
 class Component
 {
 public:
-    Component() {}
-
-    virtual void Update() = 0;
-    virtual void Move() = 0;
-    virtual void Jump() = 0;
-
-    ~Component() {}
+	Component() {}
+	virtual void Update()
+	{
+		cout << "기본 업데이트" << endl;
+	}
+	~Component()
+	{
+		cout << "컴포넌트 소멸" << endl;
+	}
 };
 
-class InputComponent : public Component
+class HealthComponent : public Component
 {
 public:
-    InputComponent() {}
+	HealthComponent() {}
+	void Update() override
+	{
+		cout << "체력 업데이트" << endl;
+	}
+};
 
-    void Move() override
-    {
-        if (GetAsyncKeyState(VK_LEFT))
-        {
-            cout << "왼쪽" << endl;
-        }
-        else if (GetAsyncKeyState(VK_RIGHT))
-        {
-            cout << "오른쪽" << endl;
-        }
-    }
+class PositionComponent : public Component
+{
+public:
+	PositionComponent() {}
+	void Update() override
+	{
+		cout << "위치 업데이트" << endl;
+	}
+};
 
-    void Jump() override
-    {
-        if (GetAsyncKeyState(VK_SPACE))
-        {
-            cout << "점프" << endl;
-        }
-    }
+class AIComponent : public Component
+{
+public:
+	AIComponent() {}
+	void Update() override
+	{
+		cout << "AI 업데이트" << endl;
+	}
+};
 
-    void Update() override
-    {
-        Move();
-        Jump();
-    }
-    
-    ~InputComponent() {}
+class ComponentManager
+{
+private:
+	vector<Component*> allComponent;
+
+public:
+	ComponentManager()
+	{
+		allComponent.push_back(new Component());
+		allComponent.push_back(new HealthComponent());
+		allComponent.push_back(new PositionComponent());
+		allComponent.push_back(new AIComponent());
+	}
+
+	void AllComponentUpdate()
+	{
+		for (auto c : allComponent)
+		{
+			c->Update();
+		}
+	}
+
+	~ComponentManager()
+	{
+		for (auto c : allComponent)
+		{
+			delete c;
+		}
+	}
 };
 
 int main()
 {
-    Component* input = new InputComponent();
+	ComponentManager cm;
 
-    while (true)
-    {
-        input->Update();
-        Sleep(500);
-    }
-
-    delete input;
+	cm.AllComponentUpdate();
 }
