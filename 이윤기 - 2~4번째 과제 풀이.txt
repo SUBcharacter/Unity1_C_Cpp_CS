@@ -1397,3 +1397,100 @@ and와 ant 같은 한글자를 제외하고 같은 알파벳을 가진 경우도
 8-5 : C++ 문제 2
 컴포넌트 기반 상태 업데이트 시스템
 
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Component
+{
+public:
+	Component() {}
+	virtual void Update()
+	{
+		cout << "기본 업데이트" << endl;
+	}
+	~Component()
+	{
+		cout << "컴포넌트 소멸" << endl;
+	}
+};
+
+class HealthComponent : public Component
+{
+public:
+	HealthComponent() {}
+	void Update() override
+	{
+		cout << "체력 업데이트" << endl;
+	}
+};
+
+class PositionComponent : public Component
+{
+public:
+	PositionComponent() {}
+	void Update() override
+	{
+		cout << "위치 업데이트" << endl;
+	}
+};
+
+class AIComponent : public Component
+{
+public:
+	AIComponent() {}
+	void Update() override
+	{
+		cout << "AI 업데이트" << endl;
+	}
+};
+
+class ComponentManager
+{
+private:
+	vector<Component*> allComponent;
+
+public:
+	ComponentManager()
+	{
+		allComponent.push_back(new Component());
+		allComponent.push_back(new HealthComponent());
+		allComponent.push_back(new PositionComponent());
+		allComponent.push_back(new AIComponent());
+	}
+
+	void AllComponentUpdate()
+	{
+		for (auto c : allComponent)
+		{
+			c->Update();
+		}
+	}
+
+	~ComponentManager()
+	{
+		for (auto c : allComponent)
+		{
+			delete c;
+		}
+	}
+};
+
+int main()
+{
+	ComponentManager cm;
+
+	cm.AllComponentUpdate();
+}
+
+- 핵심 로직 및 설명
+핵심 : 상속 및 다형성을 통한 컴포넌트 순회
+설명 :
+이번문제에 쓰인 로직은 팀 프로젝트때에 사용했던 로직이라 수월했다.
+Component 클래스를 부모로 Health, Position, AI의 상속 클래스를 만들고, Update함수를 오버로딩 해서 사용했다.
+그리고 모든 컴포넌트를 담아두고 사용할 클래스, ComponentManager를 만든다.
+ComponentManager는 모든 컴포넌트를 사용해야 함으로, 다형성을 활용한 Component 포인터 벡터를 멤버변수로 해서,
+생성시에 Component 포인터 하나당 사용할 컴포넌트를 넣어준다. 나머지는 AllComponentUpdate 함수에서 각 컴포넌트를 돌며 업데이트 해주는 코드를 넣어주고, 포인터로 동적할당을 해준 만큼 소멸자에서도 확실하게 할당된 포인터들을 해제해준다.
+main에서는 저렇게 사용해주면 간단하다.
