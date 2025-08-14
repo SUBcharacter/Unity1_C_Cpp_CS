@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <random>
 #include <vector>
+#include <queue>
 #define SIZE 8
 
 using namespace std;
@@ -8,64 +9,89 @@ using namespace std;
 class Graph
 {
 private:
-	bool visited[SIZE];
-	vector<int> adjacencyList[SIZE];
+	vector<int> list[SIZE];
+	int indegree[SIZE];
+
 public:
 	Graph()
 	{
 		for (int i = 0; i < SIZE; i++)
 		{
-			visited[i] = false;
+			indegree[i] = 0;
 		}
 	}
 
-	void insert(int i, int j)
+	void insert(int vertex, int edge)
 	{
-		adjacencyList[i].push_back(j);
-		adjacencyList[j].push_back(i);
+		list[vertex].push_back(edge);
+		indegree[edge]++;
 	}
 
-	void search(int start)
+	void search()
 	{
-		visited[start] = true;
+		queue<int> q;
 
-		cout << start << endl;
-
-		for (int next : adjacencyList[start])
+		for (int i = 0; i < SIZE; i++)
 		{
-			if (!visited[next])
+			if (indegree[i] == 0 && !list[i].empty())
 			{
-				search(next);
+				q.push(i);
+			}
+		}
+
+		while (!q.empty())
+		{
+			int current = q.front();
+
+			q.pop();
+
+			cout << current << " ";
+
+			for (int next : list[current])
+			{
+				indegree[next]--;
+				if (indegree[next] == 0)
+				{
+					q.push(next);
+				}
 			}
 		}
 	}
+
 };
 
 int main()
 {
-#pragma region 깊이 우선 탐색 (Depth First Search)
+#pragma region 위상 정렬
 
-	// root 노드에서부터 다음 분기로 넘어가기 전에
-	// 해당 분기를 완벽하게 탐색하는 방법
+	// 병합 그래프에 존재하는 각 정점들의 선행 순서를 지키며,
+	// 모든 정점을 차례대로 진행하는 알고리즘
+	
+	// 사이클이 발생하는 경우 위상 정렬을 수행할 수 없다.
+	
+	// DAG(Directed Acyclic Graph) : 사이클이 존재하지 않는 그래프
 
-	// 깊이 우선 탐색은 스택을 활용한다.
+	// 시간 복잡도 : 0(V + E)
+
+	// 1. 진입 차수가 0인 정점을 Queue에 삽입
+	
+	// 2. Queue에서 원소를 꺼내 연결된 모든
+
 
 	Graph graph;
 
 	graph.insert(1, 2);
-	graph.insert(1, 3);
+	graph.insert(1, 5);
 
 	graph.insert(2, 3);
-	graph.insert(2, 4);
-	graph.insert(2, 5);
+	graph.insert(3, 4);
+	graph.insert(4, 6);
 
-	graph.insert(3, 6);
-	graph.insert(3, 7);
-
-	graph.insert(4, 5);
+	graph.insert(5, 6);
 	graph.insert(6, 7);
 
-	graph.search(1);
+	graph.search();
+
 #pragma endregion
 
 
