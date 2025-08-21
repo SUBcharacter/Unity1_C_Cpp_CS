@@ -1,145 +1,133 @@
 ﻿#include <iostream>
-#include <random>
-#include <vector>
-#include <queue>
+#define INFINITY 1e18
 #define SIZE 7
-
 using namespace std;
 
-class Kruskal
+class Dikstra
 {
 private:
-	class Edge
-	{
-	private:
-		int x;
-		int y;
-		int weight;
-
-	public:
-		Edge(int x, int y, int weight) : x(x), y(y), weight(weight) {}
-
-		const int GetX() { return x; }
-
-		int GetY() { return y; }
-
-		int GetWeight() { return weight; }
-
-		bool operator<(const Edge& other)
-		{
-			return this->weight < other.weight;
-		}
-	};
-	int cost;
-	vector<Edge> edges;
-	vector<int> parent;
-
+	long long graph[SIZE][SIZE];
+	long long dist[SIZE];
+	bool visited[SIZE];
 public:
-	Kruskal() {}
-
-	void InitVertex(int vertex)
+	Dikstra()
 	{
-		parent.resize(vertex+1);
-		for (int i = 1; i <= vertex; i++)
+		for (int i = 0; i < SIZE; i++)
 		{
-			parent[i] = i;
-		}
-	}
-
-	void insert(int vertexX, int vertexY, int weight)
-	{
-		edges.push_back(Edge(vertexX, vertexY, weight));
-	}
-
-	int find(int x)
-	{
-		if (parent[x] != x)
-		{
-			parent[x] = find(parent[x]);
-		}
-		return parent[x];
-	}
-
-	void Union(int x, int y)
-	{
-		if (find(x) < find(y))
-		{
-			parent[y] = x;
-		}
-		else if (find(x) > find(y))
-		{
-			parent[x] = y;
-		}
-	}
-
-	void calculate()
-	{
-		InitVertex(7);
-		sort(edges.begin(),edges.end());
-
-		vector<Edge> mst;
-
-		cost = 0;
-
-		for (auto& e : edges)
-		{
-			if (find(e.GetX()) != find(e.GetY()))
+			dist[i] = 0;
+			visited[i] = false;
+			for (int j = 0; j < SIZE; j++)
 			{
-				Union(e.GetX(), e.GetY());
-				cost += e.GetWeight();
-				mst.push_back(e);
+				graph[i][j] = (i == j ? 0 : INFINITY);
+			}
+		}
+	}
+
+	void insert(int x, int y, int w)
+	{
+		graph[x][y] = w;
+		graph[y][x] = w;
+	}
+
+	const int find()
+	{
+		long long distance = INFINITY;
+		int minDist = 0;
+
+		for (int i = 1; i < SIZE; i++)
+		{
+			if (!visited[i] && dist[i] < distance)
+			{
+				minDist = i;
+				distance = dist[i];
 			}
 		}
 
-		for (auto& e : mst)
-		{
-			cout << "(" << e.GetX() << ", " << e.GetY() << ")";
-		}
-
-		cout << endl;
-
-		for (int i = 1; i <= 7; i++)
-		{
-			cout << parent[i] << " ";
-		}
-
+		return minDist;
 	}
 
-	void ShowEdge()
+	void update(int start)
 	{
-		for (auto e : edges)
+		visited[start] = true;
+		for (int i = 1; i < SIZE; i++)
 		{
-			cout << e.GetWeight() << " ";
+			if (i == start)
+			{
+				dist[i] = 0;
+			}
+			else
+			{
+				dist[i] = graph[start][i];
+			}
+		}
+	}
+
+	void search(int start)
+	{
+		update(start);
+
+		for (int i = 1; i < SIZE; i++)
+		{
+			int x = find();
+			visited[x] = true;
+			for (int j = 1; j < SIZE; j++)
+			{
+				if (!visited[j] && dist[x] + graph[x][j] < dist[j])
+				{
+					dist[j] = dist[x] + graph[x][j];
+				}
+			}
+		}
+	}
+
+	void printDist() {
+		for (int i = 1; i < SIZE; i++) {
+			cout << "1번에서 " << i << "번까지 거리: ";
+			if (dist[i] == INFINITY)
+				cout << "INF" << endl;
+			else
+				cout << dist[i] << endl;
 		}
 	}
 };
 
 int main()
 {
-#pragma region 최소 신장 트리
+#pragma region 다익스트라 알고리즘
 
-	// 그래프의 모든 정점을 포함하면서 사이클이 존재하지 않는
-	// 부분 그래프로, 그래프의 모든 정점을 최소 비용으로 연결하는 트리
+	// 시작점으로부터 모든 노드까지의 최소 거리를 구해주는 알고리즘
 
-	// 그래프의 정점의 수가 n개 일 때, 간선의 수는 n-1개
-
-	Kruskal krus;
-
-	krus.insert(1, 7, 12);
-	krus.insert(4, 7, 13);
-	krus.insert(1, 4, 30);
-	krus.insert(2, 4, 23);
-	krus.insert(1, 2, 71);
-	krus.insert(1, 5, 15);
-	krus.insert(2, 5, 65);
-	krus.insert(3, 5, 18);
-	krus.insert(5, 6, 44);
-	krus.insert(3, 6, 36);
-
-	krus.calculate();
-
+	// 1. 거리 배열에서 weight[시작 노드]의 값들로 초기화 합니다.
 	
+	// 2. 시작점을 방문 처리
+	
+	// 3. 거리 배열에서 최소 비용 노드를 찾고 방문 처리
+	//	  단, 이미 방문한 노드는 제외
+	
+	// 4. 최소 비용 노드를 거쳐갈 지 고민해서 거리 배열을 갱신
+	//	  단, 이미 방문한 노드는 제외
+	
+	// 5. 모든 노드를 방문할 때까지 3번 ~ 4번 반복
 
+	// 방문하지 않은 노드 중에서 가장 작은 거리를 가진 노드를
+	// 방문하고, 그 노드와 연결된 다른 노드까지의 거리를 계산
+
+	Dikstra dik;
+
+	dik.insert(1, 2, 2);
+	dik.insert(1, 3, 5);
+	dik.insert(1, 4, 1);
+	dik.insert(2, 3, 3);
+	dik.insert(2, 4, 2);
+	dik.insert(3, 4, 3);
+	dik.insert(3, 5, 1);
+	dik.insert(3, 6, 5);
+	dik.insert(4, 5, 1);
+	dik.insert(5, 6, 2);
+
+	dik.search(1);
+
+	dik.printDist();
 #pragma endregion
 
 	return 0;
