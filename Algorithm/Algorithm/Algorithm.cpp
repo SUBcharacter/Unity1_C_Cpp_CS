@@ -91,6 +91,21 @@ public:
 	}
 };
 
+enum Mark
+{
+	CLOVER,
+	HEART,
+	DIAMOND,
+	SPADE
+};
+
+enum Rank
+{
+	ACE = 1,
+	TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN,
+	JACK, QUEEN, KING
+};
+
 int main()
 {
 #pragma region 다익스트라 알고리즘
@@ -129,6 +144,9 @@ int main()
 
 	dik.printDist();
 #pragma endregion
+
+
+
 
 	return 0;
 }
