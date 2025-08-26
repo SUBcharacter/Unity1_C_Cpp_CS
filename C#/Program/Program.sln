@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36109.1 d17.14
+VisualStudioVersion = 17.14.36109.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Program", "Program.csproj", "{9F2649EC-1049-43B5-9820-ABC6C9D600C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grammer", "..\Grammer\Grammer.csproj", "{1EF626F9-8940-403D-B57E-4B3EAE1E8DCA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{9F2649EC-1049-43B5-9820-ABC6C9D600C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F2649EC-1049-43B5-9820-ABC6C9D600C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F2649EC-1049-43B5-9820-ABC6C9D600C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EF626F9-8940-403D-B57E-4B3EAE1E8DCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EF626F9-8940-403D-B57E-4B3EAE1E8DCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EF626F9-8940-403D-B57E-4B3EAE1E8DCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EF626F9-8940-403D-B57E-4B3EAE1E8DCA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

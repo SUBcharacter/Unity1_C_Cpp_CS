@@ -1,50 +1,56 @@
-﻿using System.Numerics;
+﻿using System.Data.SqlTypes;
+using System.Numerics;
 
 namespace Program
 {
+    
+
     internal class Program
     {
+        
+
         static void Main()
         {
-            #region 박싱
+            #region 컬렉션
 
-            // 값 형식의 데이터를 참조 형식으로 변환하는 과정
+            #region List
 
-            //int value = 100;
+            //List<int> list = new List<int>();
             //
-            //object generic = value;
+            //list.Add(10); // push_back(10);
+            //list.Add(20); // push_back(20);
+            //list.Add(30); // push_back(30);
+            //list.Add(40); // push_back(40);
+            //list.Add(50); // push_back(50);
             //
-            //Console.WriteLine(value);
-            //Console.WriteLine(generic);
+            //list.Remove(15);
+            //
+            //foreach(int i in list)
+            //{
+            //    Console.WriteLine(i);
+            //}
 
             #endregion
 
-            #region 언박싱
+            #region Dictionary
 
-            // 참조 형식의 데이터를 값 형식으로 변환하는 과정
+            Dictionary<string,int> dic = new Dictionary<string,int>();
 
-            //int box = (int)generic;
-            //
-            //Console.WriteLine(box);
+            dic.Add("Blade", 50);
+            dic.Add("Decade", 100);
+            dic.Add("Faiz", 200);
+
+            foreach(var item in dic)
+            {
+                Console.WriteLine($"KEY : {item.Key}");
+                Console.WriteLine($"VALUE : {item.Value}");
+            }
+
+            
 
             #endregion
 
-            Utility util = new Utility();
-
-            util.Pause();
-
-            int x = 10;
-            int y = 20;
-
-            Console.WriteLine($"{x} {y}");
-
-            util.Swap(ref x, ref y);
-
-            Console.WriteLine($"{x} {y}");
-
-            int abs = 10;
-
-            util.Absolute(in abs);
+            #endregion
         }
     }
 }

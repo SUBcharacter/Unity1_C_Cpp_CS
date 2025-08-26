@@ -4,8 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Program
+namespace Grammer
 {
+    struct Vector2
+    {
+        public int x;
+        public int y;
+
+        public Vector2(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
     internal class Utility
     {
         private int data;
@@ -33,6 +45,11 @@ namespace Program
                 Console.WriteLine($"ABS : {-value}");
             }
 
+        }
+
+        public void Magnitude(Vector2 value, out float length)
+        {
+            length = (float)Math.Sqrt(value.x * value.x + value.y * value.y);
         }
     }
 }
