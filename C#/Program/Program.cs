@@ -7,48 +7,41 @@ namespace Program
 
     internal class Program
     {
-        
-
         static void Main()
         {
-            #region 컬렉션
+            #region 추상 클래스
 
-            #region List
+            // 직접 생성할 수는 없지만, 다른 클래스가 상속받아 
+            // 구체적인 기능을 만들 수 있도록 설계되어 있는 클래스
 
-            //List<int> list = new List<int>();
-            //
-            //list.Add(10); // push_back(10);
-            //list.Add(20); // push_back(20);
-            //list.Add(30); // push_back(30);
-            //list.Add(40); // push_back(40);
-            //list.Add(50); // push_back(50);
-            //
-            //list.Remove(15);
-            //
-            //foreach(int i in list)
-            //{
-            //    Console.WriteLine(i);
-            //}
+            Terrain cave = new Cave(250,400);
+            Terrain graveyard = new Graveyard(500,200);
+            Terrain coast = new Coast(800,1000);
 
-            #endregion
+            cave.Description();
+            graveyard.Description();
+            coast.Description();
 
-            #region Dictionary
+            Console.WriteLine($"Cave width : {cave.Width}, Cave height : {cave.Height}\n");
+            Console.WriteLine($"Graveyard width : {graveyard.Width}, Graveyard height : {graveyard.Height}\n");
+            Console.WriteLine($"Coast width : {coast.Width}, Coast height : {coast.Height}\n");
 
-            Dictionary<string,int> dic = new Dictionary<string,int>();
+            Terrain[] terrains = { cave, graveyard, coast };
 
-            dic.Add("Blade", 50);
-            dic.Add("Decade", 100);
-            dic.Add("Faiz", 200);
+            List<ICoverable> coverables = new List<ICoverable>();
 
-            foreach(var item in dic)
+            foreach( var t in terrains )
             {
-                Console.WriteLine($"KEY : {item.Key}");
-                Console.WriteLine($"VALUE : {item.Value}");
+                if(t is ICoverable coverable)
+                {
+                    coverables.Add(coverable);
+                }
             }
 
-            
-
-            #endregion
+            foreach(var c in coverables)
+            {
+                c.TakeCover();
+            }
 
             #endregion
         }
