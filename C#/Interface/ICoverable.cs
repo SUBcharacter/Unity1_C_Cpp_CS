@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Program
+namespace Interface
 {
-    internal interface ITraversable
+    internal interface ICoverable
     {
-        bool Traverse();
-
+        void TakeCover();
+        
     }
 }

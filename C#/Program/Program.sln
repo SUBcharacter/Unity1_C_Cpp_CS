@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grammer", "..\Grammer\Gramm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collection", "..\Collection\Collection.csproj", "{FF9F35C5-DD8E-473C-96F7-F2F055BF751A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interface", "..\Interface\Interface.csproj", "{690A6913-70EE-4F2F-88F0-FD625F9C3F83}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{FF9F35C5-DD8E-473C-96F7-F2F055BF751A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF9F35C5-DD8E-473C-96F7-F2F055BF751A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF9F35C5-DD8E-473C-96F7-F2F055BF751A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{690A6913-70EE-4F2F-88F0-FD625F9C3F83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{690A6913-70EE-4F2F-88F0-FD625F9C3F83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{690A6913-70EE-4F2F-88F0-FD625F9C3F83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{690A6913-70EE-4F2F-88F0-FD625F9C3F83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
