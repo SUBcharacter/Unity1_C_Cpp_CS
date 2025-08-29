@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Program
 {
-    internal class Item
+    internal abstract class Item
     {
-        private int id;
-        private int type;  // 1검, 2목걸이, 3신발
-        private string name;
-        private int str;
-        private int dex;
-        private int intel;
+        protected int id;
+        protected int type;  // 1검, 2목걸이, 3신발
+        protected string name;
+        protected int str;
+        protected int dex;
+        protected int intel;
 
         public int Id { get { return id; } }
         public int Type { get { return type; } }
@@ -32,5 +32,51 @@ namespace Program
             this.intel = intel;
         }
 
+        public void PrintStat()
+        {
+            Console.WriteLine($"Name : {name}");
+            Console.WriteLine($"STR : {str}");
+            Console.WriteLine($"DEX : {dex}");
+            Console.WriteLine($"INT : {intel}\n");
+            
+        }
     }
+
+    internal class Sword : Item, IEnchantable
+    {
+        public Sword(int id, int type, string name, int str, int dex, int intel) : base(id, type, name, str, dex, intel)
+        {
+        }
+
+        public void Upgrade()
+        {
+            str += (int)((float)str * 0.1f);
+        }
+    }
+
+    internal class Neckless : Item, IEnchantable
+    {
+        public Neckless(int id, int type, string name, int str, int dex, int intel) : base(id, type, name, str, dex, intel)
+        {
+        }
+
+        public void Upgrade()
+        {
+            intel += (int)((float)intel * 0.1f);
+        }
+    }
+
+    internal class Shoes : Item, IEnchantable
+    {
+        public Shoes(int id, int type, string name, int str, int dex, int intel) : base(id, type, name, str, dex, intel)
+        {
+        }
+
+        public void Upgrade()
+        {
+            dex += (int)((float)dex * 0.1f);
+        }
+    }
+
+
 }

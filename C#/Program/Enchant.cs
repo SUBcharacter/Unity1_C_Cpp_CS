@@ -7,9 +7,23 @@ using System.Threading.Tasks;
 
 namespace Program
 {
-    internal interface IEnhancer
+    internal interface IEnchantable
     {
-        public void Upgrade(IEnhancer item);
-        
+        public void Upgrade();
+
     }
+
+    internal class Enchant
+    {
+        public void Enhance(Item item)
+        {
+            if (item is IEnchantable i)
+            {
+                i.Upgrade();
+            }
+            else
+                return;
+        }
+    }
+
 }

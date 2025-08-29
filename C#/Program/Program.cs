@@ -34,11 +34,34 @@ namespace Program
             // 소프트웨어의 구성 요소는 확장에는 열려 있어야 하고, 변경에는 닫혀 있어야 한다.
             // 버트란드 마이어(Bertrand Meyer)
 
-            Enchant enchant = new Enchant();
+            //Item sword = new Sword(1, 1, "Sword", 10, 5, 1);
+            //Item neckless = new Neckless(1, 2, "Neckless", 1, 5, 10);
+            //Item shoes = new Shoes(1, 3, "Shoes", 5, 10, 5);
+            //
+            //Enchant enchanter = new Enchant();
+            //
+            //enchanter.Enhance(sword);
+            //enchanter.Enhance(neckless);
+            //enchanter.Enhance(shoes);
+            //
+            //sword.PrintStat();
+            //neckless.PrintStat();
+            //shoes.PrintStat();
 
-            enchant.Enhance(new Item(1, 1, "sword", 30, 10, 0));
-            enchant.Enhance(new Item(2, 2, "neckless", 0, 0, 20));
-            enchant.Enhance(new Item(3, 3, "shoes", 10, 15, 0));
+            #endregion
+
+            #region 인터페이스 분리 원칙
+
+            // 클래스가 자신이 사용하지 않는 함수에 의존하지 않도록
+            // 설계되어야 하는 원칙
+
+            NPC merchant = new Merchant(1);
+            NPC princess = new Princess(2);
+            NPC mercenary = new Mercenary(3);
+
+            merchant.Update();
+            princess.Update();
+            mercenary.Update();
 
             #endregion
         }
